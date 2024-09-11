@@ -6,11 +6,13 @@
     "main"
   ],
   "permissions": [
-    "core:default",
+    "core:app:default",
     "sql:default",
     "sql:allow-execute",
     "sql:allow-close",
     "sql:allow-load",
-    "sql:allow-select"
+    "sql:allow-select",
+    "core:window:allow-start-dragging",
+    "core:webview:allow-internal-toggle-devtools"
   ]
 }

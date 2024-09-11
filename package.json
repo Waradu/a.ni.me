@@ -10,9 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fluentui/svg-icons": "^1.1.258",
     "@tauri-apps/plugin-sql": "^2.0.0-rc.1",
     "nuxt": "^3.13.0",
+    "nuxt-svgo": "^4.0.5",
     "sass": "^1.78.0",
+    "sass-loader": "^16.0.1",
     "vue": "latest",
     "vue-router": "latest"
   },
