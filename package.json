@@ -1,0 +1,22 @@
+{
+  "name": "anilist",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@tauri-apps/plugin-sql": "^2.0.0-rc.1",
+    "nuxt": "^3.13.0",
+    "sass": "^1.78.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0-rc.13"
+  }
+}
