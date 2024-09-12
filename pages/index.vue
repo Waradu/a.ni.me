@@ -18,7 +18,7 @@ main.index {
   height: 100%;
   align-items: center;
   justify-content: center;
-  margin-top: -60px;
+  margin-top: -20px;
 
   input {
     padding: 20px;
