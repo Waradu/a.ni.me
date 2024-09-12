@@ -13,6 +13,7 @@
     "sql:allow-load",
     "sql:allow-select",
     "core:window:allow-start-dragging",
-    "core:webview:allow-internal-toggle-devtools"
+    "core:webview:allow-internal-toggle-devtools",
+    "core:event:default"
   ]
 }

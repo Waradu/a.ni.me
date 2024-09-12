@@ -39,6 +39,40 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         })
       );
     },
+    async anime(id: number): Promise<Anime | null> {
+      const animeResult = await db.select<DbAnime[]>(
+        "SELECT * FROM animes WHERE id = ?",
+        [id]
+      );
+
+      const anime = animeResult[0];
+
+      if (!anime) {
+        return null;
+      }
+
+      const characters = await db.select<DbCharacter[]>(
+        "SELECT * FROM characters WHERE anime_id = ?",
+        [anime.id]
+      );
+
+      const genreIds = await db.select<DbAnimeGenre[]>(
+        "SELECT * FROM anime_genre WHERE anime_id = ?",
+        [anime.id]
+      );
+
+      const genres = await db.select<DbGenre[]>(
+        `SELECT * FROM genres WHERE id IN (${genreIds
+          .map((g) => g.genre_id)
+          .join(",")})`
+      );
+
+      return {
+        ...anime,
+        characters,
+        genres,
+      };
+    },
   };
 
   return {

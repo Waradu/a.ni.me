@@ -1,5 +1,8 @@
 <template>
-  <NuxtPage />
+  <div class="page">
+    <Titlebar />
+    <NuxtPage />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -20,6 +23,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss">
+@import "~/assets/css/basic.scss";
+
 * {
   margin: 0;
   padding: 0;
@@ -28,13 +33,20 @@ onMounted(async () => {
 
 html,
 body,
-#__nuxt {
+#__nuxt,
+.page {
   width: 100%;
   height: 100%;
   background-color: transparent;
   font-family: 'Segoe UI', sans-serif;
   color: white;
+  overflow: hidden;
+}
 
+main {
+  margin-top: 60px;
+  height: calc(100% - 60px);
+  overflow: auto;
 }
 
 ::-webkit-scrollbar {
@@ -61,5 +73,30 @@ body,
 
 ::-webkit-scrollbar:hover {
   width: 10px;
+}
+
+h1 {
+  @extend %title1;
+}
+
+h2 {
+  @extend %title2;
+}
+
+h3 {
+  @extend %title3;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+.page-enter-from {
+  opacity: 0;
+  translate: 0 50px;
+}
+
+.page-leave-to {
+  opacity: 0;
 }
 </style>
