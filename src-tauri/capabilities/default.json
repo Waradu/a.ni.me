@@ -12,8 +12,17 @@
     "sql:allow-close",
     "sql:allow-load",
     "sql:allow-select",
-    "core:window:allow-start-dragging",
     "core:webview:allow-internal-toggle-devtools",
-    "core:event:default"
+    "core:event:default",
+    "core:window:allow-close",
+    "core:window:allow-center",
+    "core:window:allow-minimize",
+    "core:window:allow-maximize",
+    "core:window:allow-set-size",
+    "core:window:allow-set-focus",
+    "core:window:allow-is-maximized",
+    "core:window:allow-start-dragging",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-internal-toggle-maximize"
   ]
 }

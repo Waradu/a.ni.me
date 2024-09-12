@@ -1,7 +1,8 @@
 export const useTitlebarStore = defineStore("titlebarStore", {
   state: () => ({
     title: "",
-    backLink: ""
+    backLink: "",
+    search: ""
   }),
 
   actions: {
@@ -16,6 +17,12 @@ export const useTitlebarStore = defineStore("titlebarStore", {
     },
     setBackLink(backLink: string) {
       this.backLink = backLink;
+    },
+    getSearch() {
+      return this.search;
+    },
+    setSearch(search: string) {
+      this.search = search;
     },
   },
   persist: true

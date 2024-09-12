@@ -23,8 +23,6 @@ onMounted(async () => {
 </script>
 
 <style lang="scss">
-@import "~/assets/css/basic.scss";
-
 * {
   margin: 0;
   padding: 0;
@@ -43,10 +41,17 @@ body,
   overflow: hidden;
 }
 
+.page {
+  display: flex;
+  justify-content: center;
+}
+
 main {
   margin-top: 60px;
   height: calc(100% - 60px);
   overflow: auto;
+  width: 100%;
+  /* max-width: 1400px; */
 }
 
 ::-webkit-scrollbar {
@@ -91,6 +96,7 @@ h3 {
 .page-leave-active {
   transition: all 0.2s ease-in-out;
 }
+
 .page-enter-from {
   opacity: 0;
   translate: 0 50px;

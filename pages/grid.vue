@@ -2,7 +2,7 @@
   <main class="grid">
     <div class="grid-container">
       <div class="grid">
-        <div class="card" v-for="anime in animes" :key="anime.id">
+        <div class="card" v-for="anime in search" :key="anime.id">
           <NuxtLink class="image" @click="titlebarStore.setBackLink('/grid')" :to="'/anime/' + anime.id">
             <PlayIcon class="play" />
             <div class="cover">
@@ -36,11 +36,15 @@ const animes = ref<Anime[]>([])
 onMounted(async () => {
   animes.value = await $database.animes();
 })
+
+const search = computed(() => {
+  return animes.value.filter((a) => {
+    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
+  });
+})
 </script>
 
 <style lang="scss">
-@import "~/assets/css/basic.scss";
-
 main.grid {
 
   .grid-container {
@@ -50,7 +54,7 @@ main.grid {
     justify-content: center;
 
     .grid {
-      padding: 20px;
+      padding: 30px;
       padding-top: 10px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

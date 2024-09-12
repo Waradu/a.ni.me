@@ -1,5 +1,6 @@
 <template>
   <div class="modal" v-if="shown" :class="{ shown: actuallyShown }" @click="hide">
+    <header class="min-titlebar" data-tauri-drag-region @click.stop></header>
     <div class="modal-wrapper" @click.stop>
       <div v-if="props.header" class="header">
         <h3>{{ props.header }}</h3>
@@ -69,27 +70,42 @@ defineExpose({
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #00000060;
+  background-color: #00000080;
   opacity: 0;
   transition: .2s ease-in-out;
 
+  header.min-titlebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 60px;
+    z-index: 1;
+  }
+
   .modal-wrapper {
-    background-color: #0c0c0c;
+    background-color: #111111;
     min-width: 400px;
+    max-width: 600px;
     border-radius: 8px;
     overflow: hidden;
+    padding: 20px;
+    padding-left: 25px;
+    border: 1px solid #ffffff10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
 
     .header {
       width: 100%;
-      padding: 20px;
-      padding-left: 25px;
-      background-color: black;
       display: flex;
       justify-content: space-between;
     }
 
     .content {
-      padding: 20px;
+      @extend %text1;
+      color: #ffffffaa;
     }
   }
 
