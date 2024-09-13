@@ -1,7 +1,7 @@
 <template>
   <header class="titlebar" data-tauri-drag-region>
     <div class="data" data-tauri-drag-region>
-      <div class="icons">
+      <div class="icons" data-tauri-drag-region>
         <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="titlebarStore.getBackLink() != ''">
           <ArrowBackIcon class="icon" />
         </NuxtLink>
@@ -9,20 +9,20 @@
           <HomeIcon class="icon" />
         </NuxtLink>
       </div>
-      <h3 :title="titlebarStore.getTitle()">
+      <h3 :title="titlebarStore.getTitle()" data-tauri-drag-region>
         {{ titlebarStore.getTitle() }}
       </h3>
     </div>
     <div class="input" data-tauri-drag-region>
-      <input type="text" placeholder="Search" :value="titlebarStore.search"
-        @input="titlebarStore.setSearch(($event.target as HTMLInputElement).value)">
+      <input type="text" placeholder="Search" ref="input" :value="titlebarStore.search"
+        @input="titlebarStore.setSearch(($event.target as HTMLInputElement).value); $router.replace({ path: '/' });">
     </div>
-    <div class="controls">
-      <div class="icons">
+    <div class="controls" data-tauri-drag-region>
+      <div class="icons" data-tauri-drag-region>
         <div class="wrapper">
           <SettingsIcon class="icon" />
         </div>
-        <div class="space"></div>
+        <div class="space" data-tauri-drag-region></div>
         <div class="wrapper">
           <MinimizeIcon class="icon" @click="async () => getCurrentWindow().minimize()" />
         </div>
@@ -53,11 +53,15 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 const titlebarStore = useTitlebarStore();
 const router = useRouter()
 
+const input = ref<HTMLInputElement | null>(null)
+
 router.beforeEach((to, from, next) => {
   next()
-  setTimeout(() => {
-    titlebarStore.setSearch("")
-  }, 200)
+  if (to.fullPath != "/") {
+    setTimeout(() => {
+      titlebarStore.setSearch("")
+    }, 200)
+  }
 })
 
 const isMaximized = ref(false);
@@ -69,6 +73,13 @@ onMounted(async () => {
   currentWindow.listen('tauri://resize', async () => {
     isMaximized.value = await currentWindow.isMaximized();
   });
+
+  window.addEventListener("keypress", (event: KeyboardEvent) => {
+    if (event.ctrlKey && event.code == "KeyL") {
+      if (!input.value) return;
+      input.value.focus();
+    }
+  })
 })
 </script>
 
@@ -118,7 +129,7 @@ header.titlebar {
       min-width: 200px;
       outline: none;
       border: 1px solid #ffffff10;
-      border-radius: 8px;
+      border-radius: 4px;
       background-color: transparent;
       color: #ffffffaa;
     }

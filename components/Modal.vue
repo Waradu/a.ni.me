@@ -74,6 +74,11 @@ defineExpose({
   opacity: 0;
   transition: .2s ease-in-out;
 
+  &>* {
+    transition: .1s ease-in-out;
+    scale: 0.8;
+  }
+
   header.min-titlebar {
     position: fixed;
     top: 0;
@@ -140,6 +145,10 @@ defineExpose({
 
   &.shown {
     opacity: 1;
+
+    &>* {
+      scale: 1;
+    }
   }
 }
 </style>
