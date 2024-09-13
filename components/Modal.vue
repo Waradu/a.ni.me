@@ -91,7 +91,7 @@ defineExpose({
   .modal-wrapper {
     background-color: #111111;
     min-width: 400px;
-    max-width: 600px;
+    max-width: min(800px, calc(100% - 40px));
     border-radius: 8px;
     overflow: hidden;
     padding: 20px;

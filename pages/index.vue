@@ -2,19 +2,6 @@
   <main class="grid">
     <div class="grid-container">
       <div class="grid">
-        <div class="card">
-          <div class="image" @click="showAddNew">
-            <div class="cover">
-              <div class="img">
-                <AddIcon class="add" />
-              </div>
-            </div>
-          </div>
-          <div class="text">
-            <span class="title">Add new</span>
-            <p class="info"></p>
-          </div>
-        </div>
         <div class="card" v-for="anime in search" :key="anime.id">
           <NuxtLink class="image" @click="titlebarStore.setBackLink('/')" :to="'/anime/' + anime.id">
             <PlayIcon class="play" />
@@ -29,14 +16,21 @@
             <p class="info">{{ anime.year }}</p>
           </div>
         </div>
+        <div class="card" v-if="search.length == 0">
+          <div class="image">
+            <div class="cover">
+              <div class="img">
+                <AddIcon class="add" style="rotate: 45deg;" />
+              </div>
+            </div>
+          </div>
+          <div class="text">
+            <span class="title">Nothing Found</span>
+            <p class="info"></p>
+          </div>
+        </div>
       </div>
     </div>
-    <Modal header="Add new" ref="addNew">
-      <input type="text" @click="showSelectNew">
-      <Modal header="Select new" ref="selectNew" :onHide="hideAddNew">
-        <p>Hello</p>
-      </Modal>
-    </Modal>
   </main>
 </template>
 
@@ -44,9 +38,8 @@
 import type { Anime } from '~/types/anime';
 import PlayIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
-import type { Modal } from '#build/components';
 
-const { $database } = useNuxtApp();
+const { $database, $emitter } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes")
@@ -54,35 +47,31 @@ titlebarStore.setBackLink("")
 
 const animes = ref<Anime[]>([])
 
-const addNew = ref<InstanceType<typeof Modal> | null>(null)
-const selectNew = ref<InstanceType<typeof Modal> | null>(null)
-
-const showAddNew = () => {
-  if (!addNew.value) return;
-
-  addNew.value.show()
-}
-
-const hideAddNew = () => {
-  if (!addNew.value) return;
-
-  addNew.value.hide()
-}
-
-const showSelectNew = () => {
-  if (!selectNew.value) return;
-
-  selectNew.value.show()
-}
-
 onMounted(async () => {
   animes.value = await $database.animes();
 })
 
+$emitter.on('dataUpdated', async () => {
+  console.log("updating");
+  animes.value = await $database.animes();
+});
+
 const search = computed(() => {
   return animes.value.filter((a) => {
     return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
-  });
+  }).sort(
+    (a, b) => {
+      if (a.year > b.year) {
+        return -1
+      }
+
+      if (a.year < b.year) {
+        return 1
+      }
+
+      return 0
+    }
+  );
 })
 </script>
 
@@ -165,11 +154,11 @@ main.grid {
               align-items: center;
               justify-content: center;
               transition: .2s ease-in-out;
-              color: #a6ff86;
+              color: #ff8686;
             }
 
             &:has(.img) {
-              background-color: #a6ff8610;
+              background-color: #ff868610;
             }
           }
 

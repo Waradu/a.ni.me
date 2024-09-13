@@ -1,6 +1,7 @@
 import Database from "@tauri-apps/plugin-sql";
 import type { Anime } from "~/types/anime";
 import type { DbAnime, DbCharacter, DbGenre, DbAnimeGenre } from "~/types/db";
+import type { Data as JikanData } from "~/types/response";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   let db: Database;
@@ -72,6 +73,30 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         characters,
         genres,
       };
+    },
+    async add(anime: JikanData) {
+      const animes = await this.animes();
+      const id = animes[animes.length - 1].id + 1;
+      const title = anime.title.replaceAll('"', "").replaceAll("'", "''");
+      try {
+        const image = anime.images[Object.keys(anime.images)[0]].image_url;
+        const query = `
+          INSERT INTO animes (id, created_at, name, url, image, trailer, approved, episodes, airing, status, rating, popularity, score, scored_by, favorites, synopsis, year, stars, watched)
+          VALUES 
+          (${id}, CURRENT_TIMESTAMP, '${title}', '${anime.url}', '${image}', '${
+          anime.trailer.url
+        }', ${anime.approved}, ${anime.episodes}, ${anime.airing}, '${
+          anime.status
+        }', '${anime.rating}', ${anime.popularity}, ${anime.score}, ${
+          anime.scored_by
+        }, ${anime.favorites}, '${anime.synopsis?.replaceAll("'", "''")}', ${
+          anime.year
+        }, 0, false)
+        `;
+        await db.execute(query);
+      } catch (e) {
+        console.log(e);
+      }
     },
   };
 

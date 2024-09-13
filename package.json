@@ -13,6 +13,8 @@
     "@fluentui/svg-icons": "^1.1.258",
     "@pinia/nuxt": "^0.5.4",
     "@tauri-apps/plugin-sql": "^2.0.0-rc.1",
+    "axios": "^1.7.7",
+    "mitt": "^3.0.1",
     "nuxt": "^3.13.0",
     "nuxt-svgo": "^4.0.5",
     "pinia-plugin-persistedstate": "^4.0.1",
