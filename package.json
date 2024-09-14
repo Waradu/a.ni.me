@@ -21,7 +21,8 @@
     "sass": "^1.78.0",
     "sass-loader": "^16.0.1",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "wrdu-keyboard": "^1.0.2"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0-rc.13"

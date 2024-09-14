@@ -75,7 +75,7 @@ import axios from "axios";
 import type { Modal } from "#build/components";
 import type { Anime } from "~/types/anime";
 
-const { $database, $emitter, $keyboard } = useNuxtApp();
+const { $database, $emitter } = useNuxtApp();
 
 const modal = ref<InstanceType<typeof Modal> | null>(null)
 
@@ -111,8 +111,10 @@ const next = () => {
   page.value = page.value > animes.value.length - 1 ? animes.value.length - 1 : page.value
 }
 
-$keyboard.down("ArrowRight", next)
-$keyboard.down("ArrowLeft", back)
+const keyboard = useKeyboard()
+
+keyboard.down("ArrowRight", next)
+keyboard.down("ArrowLeft", back)
 
 router.beforeEach((to, from, next) => {
   next()
