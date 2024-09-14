@@ -2,20 +2,20 @@
   <header class="titlebar" data-tauri-drag-region>
     <div class="data" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
-        <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="titlebarStore.getBackLink() != ''">
+        <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="mounted && titlebarStore.getBackLink() != ''">
           <ArrowBackIcon class="icon" />
         </NuxtLink>
-        <NuxtLink class="wrapper" to="/">
+        <NuxtLink :key="$route.fullPath" class="wrapper" to="/" @click.prevent="navigateHome">
           <HomeIcon class="icon" />
         </NuxtLink>
       </div>
-      <h3 :title="titlebarStore.getTitle()" data-tauri-drag-region>
+      <h3 :title="mounted ? titlebarStore.getTitle() : ''" data-tauri-drag-region v-if="mounted">
         {{ titlebarStore.getTitle() }}
       </h3>
     </div>
     <div class="input" data-tauri-drag-region>
-      <input type="text" placeholder="Search (enter to add)" ref="input" :value="titlebarStore.search" @input="search"
-        @keydown.enter="add">
+      <input type="text" placeholder="Search (enter to add)" ref="input" :value="mounted ? titlebarStore.search : ''"
+        @input="search" @keydown.enter="add" v-if="mounted">
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
@@ -23,8 +23,8 @@
           <SettingsIcon class="icon" />
         </div>
         <div class="space" data-tauri-drag-region></div>
-        <div class="wrapper">
-          <MinimizeIcon class="icon" @click="async () => getCurrentWindow().minimize()" />
+        <div class="wrapper" @click="async () => getCurrentWindow().minimize()">
+          <MinimizeIcon class="icon" />
         </div>
         <div class="wrapper" v-if="isMaximized" @click="async () => getCurrentWindow().toggleMaximize()">
           <RestoreIcon class="icon" />
@@ -51,12 +51,11 @@
         </div>
       </div>
       <div class="buttons">
-        <button class="previous" @click="page--; page = page < 0 ? 0 : page" :disabled="page == 0">Back</button>
+        <button class="previous" @click="back" :disabled="page == 0">Back</button>
         <div class="progress">
           {{ page + 1 }}/{{ animes.length }}
         </div>
-        <button class="next" @click="page++; page = page > animes.length - 1 ? animes.length - 1 : page"
-          :disabled="page == animes.length - 1">Next</button>
+        <button class="next" @click="next" :disabled="page == animes.length - 1">Next</button>
       </div>
     </Modal>
   </header>
@@ -76,12 +75,13 @@ import axios from "axios";
 import type { Modal } from "#build/components";
 import type { Anime } from "~/types/anime";
 
-const { $database, $emitter } = useNuxtApp();
+const { $database, $emitter, $keyboard } = useNuxtApp();
 
 const modal = ref<InstanceType<typeof Modal> | null>(null)
 
 const titlebarStore = useTitlebarStore();
 const router = useRouter()
+const route = useRoute()
 
 const input = ref<HTMLInputElement | null>(null)
 
@@ -94,10 +94,25 @@ const myanimenames = computed(() => {
   return myanimes.value.map((a) => a.name)
 })
 
+const mounted = ref(false);
+
 const page = ref(0);
 const anime = computed(() => {
   return animes.value[page.value];
 })
+
+const back = () => {
+  page.value--;
+  page.value = page.value < 0 ? 0 : page.value
+}
+
+const next = () => {
+  page.value++;
+  page.value = page.value > animes.value.length - 1 ? animes.value.length - 1 : page.value
+}
+
+$keyboard.down("ArrowRight", next)
+$keyboard.down("ArrowLeft", back)
 
 router.beforeEach((to, from, next) => {
   next()
@@ -113,15 +128,30 @@ const search = (event: Event) => {
   router.replace({ path: '/' });
 }
 
+const navigateHome = async () => {
+  titlebarStore.setSearch('')
+
+  if (route.path === '/') {
+    await router.replace({ path: '/redirect' })
+    await router.replace('/')
+  } else {
+    await router.push('/')
+  }
+}
+
 const add = async (event: KeyboardEvent) => {
   const term = (event.target as HTMLInputElement).value;
+  page.value = 0;
+  if (input.value) {
+    input.value.blur()
+  }
 
   if (term && term.length > 0 && modal.value) {
     const url = `https://api.jikan.moe/v4/anime?q=${term}`;
 
     try {
       const response = await axios.get<JikanResponse>(url);
-      animes.value = response.data.data.slice(0, 5);
+      animes.value = response.data.data.slice(0, 10);
 
       modal.value.show()
     } catch (e) {
@@ -141,6 +171,8 @@ const dbadd = async (anime: JikanData) => {
 const isMaximized = ref(false);
 
 onMounted(async () => {
+  mounted.value = true;
+
   myanimes.value = await $database.animes();
 
   const currentWindow = await getCurrentWindow();
@@ -174,6 +206,7 @@ header.titlebar {
   max-width: 100vw;
   width: 100%;
   grid-template-columns: 30% calc(40% - 80px) 30%;
+  z-index: 1000;
 
   .data {
     display: flex;

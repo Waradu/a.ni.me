@@ -1,0 +1,3 @@
+<template>
+  Hey, you shouldn't be here...
+</template>
