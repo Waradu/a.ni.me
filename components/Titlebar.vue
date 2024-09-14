@@ -19,7 +19,7 @@
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
-        <div class="wrapper">
+        <div class="wrapper" @click="openSettings">
           <SettingsIcon class="icon" />
         </div>
         <div class="space" data-tauri-drag-region></div>
@@ -74,6 +74,24 @@ import type { Response as JikanResponse, Data as JikanData } from "~/types/respo
 import axios from "axios";
 import type { Modal } from "#build/components";
 import type { Anime } from "~/types/anime";
+import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
+
+const openSettings = () => {
+  const webview = new WebviewWindow('confetti', {
+    url: '/confetti',
+    transparent: true,
+    decorations: false,
+    alwaysOnTop: true,
+    focus: false,
+    fullscreen: true,
+    shadow: false,
+    skipTaskbar: true,
+  })
+  webview.once('tauri://error', (e) => {
+    console.error('Window error:', e)
+  })
+  /* webview.destroy() */
+}
 
 const { $database, $emitter } = useNuxtApp();
 

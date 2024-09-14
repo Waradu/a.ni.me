@@ -4,6 +4,11 @@ import type { DbAnime, DbCharacter, DbGenre, DbAnimeGenre } from "~/types/db";
 import type { Data as JikanData } from "~/types/response";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
+  //@ts-ignore
+  if (nuxtApp.$router.currentRoute.value.path === "/confetti") {
+    return {};
+  }
+
   let db: Database;
 
   if (import.meta.client) {
