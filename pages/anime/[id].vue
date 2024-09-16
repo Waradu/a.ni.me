@@ -1,6 +1,6 @@
 <template>
-  <main class="anime">
-    <header v-if="anime">
+  <main class="anime" v-if="anime">
+    <header>
       <div class="image">
         <img :src="anime.image" alt="">
       </div>
@@ -16,15 +16,49 @@
         <div class="description" @click="show">
           <p v-html="anime.synopsis"></p>
         </div>
+        <div class="rating" v-if="anime.stars > 0">
+          <div v-for="i in 5">
+            <StarFilledIcon v-if="anime.stars >= i" />
+            <StarIcon v-else />
+          </div>
+        </div>
       </div>
-      <Modal header="Settings" ref="settingsModal">
+      <Modal header="Description" ref="settingsModal">
         <p v-html="anime.synopsis"></p>
       </Modal>
     </header>
+    <div class="details">
+      <div class="detail">
+        <div class="text">Score</div>
+        <div class="data">{{ anime.score }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Scored By</div>
+        <div class="data">{{ anime.scored_by }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Favorites</div>
+        <div class="data">{{ anime.favorites }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Episodes</div>
+        <div class="data">{{ anime.episodes }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Rating</div>
+        <div class="data">{{ anime.rating }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Year</div>
+        <div class="data">{{ anime.year }}</div>
+      </div>
+    </div>
   </main>
 </template>
 
 <script lang="ts" setup>
+import StarIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_regular.svg";
+import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_filled.svg";
 import type { Modal } from '#build/components';
 import type { Anime } from '~/types/anime';
 
