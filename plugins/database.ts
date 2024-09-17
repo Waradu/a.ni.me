@@ -103,6 +103,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         console.log(e);
       }
     },
+    async stars(id: number, stars: number) {
+      await db.execute(
+        `update animes set stars = ${stars} where id = ${id}`
+      );
+    },
   };
 
   return {

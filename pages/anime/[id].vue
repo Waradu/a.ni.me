@@ -1,6 +1,6 @@
 <template>
-  <main class="anime" v-if="anime">
-    <header>
+  <main class="anime">
+    <header v-if="anime">
       <div class="image">
         <img :src="anime.image" alt="">
       </div>
@@ -16,18 +16,24 @@
         <div class="description" @click="show">
           <p v-html="anime.synopsis"></p>
         </div>
-        <div class="rating" v-if="anime.stars > 0">
-          <div v-for="i in 5">
-            <StarFilledIcon v-if="anime.stars >= i" />
-            <StarIcon v-else />
-          </div>
+        <div class="rating" @mouseleave="moving = false" >
+          <template v-for="i in 5">
+            <StarFilledIcon class="icon star" v-if="anime.stars >= i" 
+              @mousedown="moving = true"
+              @mousemove="move(i)"
+              @mouseup="stars(anime.id, i);moving=false" />
+            <StarIcon class="icon" v-else 
+              @mousedown="moving = true" 
+              @mousemove="move(i)"
+              @mouseup="stars(anime.id, i);moving=false" />
+          </template>
         </div>
       </div>
       <Modal header="Description" ref="settingsModal">
         <p v-html="anime.synopsis"></p>
       </Modal>
     </header>
-    <div class="details">
+    <div class="details" v-if="anime">
       <div class="detail">
         <div class="text">Score</div>
         <div class="data">{{ anime.score }}</div>
@@ -69,6 +75,12 @@ const { $database } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
 
 const anime = ref<Anime>()
+const moving = ref(false)
+const down = ref(false)
+
+const move = (i: number) => {
+  if (moving.value && anime.value) anime.value.stars = i;
+}
 
 const settingsModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -84,7 +96,7 @@ onMounted(async () => {
   if (!getanime) {
     error({
       statusCode: 500,
-      message: 'Custom error message'
+      message: 'Anime not found'
     })
 
     return
@@ -93,6 +105,16 @@ onMounted(async () => {
   titlebarStore.setTitle(getanime.name)
   anime.value = getanime;
 })
+
+const stars = async (id: number, stars: number) => {
+  if (!anime.value || !moving.value) return;
+
+  if (anime.value.stars == stars) return;
+
+  await $database.stars(id, stars);
+
+  anime.value.stars = stars;
+}
 </script>
 
 <style lang="scss">
@@ -177,8 +199,37 @@ main.anime {
         }
       }
 
-    }
+      .rating {
+        margin-left: 8px;
+        display: flex;
+        font-size: 32px;
 
+        .icon {
+          padding: 4px;
+          cursor: pointer;
+          transition: .1s ease-in-out;
+
+          &.star {
+            color: #E4E073;
+          }
+        }
+
+        .icon:hover {
+          scale: 1.1;
+          transition: .1s ease-in-out;
+
+          &~* {
+            .icon {
+              opacity: .2;
+            }
+          }
+        }
+
+        .icon:active {
+          scale: 0.9;
+        }
+      }
+    }
   }
 }
 </style>
