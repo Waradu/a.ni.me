@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <Modal header="Add anime" ref="modal" :onHide="() => { animes = []; page = 0 }">
+    <Modal header="Add anime" ref="modal" :onHide="() => { page = 0 }">
       <div class="anime" v-if="anime">
         <div class="image">
           <img :src="anime.images[Object.keys(anime.images)[0]].image_url" alt="Image">
@@ -52,9 +52,10 @@
       </div>
       <div class="buttons">
         <button class="previous" @click="back" :disabled="page == 0">Back</button>
-        <div class="progress">
+        <div class="progress" v-if="animes.length > 0">
           {{ page + 1 }}/{{ animes.length }}
         </div>
+        <div class="progress" v-else>No results found</div>
         <button class="next" @click="next" :disabled="page == animes.length - 1">Next</button>
       </div>
     </Modal>
@@ -103,10 +104,17 @@ const route = useRoute()
 
 const input = ref<HTMLInputElement | null>(null)
 
+const height = ref(60)
+
+watch(height, (newHeight) => {
+  document.documentElement.style.setProperty('--height', newHeight + 'px');
+});
+
 const animes = ref<JikanData[]>([]);
 const animeTitle = computed(() => {
   return anime.value.title.replaceAll("\"", "")
 })
+let lastAnime = "";
 const myanimes = ref<Anime[]>([]);
 const myanimenames = computed(() => {
   return myanimes.value.map((a) => a.name)
@@ -133,6 +141,26 @@ const keyboard = useKeyboard()
 
 keyboard.down("ArrowRight", next)
 keyboard.down("ArrowLeft", back)
+keyboard.down("Escape", () => {
+  if (!modal.value) return;
+
+  modal.value.hide()
+
+  if (!input.value) return;
+
+  input.value.focus()
+})
+keyboard.down("Enter", async () => {
+  if (!(animes.value.length > 0) || !animes.value[page.value] || myanimenames.value.includes(animeTitle.value) || !modal.value || !modal.value.status()) return;
+
+  if (lastAnime != animes.value[page.value].title) return;
+
+  await dbadd(animes.value[page.value])
+
+  if (!input.value) return;
+
+  input.value.focus()
+})
 
 router.beforeEach((to, from, next) => {
   next()
@@ -181,6 +209,7 @@ const add = async (event: KeyboardEvent) => {
 }
 
 const dbadd = async (anime: JikanData) => {
+  lastAnime = anime.title;
   await $database.add(anime)
   $emitter.emit('dataUpdated');
 
@@ -208,10 +237,17 @@ onMounted(async () => {
       input.value.focus();
     }
   })
+
+  document.documentElement.style.setProperty('--height', height.value + 'px');
 })
 </script>
 
 <style lang="scss">
+main {
+  margin-top: var(--height);
+  height: calc(100% - var(--height));
+}
+
 header.titlebar {
   display: grid;
   height: 60px;
