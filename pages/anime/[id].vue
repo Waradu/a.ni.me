@@ -3,11 +3,11 @@
     <header v-if="anime">
       <div class="image" ref="tilt">
         <img :src="anime.image" alt="">
-        <div class="overlay">
-          <div class="wrapper">
+        <div class="overlay" @click="showImage">
+          <div class="wrapper" @click.stop>
             <OpenIcon class="icon" />
           </div>
-          <div class="wrapper" @click="del(anime.id)">
+          <div class="wrapper" @click="del(anime.id)" @click.stop>
             <DeleteIcon class="icon" />
           </div>
         </div>
@@ -33,8 +33,14 @@
           </template>
         </div>
       </div>
-      <Modal header="Description" ref="settingsModal">
+      <Modal header="Synopsis" ref="synopsisModal">
         <p v-html="anime.synopsis"></p>
+      </Modal>
+      <Modal header="Cover" ref="imageModal">
+        <div class="big-image" ref="coverTilt">
+          <ZoomImage :src="anime.image" />
+        </div>
+        <p class="center">Click to zoom</p>
       </Modal>
     </header>
     <div class="details" v-if="anime">
@@ -85,6 +91,7 @@ const anime = ref<Anime>()
 const moving = ref(false)
 
 const tilt = ref(null)
+const coverTilt = ref(null)
 
 const move = (i: number) => {
   if (moving.value && anime.value) anime.value.stars = i;
@@ -95,12 +102,19 @@ const del = async (id: number) => {
   navigateTo("/");
 }
 
-const settingsModal = ref<InstanceType<typeof Modal> | null>(null);
+const synopsisModal = ref<InstanceType<typeof Modal> | null>(null);
+const imageModal = ref<InstanceType<typeof Modal> | null>(null);
 
 const show = () => {
-  if (!settingsModal.value) return;
+  if (!synopsisModal.value) return;
 
-  settingsModal.value.show()
+  synopsisModal.value.show()
+}
+
+const showImage = () => {
+  if (!imageModal.value) return;
+
+  imageModal.value.show()
 }
 
 onMounted(async () => {
@@ -121,6 +135,17 @@ watch(tilt, (newValue) => {
       speed: 1000,
       glare: true,
       "max-glare": 0.2
+    })
+  }
+});
+
+watch(coverTilt, (newValue) => {
+  if (newValue !== null && coverTilt.value) {
+    VanillaTilt.init(coverTilt.value, {
+      max: 5,
+      speed: 1000,
+      glare: true,
+      "max-glare": 0.4
     })
   }
 });
@@ -189,6 +214,8 @@ main.anime {
           font-size: 24px;
           transition: .2s ease-in-out;
           translate: 0 100%;
+          cursor: pointer;
+          color: #ffffff60;
 
           .icon {
             filter: drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000);
@@ -196,6 +223,7 @@ main.anime {
 
           &:hover {
             background-color: #ffffff20;
+            color: #ffffff;
 
             &:nth-child(2) {
               background-color: #ff666620;
@@ -257,6 +285,7 @@ main.anime {
         transition: .2s ease-in-out;
         border-radius: 8px;
         cursor: pointer;
+        user-select: none;
 
         p {
           overflow: hidden;
@@ -320,6 +349,7 @@ main.anime {
       .text {
         font-size: 14px;
         color: #ffffff60;
+        user-select: none;
       }
 
       .data {
