@@ -12,8 +12,12 @@ export default defineNuxtConfig({
       preprocessorOptions: {
         scss: {
           additionalData: `@import "~/assets/css/basic.scss";`,
+          silenceDeprecations: ["legacy-js-api"],
         },
       },
     },
   },
+  svgo: {
+    autoImportPath: false
+  }
 });
