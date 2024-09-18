@@ -84,7 +84,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       const id = animes[animes.length - 1].id + 1;
       const title = anime.title.replaceAll('"', "").replaceAll("'", "''");
       try {
-        const image = anime.images[Object.keys(anime.images)[0]].image_url;
+        const image = Object.keys(anime.images).reduce((acc, key) => {
+          return (
+            anime.images[key].large_image_url ||
+            acc ||
+            anime.images[key].image_url
+          );
+        }, "");
         const query = `
           INSERT INTO animes (id, created_at, name, url, image, trailer, approved, episodes, airing, status, rating, popularity, score, scored_by, favorites, synopsis, year, stars, watched)
           VALUES 
@@ -104,14 +110,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
     },
     async stars(id: number, stars: number) {
-      await db.execute(
-        `update animes set stars = ${stars} where id = ${id}`
-      );
+      await db.execute(`update animes set stars = ${stars} where id = ${id}`);
     },
     async delete(id: number) {
-      await db.execute(
-        `delete from animes where id = ${id}`
-      );
+      await db.execute(`delete from animes where id = ${id}`);
     },
   };
 
