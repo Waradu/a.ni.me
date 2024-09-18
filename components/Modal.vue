@@ -116,6 +116,20 @@ defineExpose({
     .content {
       @extend %text1;
       color: #ffffffaa;
+      
+      .big-image {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      p.center {
+        color: #ffffff60;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+      }
     }
   }
 
