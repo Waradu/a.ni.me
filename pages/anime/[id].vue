@@ -1,8 +1,16 @@
 <template>
   <main class="anime">
     <header v-if="anime">
-      <div class="image">
+      <div class="image" ref="tilt">
         <img :src="anime.image" alt="">
+        <div class="overlay">
+          <div class="wrapper">
+            <OpenIcon class="icon" />
+          </div>
+          <div class="wrapper" @click="del(anime.id)">
+            <DeleteIcon class="icon" />
+          </div>
+        </div>
       </div>
       <div class="text">
         <div class="name">
@@ -16,16 +24,12 @@
         <div class="description" @click="show">
           <p v-html="anime.synopsis"></p>
         </div>
-        <div class="rating" @mouseleave="moving = false" >
+        <div class="rating">
           <template v-for="i in 5">
-            <StarFilledIcon class="icon star" v-if="anime.stars >= i" 
-              @mousedown="moving = true"
-              @mousemove="move(i)"
-              @mouseup="stars(anime.id, i);moving=false" />
-            <StarIcon class="icon" v-else 
-              @mousedown="moving = true" 
-              @mousemove="move(i)"
-              @mouseup="stars(anime.id, i);moving=false" />
+            <StarFilledIcon class="icon star" v-if="anime.stars >= i" @mousedown.prevent="moving = true"
+              @mousemove.prevent="move(i)" @mouseup.prevent="stars(anime.id, i); moving = false" />
+            <StarIcon class="icon" v-else @mousedown.prevent="moving = true" @mousemove.prevent="move(i)"
+              @mouseup.prevent="stars(anime.id, i); moving = false" />
           </template>
         </div>
       </div>
@@ -65,8 +69,11 @@
 <script lang="ts" setup>
 import StarIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_regular.svg";
 import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_filled.svg";
+import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_regular.svg";
+import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import type { Modal } from '#build/components';
 import type { Anime } from '~/types/anime';
+import VanillaTilt from 'vanilla-tilt'
 
 const route = useRoute();
 const error = useError()
@@ -76,10 +83,16 @@ const titlebarStore = useTitlebarStore();
 
 const anime = ref<Anime>()
 const moving = ref(false)
-const down = ref(false)
+
+const tilt = ref(null)
 
 const move = (i: number) => {
   if (moving.value && anime.value) anime.value.stars = i;
+}
+
+const del = async (id: number) => {
+  await $database.delete(id);
+  navigateTo("/");
 }
 
 const settingsModal = ref<InstanceType<typeof Modal> | null>(null);
@@ -94,17 +107,23 @@ onMounted(async () => {
   const getanime = await $database.anime(Number(route.params.id));
 
   if (!getanime) {
-    error({
-      statusCode: 500,
-      message: 'Anime not found'
-    })
-
     return
   }
 
   titlebarStore.setTitle(getanime.name)
   anime.value = getanime;
 })
+
+watch(tilt, (newValue) => {
+  if (newValue !== null && tilt.value) {
+    VanillaTilt.init(tilt.value, {
+      max: 10,
+      speed: 1000,
+      glare: true,
+      "max-glare": 0.2
+    })
+  }
+});
 
 const stars = async (id: number, stars: number) => {
   if (!anime.value || !moving.value) return;
@@ -134,13 +153,66 @@ main.anime {
     .image {
       aspect-ratio: 2 / 3;
       height: 300px;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 100%;
+      border-radius: 8px;
+      overflow: hidden;
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 8px;
         box-shadow: 0px 5px 10px #00000010;
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        transition: .2s ease-in-out;
+      }
+
+      .overlay {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: end;
+        transition: .2s ease-in-out;
+        opacity: 0;
+        background-image: linear-gradient(to bottom, transparent, black);
+
+        .wrapper {
+          aspect-ratio: 1/1;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          transition: .2s ease-in-out;
+          translate: 0 100%;
+
+          .icon {
+            filter: drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000);
+          }
+
+          &:hover {
+            background-color: #ffffff20;
+
+            &:nth-child(2) {
+              background-color: #ff666620;
+              color: #ff6666aa;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .overlay {
+          opacity: 1;
+
+          .wrapper {
+            translate: 0 0;
+          }
+        }
       }
     }
 
@@ -228,6 +300,30 @@ main.anime {
         .icon:active {
           scale: 0.9;
         }
+      }
+    }
+  }
+
+  .details {
+    padding-inline: 80px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .detail {
+      display: flex;
+      width: max-content;
+      padding: 20px;
+      align-items: center;
+      flex-direction: column;
+
+      .text {
+        font-size: 14px;
+        color: #ffffff60;
+      }
+
+      .data {
+        @extend %title3;
       }
     }
   }
