@@ -46,13 +46,9 @@ titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
 
 const animes = ref<Anime[]>([])
-
-onMounted(async () => {
-  animes.value = await $database.animes();
-})
+animes.value = await $database.animes();
 
 $emitter.on('dataUpdated', async () => {
-  console.log("updating");
   animes.value = await $database.animes();
 });
 
