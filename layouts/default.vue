@@ -12,8 +12,6 @@
 }
 
 main {
-  margin-top: 60px;
-  height: calc(100% - 60px);
   overflow: auto;
   width: 100%;
   /* max-width: 1400px; */
