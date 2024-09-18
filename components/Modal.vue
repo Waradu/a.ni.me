@@ -51,9 +51,14 @@ function hide() {
   }, 200)
 }
 
+function status() {
+  return shown.value;
+}
+
 defineExpose({
   show,
   hide,
+  status
 })
 </script>
 
