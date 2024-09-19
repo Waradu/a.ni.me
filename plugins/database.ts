@@ -79,29 +79,57 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         genres,
       };
     },
+    async convert(anime: JikanData, id: number): Promise<Anime> {
+      const title = anime.title.replaceAll('"', "").replaceAll("'", "''");
+
+      const image = Object.keys(anime.images).reduce((acc, key) => {
+        return (
+          anime.images[key].large_image_url ||
+          acc ||
+          anime.images[key].image_url
+        );
+      }, "");
+
+      return {
+        id: id,
+        created_at: new Date().toISOString(),
+        name: title,
+        url: anime.url,
+        image: image,
+        trailer: anime.trailer.url || "",
+        approved: anime.approved,
+        episodes: anime.episodes || 0,
+        airing: anime.airing,
+        status: anime.status,
+        rating: anime.rating,
+        popularity: anime.popularity,
+        score: anime.score || 0,
+        scored_by: anime.scored_by || 0,
+        favorites: anime.favorites || 0,
+        synopsis: anime.synopsis || "",
+        year: anime.year || 0,
+        stars: 0,
+        watched: false,
+        characters: [],
+        genres: [],
+      };
+    },
     async add(anime: JikanData) {
       const animes = await this.animes();
       const id = animes[animes.length - 1].id + 1;
-      const title = anime.title.replaceAll('"', "").replaceAll("'", "''");
+      var canime = await this.convert(anime, id)
       try {
-        const image = Object.keys(anime.images).reduce((acc, key) => {
-          return (
-            anime.images[key].large_image_url ||
-            acc ||
-            anime.images[key].image_url
-          );
-        }, "");
         const query = `
           INSERT INTO animes (id, created_at, name, url, image, trailer, approved, episodes, airing, status, rating, popularity, score, scored_by, favorites, synopsis, year, stars, watched)
           VALUES 
-          (${id}, CURRENT_TIMESTAMP, '${title}', '${anime.url}', '${image}', '${
-          anime.trailer.url
-        }', ${anime.approved}, ${anime.episodes}, ${anime.airing}, '${
-          anime.status
-        }', '${anime.rating}', ${anime.popularity}, ${anime.score}, ${
-          anime.scored_by
-        }, ${anime.favorites}, '${anime.synopsis?.replaceAll("'", "''")}', ${
-          anime.year
+          (${canime.id}, CURRENT_TIMESTAMP, '${canime.name}', '${canime.url}', '${canime.image}', '${
+          canime.url
+        }', ${canime.approved}, ${canime.episodes}, ${canime.airing}, '${
+          canime.status
+        }', '${canime.rating}', ${canime.popularity}, ${canime.score}, ${
+          canime.scored_by
+        }, ${canime.favorites}, '${canime.synopsis?.replaceAll("'", "''")}', ${
+          canime.year
         }, 0, false)
         `;
         await db.execute(query);
