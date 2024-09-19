@@ -4,9 +4,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
   modules: ["nuxt-svgo", "@pinia/nuxt", "wrdu-keyboard", "@nuxt/scripts"],
-  app: {
-    pageTransition: { name: "page", mode: "out-in" },
-  },
   vite: {
     css: {
       preprocessorOptions: {
