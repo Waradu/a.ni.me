@@ -164,7 +164,7 @@ keyboard.down("Enter", async () => {
 
 router.beforeEach((to, from, next) => {
   next()
-  if (to.fullPath != "/") {
+  if (to.fullPath != "/" && to.fullPath != "/search") {
     setTimeout(() => {
       titlebarStore.setSearch("")
     }, 200)
@@ -173,7 +173,9 @@ router.beforeEach((to, from, next) => {
 
 const search = (event: Event) => {
   titlebarStore.setSearch((event.target as HTMLInputElement).value);
-  router.replace({ path: '/' });
+  if (route.path != '/search') {
+    router.replace({ path: '/' });
+  }
 }
 
 const navigateHome = async () => {
@@ -188,22 +190,14 @@ const navigateHome = async () => {
 }
 
 const add = async (event: KeyboardEvent) => {
-  const term = (event.target as HTMLInputElement).value;
-  page.value = 0;
-  if (input.value) {
-    input.value.blur()
-  }
-
-  if (term && term.length > 0 && modal.value) {
-    const url = `https://api.jikan.moe/v4/anime?q=${term}`;
-
-    try {
-      const response = await axios.get<JikanResponse>(url);
-      animes.value = response.data.data.slice(0, 10);
-
-      modal.value.show()
-    } catch (e) {
-      console.log("Error", e);
+  if (titlebarStore.getSearch() == "") {
+    router.push({ path: '/' });
+  } else {
+    if (route.path === '/search') {
+      await router.replace({ path: '/redirect' })
+      await router.replace({ path: '/search' });
+    } else {
+      router.push({ path: '/search' });
     }
   }
 }

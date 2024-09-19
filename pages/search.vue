@@ -1,18 +1,20 @@
 <template>
   <div class="grid">
-    <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
-      :onClick="() => titlebarStore.setBackLink('/')" />
+    <Card v-for="anime in search" :key="anime.id" :anime="anime" link=""
+      :onClick="(e: MouseEvent) => e.preventDefault()" />
     <Card :anime="null" v-if="search.length == 0" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import axios from 'axios';
 import type { Anime } from '~/types/anime';
+import type { Response as JikanResponse, Data as JikanData } from "~/types/response";
 
-const { $database, $emitter } = useNuxtApp();
+const { $database } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
-titlebarStore.setTitle("Animes")
+titlebarStore.setTitle("Search")
 titlebarStore.setBackLink("")
 
 definePageMeta({
@@ -22,9 +24,13 @@ definePageMeta({
 const animes = ref<Anime[]>([])
 animes.value = await $database.animes();
 
-$emitter.on('dataUpdated', async () => {
-  animes.value = await $database.animes();
-});
+const url = `https://api.jikan.moe/v4/anime?q=${titlebarStore.getSearch()}`;
+
+const response = await axios.get<JikanResponse>(url);
+animes.value = await Promise.all(response.data.data.map(async (a) => {
+  const an = await $database.convert(a, 0);
+  return an;
+}));
 
 const search = computed(() => {
   return animes.value.filter((a) => {

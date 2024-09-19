@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-if="anime">
-    <NuxtLink class="image" @click="titlebarStore.setBackLink('/')" :to="'/anime/' + anime.id">
+    <NuxtLink class="image" @click="onClick()" :to="link">
       <PlayIcon class="play" />
       <div class="cover">
         <img :src="anime.image"
@@ -37,6 +37,16 @@ defineProps({
   anime: {
     type: Object as PropType<Anime | null>,
     required: true
+  },
+  link: {
+    type: String,
+    default: ""
+  },
+  onClick: {
+    type: Function,
+    default() {
+      return () => { }
+    },
   }
 })
 
