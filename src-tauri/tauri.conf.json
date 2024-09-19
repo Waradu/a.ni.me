@@ -5,7 +5,7 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "bun run dev",
+    "beforeDevCommand": "bun run nuxt dev",
     "beforeBuildCommand": "bun run generate"
   },
   "app": {
