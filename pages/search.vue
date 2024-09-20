@@ -10,6 +10,7 @@
 import axios from 'axios';
 import type { Anime } from '~/types/anime';
 import type { Response as JikanResponse, Data as JikanData } from "~/types/response";
+import { AnimeClient } from '@tutkli/jikan-ts'
 
 const { $database } = useNuxtApp();
 
@@ -23,6 +24,14 @@ definePageMeta({
 
 const animes = ref<Anime[]>([])
 animes.value = await $database.animes();
+
+const animeClient = new AnimeClient();
+
+const res = await animeClient.getAnimeSearch({
+  q: titlebarStore.getSearch()
+})
+
+console.log(res);
 
 const url = `https://api.jikan.moe/v4/anime?q=${titlebarStore.getSearch()}`;
 
