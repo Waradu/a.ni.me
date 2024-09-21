@@ -22,7 +22,7 @@
     "nuxt": "^3.13.2",
     "nuxt-svgo": "^4.0.6",
     "pinia-plugin-persistedstate": "^4.0.2",
-    "sass": "^1.79.2",
+    "sass": "^1.79.3",
     "vanilla-tilt": "^1.8.1",
     "vue": "latest",
     "vue-router": "latest",
@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0-rc.16",
-    "sass-loader": "^16.0.1"
+    "sass-loader": "^16.0.2"
   }
 }
