@@ -5,7 +5,7 @@
         <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="mounted && titlebarStore.getBackLink() != ''">
           <ArrowBackIcon class="icon" />
         </NuxtLink>
-        <NuxtLink :key="$route.fullPath" class="wrapper" to="/" @click.prevent="navigateHome">
+        <NuxtLink :key="route.fullPath" class="wrapper" to="/" @click.prevent="navigateHome">
           <HomeIcon class="icon" />
         </NuxtLink>
       </div>
