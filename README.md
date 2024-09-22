@@ -30,4 +30,16 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 ## ✨ Preview
 
 <img width="800" alt="AppDark" src="https://github.com/user-attachments/assets/68a4c54e-7546-4bac-bf92-bb8eb51c828d">
+
 <sup>there will also be a lightmode in future</sup>
+
+## ⌨️ Local development
+
+You'll need to have Rust and bun installed (if you use npm / pnpm you have to change it in src-tauri/tauri.conf.json). Then, follow these steps:
+
+```zsh
+git clone https://github.com/Waradu/a.ni.me.git
+cd a.ni.me
+bun i
+bun dev
+```
