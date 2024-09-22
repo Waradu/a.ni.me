@@ -21,7 +21,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 ## 📝 TODO
 
 - [x] Finish this todo section
-- [ ] Finish the app (V1)
+- [ ] Finish the app (v1)
   - [ ] Make search work
   - [ ] Add more info like characters/genres
   - [ ] Add settings
@@ -33,14 +33,15 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
   - [ ] Add more content to website
-  - [ ] Release V1
-- [ ] V2
+  - [ ] Release v1
+- [ ] v2
   - [ ] Add recommendations
   - [ ] Add cross-device sync
   - [ ] Add Usedr profiles (maybe)
   - [ ] Add feed (maybe)
   - [ ] Waifu collection (maybe)
   - [ ] Make it secure and private
+  - [ ] release v2
 - [ ] more to come
 
 <sup>Feel free to share your ideas or improvements by creating an issue [here](https://github.com/Waradu/a.ni.me/issues)!</sup>
