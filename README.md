@@ -1,75 +1,13 @@
-# Nuxt 3 Minimal Starter
+<div align="center">
+  <img align="center" width="128px" src="public/icon.png" />
+  <h1 align="center"><b>A • NI • ME</b></h1>
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+   Can't keep up with all the anime you've watched? Neither can we! <br>
+   Organize your list, hide the for research purpose ones and keep things under control. We won't tell. 
+</div>
 
-## Setup
+<br>
 
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+> \[!IMPORTANT]
+>
+> **Star this project**, to get notified when it releases
