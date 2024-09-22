@@ -12,11 +12,14 @@
 >
 > **Star this project**, to get notified when it releases
 
-## 🤨 A.ni.me? what is this?
+## 🤨 A•NI•ME? what is this?
 
-A.ni.me helps you keep track of all the anime you’ve watched. It’s simple, fast, and easy to use! You can sort and filter your list, share it with friends.
+A•NI•ME helps you keep track of all the anime you’ve watched. It’s simple, fast, and easy to use! You can sort and filter your list, share it with friends.
 
 You can also hide shows you don’t want others to see 😏. Soon, you’ll be able to sync your list across devices and get cool recommendations! It’s perfect for any anime fan who watches a lot!
+
+<sup>why A•NI•ME? because "anime" in japanese means アニメ</sup><br>
+<sup><b>ア = A, ニ = NI, メ = ME</b></sup>
 
 ## 📝 TODO
 
