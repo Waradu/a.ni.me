@@ -35,7 +35,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 ## ⌨️ Local development
 
-You'll need to have Rust and bun installed (if you use npm / pnpm you have to change it in src-tauri/tauri.conf.json). Then, follow these steps:
+You'll need to have Rust and bun installed. Then, follow these steps:
 
 ```zsh
 git clone https://github.com/Waradu/a.ni.me.git
@@ -43,3 +43,5 @@ cd a.ni.me
 bun i
 bun dev
 ```
+
+<sup>if you use npm / pnpm you have to change it in `src-tauri/tauri.conf.json` (`beforeDevCommand` and `beforeBuildCommand`)</sup>
