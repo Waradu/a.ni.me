@@ -29,6 +29,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Add share option
   - [ ] Add export/import
   - [ ] Add ability to hide animes
+  - [ ] Add Lightmode
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
@@ -50,7 +51,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 <img width="800" alt="AppDark" src="https://github.com/user-attachments/assets/68a4c54e-7546-4bac-bf92-bb8eb51c828d">
 
-<sup>there will also be a lightmode in future</sup>
+<sup>there will also be a lightmode in the future</sup>
 
 ## ⌨️ Local development
 
