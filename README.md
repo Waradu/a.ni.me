@@ -20,7 +20,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 ## 📝 TODO
 
-- [ ] Finish this todo section
+- [x] Finish this todo section
 - [ ] Finish the app (V1)
   - [ ] Make search work
   - [ ] Add more info like characters/genres
