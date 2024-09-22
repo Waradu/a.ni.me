@@ -20,6 +20,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 ## 📝 TODO
 
+- [ ] Finish this todo section
 - [ ] Finish the app
   - [ ] 1
   - [ ] 2
