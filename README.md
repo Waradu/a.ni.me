@@ -21,9 +21,26 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 ## 📝 TODO
 
 - [ ] Finish this todo section
-- [ ] Finish the app
-  - [ ] 1
-  - [ ] 2
+- [ ] Finish the app (V1)
+  - [ ] Make search work
+  - [ ] Add more info like characters/genres
+  - [ ] Add settings
+  - [ ] Add filtering / sorting
+  - [ ] Add share option
+  - [ ] Add export/import
+  - [ ] Add ability to hide animes
+  - [ ] Clean up design
+  - [ ] Clean up spaghetti code
+  - [ ] Fix bugs
+  - [ ] Add more content to website
+  - [ ] Release V1
+- [ ] V2
+  - [ ] Add recommendations
+  - [ ] Add cross-device sync
+  - [ ] Add Usedr profiles (maybe)
+  - [ ] Add feed (maybe)
+  - [ ] Waifu collection (maybe)
+  - [ ] Make it secure and private
 - [ ] more to come
 
 <sup>Feel free to share your ideas or improvements by creating an issue [here](https://github.com/Waradu/a.ni.me/issues)!</sup>
