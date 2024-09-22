@@ -24,3 +24,10 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] 1
   - [ ] 2
 - [ ] more to come
+
+<sup>Feel free to share your ideas or improvements by creating an issue [here](https://github.com/Waradu/a.ni.me/issues)!</sup>
+
+## ✨ Preview
+
+<img width="800" alt="AppDark" src="https://github.com/user-attachments/assets/68a4c54e-7546-4bac-bf92-bb8eb51c828d">
+<sup>there will also be a lightmode in future</sup>
