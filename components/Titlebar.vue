@@ -229,8 +229,8 @@ onMounted(async () => {
 
 <style lang="scss">
 main {
-  margin-top: var(--height);
-  height: calc(100% - var(--height));
+  margin-top: var(--height, 60px);
+  height: calc(100% - var(--height, 60px));
 }
 
 header.titlebar {
