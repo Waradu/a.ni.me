@@ -35,7 +35,7 @@ import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg"
 
 defineProps({
   anime: {
-    type: Object as PropType<Anime | null>,
+    type: Object as PropType<Anime | false>,
     required: true
   },
   link: {

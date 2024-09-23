@@ -1,11 +1,12 @@
 <template>
   <main class="index">
     <div class="grid-container">
-      <div class="grid">
+      <div class="grid" v-if="!loading">
         <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
           :onClick="() => titlebarStore.setBackLink('/')" />
-        <Card :anime="null" v-if="search.length == 0" />
+        <Card :anime="false" v-if="search.length == 0" />
       </div>
+      <div v-else>Loading</div>
     </div>
   </main>
 </template>
@@ -21,9 +22,10 @@ titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
 
 const animes = ref<Anime[]>([])
-animes.value = await $database.animes();
 
 const searching = ref(false)
+
+const loading = ref(true)
 
 $emitter.on('dataUpdated', async () => {
   animes.value = await $database.animes();
@@ -64,6 +66,10 @@ const search = computed(() => {
   );
 })
 
+const redirect = (e: MouseEvent, id: number) => {
+  e.preventDefault()
+}
+
 const keyboard = useKeyboard()
 
 keyboard.up("Escape", async () => {
@@ -74,6 +80,14 @@ keyboard.up("Escape", async () => {
 
 onBeforeUnmount(() => {
   keyboard.stop()
+})
+
+onMounted(async () => {
+  try {
+    animes.value = await $database.animes();
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 
