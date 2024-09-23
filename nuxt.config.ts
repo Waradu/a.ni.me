@@ -18,6 +18,6 @@ export default defineNuxtConfig({
     pageTransition: { name: "page", mode: "out-in" },
   },
   svgo: {
-    autoImportPath: false
-  }
+    autoImportPath: false,
+  },
 });

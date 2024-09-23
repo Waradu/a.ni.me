@@ -1,16 +1,15 @@
 <template>
   <div class="card" v-if="anime">
     <NuxtLink class="image" @click="onClick()" :to="link">
-      <PlayIcon class="play" />
+      <OpenIcon class="open" />
       <div class="cover">
-        <img :src="anime.image"
-          onerror="this.onerror=null; this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/joL2kcAAAAASUVORK5CYII='"
-          alt="not found">
+        <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
     <div class="text">
       <span class="title" :title="anime.name">{{ anime.name }}</span>
-      <p class="info">{{ anime.year }}</p>
+      <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
+      <p class="info" v-else>N/A</p>
     </div>
   </div>
   <div class="card" v-else>
@@ -30,7 +29,7 @@
 
 <script lang="ts" setup>
 import type { Anime } from '~/types/anime';
-import PlayIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
+import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 
 defineProps({
@@ -77,7 +76,7 @@ const titlebarStore = useTitlebarStore();
     overflow: hidden;
     color: white;
 
-    .play {
+    .open {
       scale: 2.5;
       opacity: 0;
       transition: .2s ease-in-out;
@@ -132,7 +131,7 @@ const titlebarStore = useTitlebarStore();
         scale: 1.2;
       }
 
-      .play {
+      .open {
         opacity: 1;
       }
 
