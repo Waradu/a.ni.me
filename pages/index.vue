@@ -3,7 +3,7 @@
     <div class="grid-container">
       <div class="grid" v-if="!loading">
         <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
-          :onClick="() => titlebarStore.setBackLink('/')" />
+          :onClick="(e: MouseEvent) => redirect(e, anime.id)" />
         <Card :anime="false" v-if="search.length == 0" />
       </div>
       <div v-else>Loading</div>
@@ -68,6 +68,8 @@ const search = computed(() => {
 
 const redirect = (e: MouseEvent, id: number) => {
   e.preventDefault()
+  titlebarStore.setBackLink('/')
+  navigateTo(`/anime/${id}`)
 }
 
 const keyboard = useKeyboard()

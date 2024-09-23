@@ -45,7 +45,7 @@ defineProps({
   onClick: {
     type: Function,
     default() {
-      return () => { }
+      return (e: MouseEvent) => { }
     },
   }
 })
