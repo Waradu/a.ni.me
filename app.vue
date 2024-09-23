@@ -1,19 +1,13 @@
 <template>
-  <Titlebar v-if="route.fullPath != '/confetti'" />
+  <Titlebar />
   <div class="page">
-    <Transition name="page" mode="out-in">
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </Transition>
+    <NuxtPage />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Database from '@tauri-apps/plugin-sql';
 import type { DbAnime } from '~/types/db';
-
-const route = useRoute()
 
 onMounted(async () => {
   /* const db = await Database.load('sqlite:anilist.db');

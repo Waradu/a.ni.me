@@ -2,6 +2,7 @@ import Database from "@tauri-apps/plugin-sql";
 import type { Anime } from "~/types/anime";
 import type { DbAnime, DbCharacter, DbGenre, DbAnimeGenre } from "~/types/db";
 import type { Data as JikanData } from "~/types/response";
+import type { Anime as JikanAnime } from '@tutkli/jikan-ts'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   //@ts-ignore
@@ -79,16 +80,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         genres,
       };
     },
-    async convert(anime: JikanData, id: number): Promise<Anime> {
+    async convert(anime: JikanData | JikanAnime, id: number): Promise<Anime> {
       const title = anime.title.replaceAll('"', "").replaceAll("'", "''");
 
-      const image = Object.keys(anime.images).reduce((acc, key) => {
-        return (
-          anime.images[key].large_image_url ||
-          acc ||
-          anime.images[key].image_url
-        );
-      }, "");
+      const image = anime.images.jpg.large_image_url || anime.images.jpg.image_url;
 
       return {
         id: id,

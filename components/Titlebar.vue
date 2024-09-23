@@ -190,16 +190,7 @@ const navigateHome = async () => {
 }
 
 const add = async (event: KeyboardEvent) => {
-  if (titlebarStore.getSearch() == "") {
-    router.push({ path: '/' });
-  } else {
-    if (route.path === '/search') {
-      await router.replace({ path: '/redirect' })
-      await router.replace({ path: '/search' });
-    } else {
-      router.push({ path: '/search' });
-    }
-  }
+  $emitter.emit('search');
 }
 
 const dbadd = async (anime: JikanData) => {

@@ -1,12 +1,17 @@
 <template>
-  <div class="grid">
-    <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
-      :onClick="() => titlebarStore.setBackLink('/')" />
-    <Card :anime="null" v-if="search.length == 0" />
-  </div>
+  <main class="index">
+    <div class="grid-container">
+      <div class="grid">
+        <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
+          :onClick="() => titlebarStore.setBackLink('/')" />
+        <Card :anime="null" v-if="search.length == 0" />
+      </div>
+    </div>
+  </main>
 </template>
 
 <script lang="ts" setup>
+import { AnimeClient } from '@tutkli/jikan-ts';
 import type { Anime } from '~/types/anime';
 
 const { $database, $emitter } = useNuxtApp();
@@ -15,20 +20,35 @@ const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
 
-definePageMeta({
-  layout: "grid"
-})
-
 const animes = ref<Anime[]>([])
 animes.value = await $database.animes();
+
+const searching = ref(false)
 
 $emitter.on('dataUpdated', async () => {
   animes.value = await $database.animes();
 });
 
+$emitter.on('search', async () => {
+  if (titlebarStore.getSearch().length < 1) return;
+
+  const animeClient = new AnimeClient();
+
+  const res = await animeClient.getAnimeSearch({
+    q: titlebarStore.getSearch()
+  })
+
+  animes.value = await Promise.all(res.data.map(async (a) => {
+    return await $database.convert(a, 0)
+  }))
+
+  searching.value = true;
+  titlebarStore.setTitle("Searching")
+});
+
 const search = computed(() => {
   return animes.value.filter((a) => {
-    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
+    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase()) || searching.value
   }).sort(
     (a, b) => {
       if (a.year > b.year) {
@@ -43,125 +63,36 @@ const search = computed(() => {
     }
   );
 })
+
+const keyboard = useKeyboard()
+
+keyboard.up("Escape", async () => {
+  searching.value = false;
+  titlebarStore.setTitle("Animes")
+  animes.value = await $database.animes();
+})
+
+onBeforeUnmount(() => {
+  keyboard.stop()
+})
 </script>
 
 <style lang="scss">
-.card {
-  max-width: 220px;
-  width: 1fr;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-
-  .image {
+main.index {
+  .grid-container {
     width: 100%;
-    border-radius: 8px;
-    aspect-ratio: 2 / 3;
-    box-shadow: 0px 5px 10px #00000010;
-    transition: .2s ease-in-out;
-    cursor: pointer;
+    height: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
-    color: white;
 
-    .play {
-      scale: 2.5;
-      opacity: 0;
-      transition: .2s ease-in-out;
-      z-index: 1;
-    }
-
-    .add {
-      scale: 2.5;
-      transition: .2s ease-in-out;
-      z-index: 1;
-    }
-
-    .cover {
-      background-color: #ffffff10;
+    .grid {
+      padding: 30px;
+      padding-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
       width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 0;
-      transition: .2s ease-in-out;
-
-      img {
-        width: 100%;
-        height: 100%;
-        transition: .2s ease-in-out;
-      }
-
-      .img {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: .2s ease-in-out;
-        color: #ff8686;
-      }
-
-      &:has(.img) {
-        background-color: #ff868610;
-      }
-    }
-
-    &:hover {
-      img {
-        scale: 1.1;
-      }
-
-      .img {
-        scale: 1.2;
-      }
-
-      .play {
-        opacity: 1;
-      }
-
-      .cover:not(:has(.img)) {
-        filter: brightness(40%);
-      }
-    }
-
-    &:active {
-      scale: 0.95;
-
-      img {
-        scale: 1;
-      }
-
-      .img {
-        scale: 1;
-      }
-    }
-  }
-
-  .text {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
-    span {
-      @extend %subtitle1;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 100%;
-      text-overflow: ellipsis;
-    }
-
-    p {
-      @extend %body1;
-      color: #ffffff80;
+      height: max-content;
     }
   }
 }
