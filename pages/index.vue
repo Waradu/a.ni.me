@@ -20,6 +20,7 @@ const { $database, $emitter } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
+var lastSearch = ""
 
 const animes = ref<Anime[]>([])
 
@@ -27,17 +28,18 @@ const searching = ref(false)
 
 const loading = ref(true)
 
+const animeClient = new AnimeClient();
+
 $emitter.on('dataUpdated', async () => {
   animes.value = await $database.animes();
 });
 
 $emitter.on('search', async () => {
-  if (titlebarStore.getSearch().length < 1) return;
-
-  const animeClient = new AnimeClient();
+  if (titlebarStore.getSearch().length < 1 || lastSearch == titlebarStore.getSearch()) return;
 
   const res = await animeClient.getAnimeSearch({
-    q: titlebarStore.getSearch()
+    q: titlebarStore.getSearch(),
+    sfw: true
   })
 
   animes.value = await Promise.all(res.data.map(async (a) => {
@@ -46,6 +48,8 @@ $emitter.on('search', async () => {
 
   searching.value = true;
   titlebarStore.setTitle("Searching")
+
+  lastSearch = titlebarStore.getSearch()
 });
 
 const search = computed(() => {
