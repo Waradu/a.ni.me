@@ -109,22 +109,21 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         genres: [],
       };
     },
-    async add(anime: JikanData) {
+    async add(anime: Anime) {
       const animes = await this.animes();
       const id = animes[animes.length - 1].id + 1;
-      var canime = await this.convert(anime, id)
       try {
         const query = `
           INSERT INTO animes (id, created_at, name, url, image, trailer, approved, episodes, airing, status, rating, popularity, score, scored_by, favorites, synopsis, year, stars, watched)
           VALUES 
-          (${canime.id}, CURRENT_TIMESTAMP, '${canime.name}', '${canime.url}', '${canime.image}', '${
-          canime.url
-        }', ${canime.approved}, ${canime.episodes}, ${canime.airing}, '${
-          canime.status
-        }', '${canime.rating}', ${canime.popularity}, ${canime.score}, ${
-          canime.scored_by
-        }, ${canime.favorites}, '${canime.synopsis?.replaceAll("'", "''")}', ${
-          canime.year
+          (${id}, CURRENT_TIMESTAMP, '${anime.name}', '${anime.url}', '${anime.image}', '${
+          anime.url
+        }', ${anime.approved}, ${anime.episodes}, ${anime.airing}, '${
+          anime.status
+        }', '${anime.rating}', ${anime.popularity}, ${anime.score}, ${
+          anime.scored_by
+        }, ${anime.favorites}, '${anime.synopsis?.replaceAll("'", "''")}', ${
+          anime.year
         }, 0, false)
         `;
         await db.execute(query);

@@ -25,8 +25,13 @@ $emitter.on('search', async () => {
     return;
   };
 
-  titlebarStore.setTitle("Searching")
   searching.value = true
+  titlebarStore.setTitle("Searching")
+})
+
+$emitter.on('stopSearch', async () => {
+  searching.value = false
+  titlebarStore.setTitle("Animes")
 })
 
 const keyboard = useKeyboard()
