@@ -174,7 +174,7 @@ const navigateHome = async () => {
 
   if (route.path === '/') {
     await router.replace({ path: '/redirect' })
-    navigateTo("/")
+    await router.replace({ path: '/' })
   } else {
     await router.push('/')
   }

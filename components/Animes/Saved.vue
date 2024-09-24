@@ -12,7 +12,7 @@
       <p class="info" v-else>N/A</p>
     </div>
   </div>
-  <div class="card" v-if="filteredAnimes.length == 0">
+  <div class="card" v-if="filteredAnimes.length == 0 && !loading">
     <div class="image">
       <div class="cover">
         <div class="img">
@@ -66,12 +66,9 @@ const redirect = (e: MouseEvent, id: number) => {
   navigateTo(`/anime/${id}`)
 }
 
+animes.value = await $database.animes();
 onMounted(async () => {
-  try {
-    animes.value = await $database.animes();
-  } finally {
-    loading.value = false
-  }
+  loading.value = false
 })
 </script>
 

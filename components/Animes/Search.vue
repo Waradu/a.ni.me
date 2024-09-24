@@ -1,7 +1,7 @@
 <template>
   <div class="card" v-for="anime in filteredAnimes">
     <NuxtLink class="image" @click="redirect($event, anime.id)">
-      <OpenIcon class="open" />
+      <AddIcon class="open" />
       <div class="cover">
         <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
@@ -12,7 +12,7 @@
       <p class="info" v-else>N/A</p>
     </div>
   </div>
-  <div class="card" v-if="filteredAnimes.length == 0">
+  <div class="card" v-if="filteredAnimes.length == 0 && !loading">
     <div class="image">
       <div class="cover">
         <div class="img">
@@ -29,7 +29,6 @@
 
 <script lang="ts" setup>
 import type { Anime } from '~/types/anime';
-import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 import { AnimeClient } from '@tutkli/jikan-ts';
 
@@ -38,12 +37,21 @@ const { $database, $emitter } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
 
 const animes = ref<Anime[]>([]);
-const loading = ref(true)
-var lastSearch = ""
+
+const savedAnimes = ref<Anime[]>([]);
+
+const savedAnimeNames = computed(() => {
+  return savedAnimes.value.map((a) => {
+    return a.name;
+  })
+});
+
+const loading = ref(true);
+var lastSearch = "";
 
 const filteredAnimes = computed(() => {
   return animes.value.filter((a) => {
-    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
+    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase()) && !savedAnimeNames.value.includes(a.name)
   }).sort(
     (a, b) => {
       if (a.year > b.year) {
@@ -61,8 +69,6 @@ const filteredAnimes = computed(() => {
 
 const redirect = (e: MouseEvent, id: number) => {
   e.preventDefault()
-  titlebarStore.setBackLink('/')
-  navigateTo(`/anime/${id}`)
 }
 
 const animeClient = new AnimeClient();
@@ -70,6 +76,7 @@ const animeClient = new AnimeClient();
 onMounted(async () => {
   try {
     await searchMAL()
+    savedAnimes.value = await $database.animes();
   } finally {
     loading.value = false
   }
@@ -80,6 +87,8 @@ const searchMAL = async () => {
     q: titlebarStore.getSearch(),
     sfw: true
   })
+
+  titlebarStore.setSearch("");
 
   animes.value = await Promise.all(res.data.map(async (a) => {
     return await $database.convert(a, 0)
