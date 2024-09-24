@@ -1,6 +1,6 @@
 <template>
-  <div class="card" v-if="anime">
-    <NuxtLink class="image" @click="onClick()" :to="link">
+  <div class="card" v-for="anime in filteredAnimes">
+    <NuxtLink class="image" @click="redirect($event, anime.id)">
       <OpenIcon class="open" />
       <div class="cover">
         <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
@@ -12,44 +12,53 @@
       <p class="info" v-else>N/A</p>
     </div>
   </div>
-  <div class="card" v-else>
-    <div class="image">
-      <div class="cover">
-        <div class="img">
-          <AddIcon class="add" style="rotate: 45deg;" />
-        </div>
-      </div>
-    </div>
-    <div class="text">
-      <span class="title">Nothing Found</span>
-      <p class="info"></p>
-    </div>
-  </div>
 </template>
 
 <script lang="ts" setup>
 import type { Anime } from '~/types/anime';
 import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
-import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 
-defineProps({
-  anime: {
-    type: Object as PropType<Anime | false>,
-    required: true
-  },
-  link: {
-    type: String,
-    default: ""
-  },
-  onClick: {
-    type: Function,
-    default() {
-      return (e: MouseEvent) => { }
-    },
-  }
+const { $database, $emitter } = useNuxtApp();
+const titlebarStore = useTitlebarStore();
+
+const animes = ref<Anime[]>([]);
+const loading = ref(true)
+
+$emitter.on('dataUpdated', async () => {
+  animes.value = await $database.animes();
+});
+
+const filteredAnimes = computed(() => {
+  return animes.value.filter((a) => {
+    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
+  }).sort(
+    (a, b) => {
+      if (a.year > b.year) {
+        return -1
+      }
+
+      if (a.year < b.year) {
+        return 1
+      }
+
+      return 0
+    }
+  );
 })
 
-const titlebarStore = useTitlebarStore();
+const redirect = (e: MouseEvent, id: number) => {
+  e.preventDefault()
+  titlebarStore.setBackLink('/')
+  navigateTo(`/anime/${id}`)
+}
+
+onMounted(async () => {
+  try {
+    animes.value = await $database.animes();
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <style lang="scss">

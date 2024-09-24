@@ -1,99 +1,41 @@
 <template>
   <main class="index">
     <div class="grid-container">
-      <div class="grid" v-if="!loading">
-        <Card v-for="anime in search" :key="anime.id" :anime="anime" :link="'/anime/' + anime.id"
-          :onClick="(e: MouseEvent) => redirect(e, anime.id)" />
-        <Card :anime="false" v-if="search.length == 0" />
+      <div class="grid">
+        <AnimesSearch v-if="searching" />
+        <AnimesSaved v-else />
       </div>
-      <div v-else>Loading</div>
     </div>
   </main>
 </template>
 
 <script lang="ts" setup>
-import { AnimeClient } from '@tutkli/jikan-ts';
-import type { Anime } from '~/types/anime';
-
-const { $database, $emitter } = useNuxtApp();
-
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
-var lastSearch = ""
 
-const animes = ref<Anime[]>([])
+const { $emitter } = useNuxtApp();
 
 const searching = ref(false)
 
-const loading = ref(true)
-
-const animeClient = new AnimeClient();
-
-$emitter.on('dataUpdated', async () => {
-  animes.value = await $database.animes();
-});
-
 $emitter.on('search', async () => {
-  if (titlebarStore.getSearch().length < 1 || lastSearch == titlebarStore.getSearch()) return;
+  if (titlebarStore.getSearch().length < 1) {
+    searching.value = false; return
+  };
 
-  const res = await animeClient.getAnimeSearch({
-    q: titlebarStore.getSearch(),
-    sfw: true
-  })
-
-  animes.value = await Promise.all(res.data.map(async (a) => {
-    return await $database.convert(a, 0)
-  }))
-
-  searching.value = true;
   titlebarStore.setTitle("Searching")
-
-  lastSearch = titlebarStore.getSearch()
-});
-
-const search = computed(() => {
-  return animes.value.filter((a) => {
-    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase()) || searching.value
-  }).sort(
-    (a, b) => {
-      if (a.year > b.year) {
-        return -1
-      }
-
-      if (a.year < b.year) {
-        return 1
-      }
-
-      return 0
-    }
-  );
+  searching.value = true
 })
-
-const redirect = (e: MouseEvent, id: number) => {
-  e.preventDefault()
-  titlebarStore.setBackLink('/')
-  navigateTo(`/anime/${id}`)
-}
 
 const keyboard = useKeyboard()
 
 keyboard.up("Escape", async () => {
   searching.value = false;
   titlebarStore.setTitle("Animes")
-  animes.value = await $database.animes();
 })
 
 onBeforeUnmount(() => {
   keyboard.stop()
-})
-
-onMounted(async () => {
-  try {
-    animes.value = await $database.animes();
-  } finally {
-    loading.value = false
-  }
 })
 </script>
 

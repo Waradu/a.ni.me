@@ -14,7 +14,7 @@
       </h3>
     </div>
     <div class="input" data-tauri-drag-region>
-      <input type="text" placeholder="Search (enter to add)" ref="input" :value="mounted ? titlebarStore.search : ''"
+      <input type="text" placeholder="Search" ref="input" :value="mounted ? titlebarStore.search : ''"
         @input="search" @keydown.enter="add" v-if="mounted">
     </div>
     <div class="controls" data-tauri-drag-region>
@@ -162,18 +162,9 @@ keyboard.down("Enter", async () => {
   input.value.focus()
 })
 
-router.beforeEach((to, from, next) => {
-  next()
-  if (to.fullPath != "/" && to.fullPath != "/search") {
-    setTimeout(() => {
-      titlebarStore.setSearch("")
-    }, 200)
-  }
-})
-
 const search = (event: Event) => {
   titlebarStore.setSearch((event.target as HTMLInputElement).value);
-  if (route.path != '/search') {
+  if (route.path != '/') {
     router.replace({ path: '/' });
   }
 }
@@ -183,7 +174,7 @@ const navigateHome = async () => {
 
   if (route.path === '/') {
     await router.replace({ path: '/redirect' })
-    await router.replace('/')
+    navigateTo("/")
   } else {
     await router.push('/')
   }
