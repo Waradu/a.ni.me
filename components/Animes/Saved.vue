@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-for="anime in filteredAnimes">
-    <NuxtLink class="image" @click="redirect($event, anime.id)">
+    <NuxtLink class="image" @click.prevent="redirect(anime.id)">
       <OpenIcon class="open" />
       <div class="cover">
         <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
@@ -60,8 +60,7 @@ const filteredAnimes = computed(() => {
   );
 })
 
-const redirect = (e: MouseEvent, id: number) => {
-  e.preventDefault()
+const redirect = (id: number) => {
   titlebarStore.setBackLink('/')
   navigateTo(`/anime/${id}`)
 }
