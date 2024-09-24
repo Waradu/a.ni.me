@@ -43,8 +43,14 @@ $emitter.on('dataUpdated', async () => {
 });
 
 const filteredAnimes = computed(() => {
+  const term = titlebarStore.search.toLowerCase();
+
   return animes.value.filter((a) => {
-    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase())
+    return (
+      a.name.toLowerCase().includes(term) ||
+      a.synopsis.toLowerCase().includes(term) ||
+      a.characters.map((c) => c.name).filter((n) => n.toLowerCase().includes(term)).length > 0
+    )
   }).sort(
     (a, b) => {
       if (a.year > b.year) {
