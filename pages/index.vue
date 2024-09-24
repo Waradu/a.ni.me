@@ -20,7 +20,9 @@ const searching = ref(false)
 
 $emitter.on('search', async () => {
   if (titlebarStore.getSearch().length < 1) {
-    searching.value = false; return
+    titlebarStore.setTitle("Animes")
+    searching.value = false;
+    return;
   };
 
   titlebarStore.setTitle("Searching")

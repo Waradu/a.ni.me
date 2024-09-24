@@ -12,11 +12,25 @@
       <p class="info" v-else>N/A</p>
     </div>
   </div>
+  <div class="card" v-if="filteredAnimes.length == 0">
+    <div class="image">
+      <div class="cover">
+        <div class="img">
+          <AddIcon class="add" style="rotate: 45deg;" />
+        </div>
+      </div>
+    </div>
+    <div class="text">
+      <span class="title">Nothing Found</span>
+      <p class="info"></p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import type { Anime } from '~/types/anime';
 import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
+import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 
 const { $database, $emitter } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
