@@ -5,7 +5,7 @@
         <img :src="anime.image" alt="">
         <div class="overlay" @click="showImage">
           <div class="wrapper" @click.stop>
-            <OpenIcon class="icon" />
+            <ShareIcon class="icon" />
           </div>
           <div class="wrapper" @click="del(anime.id)" @click.stop>
             <DeleteIcon class="icon" />
@@ -75,7 +75,7 @@
 <script lang="ts" setup>
 import StarIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_regular.svg";
 import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_filled.svg";
-import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_regular.svg";
+import ShareIcon from "~/node_modules/@fluentui/svg-icons/icons/share_28_regular.svg";
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import type { Modal } from '#build/components';
 import type { Anime } from '~/types/anime';
