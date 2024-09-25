@@ -25,7 +25,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 - [x] Finish this todo section
 - [ ] Finish the app (v1)
-  - [ ] Make search work
+  - [x] Make search work
   - [ ] Add more info like characters/genres
   - [ ] Add settings
   - [ ] Add filtering / sorting
