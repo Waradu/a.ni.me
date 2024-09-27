@@ -33,6 +33,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Add export/import
   - [ ] Add ability to hide animes
   - [ ] Add Lightmode
+  - [ ] Add Notification
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
