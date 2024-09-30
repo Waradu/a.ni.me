@@ -55,11 +55,11 @@ main.index {
     justify-content: center;
 
     .grid {
-      padding: 30px;
-      padding-top: 10px;
+      padding: 12px;
+      padding-top: 0px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
+      gap: 12px;
       width: 100%;
       height: max-content;
     }
