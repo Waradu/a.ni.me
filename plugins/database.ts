@@ -13,7 +13,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   let db: Database;
 
   if (import.meta.client) {
-    db = await Database.load("sqlite:anilist.db");
+    db = await Database.load("sqlite:a.ni.me.db");
   }
 
   const database = {

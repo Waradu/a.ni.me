@@ -1,5 +1,5 @@
 [package]
-name = "anilist"
+name = "a_ni_me"
 version = "0.1.0"
 description = "Manage your animes in one place"
 authors = ["Waradu"]

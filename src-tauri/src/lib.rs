@@ -80,7 +80,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(
             tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:anilist.db", migrations)
+                .add_migrations("sqlite:a.ni.me.db", migrations)
                 .build(),
         )
         .run(tauri::generate_context!())
