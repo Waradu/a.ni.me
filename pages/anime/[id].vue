@@ -246,7 +246,7 @@ main.anime {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 80px;
+  gap: 40px;
 
   header {
     width: 100%;
