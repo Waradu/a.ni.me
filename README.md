@@ -26,8 +26,9 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 - [x] Finish this todo section
 - [ ] Finish the app (v1)
   - [x] Make search work
-  - [ ] Add more info like characters/genres
+  - [x] Add more info like characters/genres
   - [ ] Add settings
+  - [ ] Add Get-Started / Welcome screen
   - [ ] Add filtering / sorting
   - [ ] Add share option
   - [ ] Add export/import
@@ -42,7 +43,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 - [ ] v2
   - [ ] Add recommendations
   - [ ] Add cross-device sync
-  - [ ] Add Usedr profiles (maybe)
+  - [ ] Add User profiles (maybe)
   - [ ] Add feed (maybe)
   - [ ] Waifu collection (maybe)
   - [ ] Make it secure and private
