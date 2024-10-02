@@ -14,8 +14,8 @@
       </h3>
     </div>
     <div class="input" data-tauri-drag-region>
-      <input type="text" placeholder="Search" ref="input" :value="mounted ? titlebarStore.search : ''"
-        @input="search" @keydown.enter="add" v-if="mounted">
+      <input type="text" placeholder="Search" ref="input" :value="mounted ? titlebarStore.search : ''" @input="search"
+        @keydown.enter="add" v-if="mounted">
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
@@ -49,21 +49,21 @@ import MinimizeIcon from "~/assets/svg/minimize.svg";
 import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { WebviewWindow } from '@tauri-apps/api/webviewWindow'
+
+const { proxy } = useScriptNpm({
+  packageName: 'js-confetti',
+  file: 'dist/js-confetti.browser.js',
+  version: '0.12.0',
+  scriptOptions: {
+    //@ts-ignore
+    use: () => typeof window.JSConfetti !== 'undefined' && new window.JSConfetti()
+  },
+})
 
 const openSettings = () => {
-  const webview = new WebviewWindow('confetti', {
-    url: '/confetti',
-    transparent: true,
-    decorations: false,
-    alwaysOnTop: true,
-    focus: false,
-    fullscreen: true,
-    shadow: false,
-    skipTaskbar: true,
-  })
-  webview.once('tauri://error', (e) => {
-    console.error('Window error:', e)
+  proxy.addConfetti({
+    confettiRadius: 6,
+    confettiNumber: 500,
   })
 }
 
