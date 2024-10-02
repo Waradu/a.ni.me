@@ -32,6 +32,11 @@
               @mouseup.prevent="stars(anime.id, i); moving = false" />
           </template>
         </div>
+        <div class="genres">
+          <div class="genre" v-for="genre in anime.data.genres">
+            {{ genre.name }}
+          </div>
+        </div>
       </div>
       <Modal header="Synopsis" ref="synopsisModal">
         <p v-html="anime.data.synopsis"></p>
@@ -69,6 +74,12 @@
         <div class="data">{{ anime.data.year }}</div>
       </div>
     </div>
+    <div class="characters" ref="charactersContainer">
+      <div class="character" v-for="character in characters" :key="character.character.mal_id">
+        <img :src="character.character.images.jpg.large_image_url || character.character.images.jpg.image_url" alt="">
+        <div class="name">{{ character.character.name }}</div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -80,15 +91,19 @@ import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regul
 import type { Modal } from '#build/components';
 import VanillaTilt from 'vanilla-tilt'
 import type { CombinedAnime } from "~/types/db";
+import { AnimeClient, type AnimeCharacter } from '@tutkli/jikan-ts';
 
 const route = useRoute();
 const { $database } = useNuxtApp();
+
+const animeClient = new AnimeClient();
 
 const titlebarStore = useTitlebarStore();
 
 titlebarStore.setBackLink('/')
 
 const anime = ref<CombinedAnime>()
+const characters = ref<AnimeCharacter[]>()
 const moving = ref(false)
 
 const image = computed(() => {
@@ -128,7 +143,39 @@ const start = async (id: number, stars: number) => {
   moving.value = true;
 }
 
+const charactersContainer = ref<HTMLElement | null>(null)
+let isDragging = ref(false)
+let startX = 0
+let scrollLeft = 0
+
+const startDrag = (event: MouseEvent) => {
+  event.preventDefault()
+  isDragging.value = true
+  startX = event.pageX - (charactersContainer.value?.offsetLeft ?? 0)
+  scrollLeft = charactersContainer.value?.scrollLeft ?? 0
+  charactersContainer.value?.classList.add("dragging")
+}
+
+const drag = (event: MouseEvent) => {
+  if (!isDragging.value || !charactersContainer.value) return
+  event.preventDefault()
+  const x = event.pageX - (charactersContainer.value.offsetLeft ?? 0)
+  const walk = (x - startX)
+  charactersContainer.value.scrollLeft = scrollLeft - walk
+}
+
+const stopDrag = () => {
+  isDragging.value = false
+  charactersContainer.value?.classList.remove("dragging")
+}
+
 onMounted(async () => {
+  if (charactersContainer.value) {
+    charactersContainer.value.addEventListener('mousedown', startDrag)
+    charactersContainer.value.addEventListener('mousemove', drag)
+    window.addEventListener('mouseup', stopDrag)
+  }
+
   const getanime = await $database.anime(Number(route.params.id));
 
   if (!getanime) {
@@ -137,6 +184,27 @@ onMounted(async () => {
 
   titlebarStore.setTitle(getanime.data.title)
   anime.value = getanime;
+
+  try {
+    const chars = await animeClient.getAnimeCharacters(anime.value.data.mal_id);
+
+    if (chars == undefined) {
+      return [];
+    }
+
+    characters.value = chars.data;
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+})
+
+onBeforeUnmount(() => {
+  if (charactersContainer.value) {
+    charactersContainer.value.removeEventListener('mousedown', startDrag)
+    charactersContainer.value.removeEventListener('mousemove', drag)
+  }
+  window.removeEventListener('mouseup', stopDrag)
 })
 
 watch(tilt, (newValue) => {
@@ -178,6 +246,7 @@ main.anime {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 80px;
 
   header {
     width: 100%;
@@ -185,6 +254,7 @@ main.anime {
     display: flex;
     padding: 40px;
     padding-top: 20px;
+    padding-bottom: 0;
 
     .image {
       aspect-ratio: 2 / 3;
@@ -341,6 +411,23 @@ main.anime {
           scale: 0.9;
         }
       }
+
+      .genres {
+        display: flex;
+        gap: 10px;
+        padding-inline: 14px;
+        user-select: none;
+
+        .genre {
+          font-size: 14px;
+          background-color: #ffffff10;
+          border: 1px solid #ffffff20;
+          color: #ffffffaa;
+          padding: 2px;
+          padding-inline: 10px;
+          border-radius: 20px;
+        }
+      }
     }
   }
 
@@ -366,6 +453,47 @@ main.anime {
       .data {
         @extend %title3;
       }
+    }
+  }
+
+  .characters {
+    display: flex;
+    padding: 20px;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: scroll;
+    align-items: start;
+    gap: 20px;
+    padding-top: 0;
+    user-select: none;
+    cursor: grab;
+    padding-inline: 80px;
+
+    &.dragging {
+      cursor: grabbing;
+    }
+
+    .character {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 150px;
+      max-width: 150px;
+      align-items: center;
+      text-align: center;
+
+      img {
+        width: 100%;
+        border-radius: 8px;
+      }
+    }
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 }
