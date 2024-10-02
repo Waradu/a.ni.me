@@ -52,19 +52,7 @@ var lastSearch = "";
 const filteredAnimes = computed(() => {
   return animes.value.map(a => a.data).filter((a) => {
     return a.title.toLowerCase().includes(titlebarStore.search.toLowerCase()) && !savedAnimeNames.value.includes(a.title)
-  }).sort(
-    (a, b) => {
-      if (a.year > b.year) {
-        return -1
-      }
-
-      if (a.year < b.year) {
-        return 1
-      }
-
-      return 0
-    }
-  );
+  })
 })
 
 const add = async (id: number) => {
