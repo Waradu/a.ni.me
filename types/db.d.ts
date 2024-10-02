@@ -1,42 +1,14 @@
-export type DbAnime = {
+import type { Anime } from "@tutkli/jikan-ts";
+
+export interface DbAnime {
   id: number;
   created_at: string;
-  name: string;
-  url: string;
-  image: string;
-  trailer: string;
-  approved: boolean;
-  episodes: number;
-  airing: boolean;
-  status: string;
-  rating: string;
-  popularity: number;
-  score: number;
-  scored_by: number;
-  favorites: number;
-  synopsis: string;
-  year: number;
   stars: number;
+  rewatch_count: number;
+  recommended_by: string;
   watched: boolean;
-};
+}
 
-export type DbCharacter = {
-  id: number;
-  created_at: string;
-  name: string;
-  image: string;
-  anime_id: number;
-};
-
-export type DbGenre = {
-  id: number;
-  created_at: string;
-  name: string;
-};
-
-export type DbAnimeGenre = {
-  id: number;
-  created_at: string;
-  anime_id: number;
-  genre_id: number;
-};
+export interface CombinedAnime extends DbAnime {
+  data: Anime
+}

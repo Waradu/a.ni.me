@@ -1,13 +1,13 @@
 <template>
   <div class="card" v-for="anime in filteredAnimes">
-    <NuxtLink class="image" @click.prevent="add(anime)">
+    <NuxtLink class="image" @click.prevent="add(anime.mal_id)">
       <AddIcon class="open" />
       <div class="cover">
-        <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
+        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.name">{{ anime.name }}</span>
+      <span class="title" :title="anime.title">{{ anime.title }}</span>
       <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -28,21 +28,21 @@
 </template>
 
 <script lang="ts" setup>
-import type { Anime } from '~/types/anime';
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 import { AnimeClient } from '@tutkli/jikan-ts';
+import type { CombinedAnime } from "~/types/db";
 
 const { $database, $emitter } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
 
-const animes = ref<Anime[]>([]);
+const animes = ref<CombinedAnime[]>([]);
 
-const savedAnimes = ref<Anime[]>([]);
+const savedAnimes = ref<CombinedAnime[]>([]);
 
 const savedAnimeNames = computed(() => {
   return savedAnimes.value.map((a) => {
-    return a.name;
+    return a.data.title;
   })
 });
 
@@ -50,8 +50,8 @@ const loading = ref(true);
 var lastSearch = "";
 
 const filteredAnimes = computed(() => {
-  return animes.value.filter((a) => {
-    return a.name.toLowerCase().includes(titlebarStore.search.toLowerCase()) && !savedAnimeNames.value.includes(a.name)
+  return animes.value.map(a => a.data).filter((a) => {
+    return a.title.toLowerCase().includes(titlebarStore.search.toLowerCase()) && !savedAnimeNames.value.includes(a.title)
   }).sort(
     (a, b) => {
       if (a.year > b.year) {
@@ -67,8 +67,8 @@ const filteredAnimes = computed(() => {
   );
 })
 
-const add = async (anime: Anime) => {
-  await $database.add(anime)
+const add = async (id: number) => {
+  await $database.add(id)
   $emitter.emit("stopSearch")
 }
 
@@ -91,9 +91,17 @@ const searchMAL = async () => {
 
   titlebarStore.setSearch("");
 
-  animes.value = await Promise.all(res.data.map(async (a) => {
-    return await $database.convert(a, 0)
-  }))
+  animes.value = res.data.map(a => {
+    return {
+      id: 0,
+      created_at: "",
+      stars: 0,
+      rewatch_count: 0,
+      recommended_by: "",
+      watched: false,
+      data: a
+    }
+  })
 }
 
 $emitter.on('search', async () => {

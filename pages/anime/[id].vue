@@ -2,7 +2,7 @@
   <main class="anime">
     <header v-if="anime">
       <div class="image" ref="tilt">
-        <img :src="anime.image" alt="">
+        <img :src="image" alt="">
         <div class="overlay" @click="showImage">
           <div class="wrapper" @click.stop>
             <ShareIcon class="icon" />
@@ -14,31 +14,31 @@
       </div>
       <div class="text">
         <div class="name">
-          <h1 :title="anime.name">
-            {{ anime.name }}
+          <h1 :title="anime.data.title">
+            {{ anime.data.title }}
           </h1>
           <div class="airing">
-            {{ anime.status }}
+            {{ anime.data.status }}
           </div>
         </div>
         <div class="description" @click="show">
-          <p v-html="anime.synopsis"></p>
+          <p v-html="anime.data.synopsis"></p>
         </div>
         <div class="rating">
           <template v-for="i in 5">
-            <StarFilledIcon class="icon star" v-if="anime.stars >= i" @mousedown.prevent="moving = true"
+            <StarFilledIcon class="icon star" v-if="anime.stars >= i" @mousedown.prevent="start(anime.id, i)"
               @mousemove.prevent="move(i)" @mouseup.prevent="stars(anime.id, i); moving = false" />
-            <StarIcon class="icon" v-else @mousedown.prevent="moving = true" @mousemove.prevent="move(i)"
+            <StarIcon class="icon" v-else @mousedown.prevent="start(anime.id, i)" @mousemove.prevent="move(i)"
               @mouseup.prevent="stars(anime.id, i); moving = false" />
           </template>
         </div>
       </div>
       <Modal header="Synopsis" ref="synopsisModal">
-        <p v-html="anime.synopsis"></p>
+        <p v-html="anime.data.synopsis"></p>
       </Modal>
       <Modal header="Cover" ref="imageModal">
         <div class="big-image" ref="coverTilt">
-          <ZoomImage :src="anime.image" />
+          <ZoomImage :src="image" />
         </div>
         <p class="center">Click to zoom</p>
       </Modal>
@@ -46,27 +46,27 @@
     <div class="details" v-if="anime">
       <div class="detail">
         <div class="text">Score</div>
-        <div class="data">{{ anime.score }}</div>
+        <div class="data">{{ anime.data.score }}</div>
       </div>
       <div class="detail">
         <div class="text">Scored By</div>
-        <div class="data">{{ anime.scored_by }}</div>
+        <div class="data">{{ anime.data.scored_by }}</div>
       </div>
       <div class="detail">
         <div class="text">Favorites</div>
-        <div class="data">{{ anime.favorites }}</div>
+        <div class="data">{{ anime.data.favorites }}</div>
       </div>
       <div class="detail">
         <div class="text">Episodes</div>
-        <div class="data">{{ anime.episodes }}</div>
+        <div class="data">{{ anime.data.episodes }}</div>
       </div>
       <div class="detail">
         <div class="text">Rating</div>
-        <div class="data">{{ anime.rating }}</div>
+        <div class="data">{{ anime.data.rating }}</div>
       </div>
       <div class="detail">
         <div class="text">Year</div>
-        <div class="data">{{ anime.year }}</div>
+        <div class="data">{{ anime.data.year }}</div>
       </div>
     </div>
   </main>
@@ -78,17 +78,24 @@ import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_fil
 import ShareIcon from "~/node_modules/@fluentui/svg-icons/icons/share_28_regular.svg";
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import type { Modal } from '#build/components';
-import type { Anime } from '~/types/anime';
 import VanillaTilt from 'vanilla-tilt'
+import type { CombinedAnime } from "~/types/db";
 
 const route = useRoute();
-const error = useError()
 const { $database } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
 
-const anime = ref<Anime>()
+titlebarStore.setBackLink('/')
+
+const anime = ref<CombinedAnime>()
 const moving = ref(false)
+
+const image = computed(() => {
+  if (!anime.value) return "";
+
+  return anime.value.data.images.jpg.large_image_url || anime.value.data.images.jpg.image_url;
+})
 
 const tilt = ref(null)
 const coverTilt = ref(null)
@@ -117,6 +124,10 @@ const showImage = () => {
   imageModal.value.show()
 }
 
+const start = async (id: number, stars: number) => {
+  moving.value = true;
+}
+
 onMounted(async () => {
   const getanime = await $database.anime(Number(route.params.id));
 
@@ -124,7 +135,7 @@ onMounted(async () => {
     return
   }
 
-  titlebarStore.setTitle(getanime.name)
+  titlebarStore.setTitle(getanime.data.title)
   anime.value = getanime;
 })
 
@@ -155,9 +166,9 @@ const stars = async (id: number, stars: number) => {
 
   if (anime.value.stars == stars) return;
 
-  await $database.stars(id, stars);
-
   anime.value.stars = stars;
+
+  await $database.stars(id, stars);
 }
 </script>
 

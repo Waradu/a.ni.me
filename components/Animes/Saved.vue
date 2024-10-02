@@ -1,13 +1,13 @@
 <template>
   <div class="card" v-for="anime in filteredAnimes">
-    <NuxtLink class="image" @click.prevent="redirect(anime.id)">
+    <NuxtLink class="image" @click.prevent="redirect(anime.mal_id)">
       <OpenIcon class="open" />
       <div class="cover">
-        <img :src="anime.image" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
+        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.name">{{ anime.name }}</span>
+      <span class="title" :title="anime.title">{{ anime.title }}</span>
       <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -28,14 +28,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { Anime } from '~/types/anime';
 import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
+import type { CombinedAnime } from "~/types/db";
 
 const { $database, $emitter } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
 
-const animes = ref<Anime[]>([]);
+const animes = ref<CombinedAnime[]>([]);
 const loading = ref(true)
 
 $emitter.on('dataUpdated', async () => {
@@ -45,11 +45,13 @@ $emitter.on('dataUpdated', async () => {
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
 
-  return animes.value.filter((a) => {
+  return animes.value.map(a => {
+    return a.data;
+  }).filter((a) => {
     return (
-      a.name.toLowerCase().includes(term) ||
-      a.synopsis.toLowerCase().includes(term) ||
-      a.characters.map((c) => c.name).filter((n) => n.toLowerCase().includes(term)).length > 0
+      a.title.toLowerCase().includes(term) ||
+      a.synopsis.toLowerCase().includes(term) /* ||
+      a.characters.map((c) => c.name).filter((n) => n.toLowerCase().includes(term)).length > 0 */
     )
   }).sort(
     (a, b) => {
@@ -67,7 +69,6 @@ const filteredAnimes = computed(() => {
 })
 
 const redirect = (id: number) => {
-  titlebarStore.setBackLink('/')
   navigateTo(`/anime/${id}`)
 }
 
