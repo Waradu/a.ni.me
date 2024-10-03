@@ -8,7 +8,7 @@
     </NuxtLink>
     <div class="text">
       <span class="title" :title="anime.title">{{ anime.title }}</span>
-      <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
+      <p class="info capitalize" v-if="anime.year > 0">{{ anime.season }} {{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
   </div>
@@ -195,6 +195,10 @@ onMounted(async () => {
     p {
       @extend %body1;
       color: #ffffff80;
+
+      &.capitalize {
+        text-transform: capitalize;
+      }
     }
   }
 }
