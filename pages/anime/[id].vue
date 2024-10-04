@@ -1,7 +1,7 @@
 <template>
   <main class="anime">
     <header v-if="anime">
-      <div class="image" ref="tilt">
+      <div class="image">
         <img :src="image" alt="">
         <div class="overlay" @click="showImage">
           <div class="wrapper" @click.stop>
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="description" @click="show">
-          <p v-html="anime.data.synopsis"></p>
+          <p v-html="anime.data.synopsis.replace('[Written by MAL Rewrite]', '')"></p>
         </div>
         <div class="rating">
           <template v-for="i in 5">
@@ -39,7 +39,7 @@
         </div>
       </div>
       <Modal header="Synopsis" ref="synopsisModal">
-        <p v-html="anime.data.synopsis"></p>
+        <p v-html="anime.data.synopsis.replace('[Written by MAL Rewrite]', '')"></p>
       </Modal>
       <Modal header="Cover" ref="imageModal">
         <div class="big-image" ref="coverTilt">
@@ -112,7 +112,6 @@ const image = computed(() => {
   return anime.value.data.images.jpg.large_image_url || anime.value.data.images.jpg.image_url;
 })
 
-const tilt = ref(null)
 const coverTilt = ref(null)
 
 const move = (i: number) => {
@@ -207,17 +206,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('mouseup', stopDrag)
 })
 
-watch(tilt, (newValue) => {
-  if (newValue !== null && tilt.value) {
-    VanillaTilt.init(tilt.value, {
-      max: 10,
-      speed: 1000,
-      glare: true,
-      "max-glare": 0.2
-    })
-  }
-});
-
 watch(coverTilt, (newValue) => {
   if (newValue !== null && coverTilt.value) {
     VanillaTilt.init(coverTilt.value, {
@@ -296,7 +284,7 @@ main.anime {
           transition: .2s ease-in-out;
           translate: 0 100%;
           cursor: pointer;
-          color: #ffffff60;
+          color: #ffffffaa;
 
           .icon {
             filter: drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000);
