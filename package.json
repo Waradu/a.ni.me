@@ -10,26 +10,26 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@fluentui/svg-icons": "^1.1.258",
-    "@nuxt/scripts": "^0.8.5",
-    "@pinia/nuxt": "^0.5.4",
-    "@tauri-apps/api": "2.0.0-rc.4",
-    "@tauri-apps/plugin-sql": "^2.0.0-rc.1",
+    "@fluentui/svg-icons": "^1.1.260",
+    "@nuxt/scripts": "^0.9.4",
+    "@pinia/nuxt": "^0.5.5",
+    "@tauri-apps/api": "2.0.1",
+    "@tauri-apps/plugin-sql": "^2.0.0",
     "@tutkli/jikan-ts": "^2.0.2",
     "axios": "^1.7.7",
     "axios-cache-interceptor": "^1.6.0",
     "mitt": "^3.0.1",
     "nuxt": "^3.13.2",
     "nuxt-svgo": "^4.0.6",
-    "pinia-plugin-persistedstate": "^4.0.2",
-    "sass": "^1.79.3",
+    "pinia-plugin-persistedstate": "^4.1.1",
+    "sass": "^1.79.4",
     "vanilla-tilt": "^1.8.1",
-    "vue": "latest",
-    "vue-router": "latest",
+    "vue": "^3.5.11",
+    "vue-router": "^4.4.5",
     "wrdu-keyboard": "^1.1.1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0-rc.16",
+    "@tauri-apps/cli": "^2.0.1",
     "sass-loader": "^16.0.2"
   }
 }
