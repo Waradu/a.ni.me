@@ -14,8 +14,8 @@
       </div>
       <div class="text">
         <div class="name">
-          <h1 :title="anime.data.title">
-            {{ anime.data.title }}
+          <h1 :title="anime.data.title_english || anime.data.title">
+            {{ anime.data.title_english || anime.data.title }}
           </h1>
           <div class="airing">
             {{ anime.data.status }}
@@ -181,7 +181,7 @@ onMounted(async () => {
     return
   }
 
-  titlebarStore.setTitle(getanime.data.title)
+  titlebarStore.setTitle(getanime.data.title_english || getanime.data.title)
   anime.value = getanime;
 
   try {

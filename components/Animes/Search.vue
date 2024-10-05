@@ -3,11 +3,12 @@
     <NuxtLink class="image" @click.prevent="add(anime.mal_id)">
       <AddIcon class="open" />
       <div class="cover">
-        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
+        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url"
+          onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.title">{{ anime.title }}</span>
+      <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
       <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -40,9 +41,9 @@ const animes = ref<CombinedAnime[]>([]);
 
 const savedAnimes = ref<CombinedAnime[]>([]);
 
-const savedAnimeNames = computed(() => {
+const savedAnimeIds = computed(() => {
   return savedAnimes.value.map((a) => {
-    return a.data.title;
+    return a.data.mal_id;
   })
 });
 
@@ -50,8 +51,16 @@ const loading = ref(true);
 var lastSearch = "";
 
 const filteredAnimes = computed(() => {
-  return animes.value.map(a => a.data).filter((a) => {
-    return a.title.toLowerCase().includes(titlebarStore.search.toLowerCase()) && !savedAnimeNames.value.includes(a.title)
+  const term = titlebarStore.search.toLowerCase();
+
+  return animes.value.map(a => {
+    return a.data;
+  }).filter((a) => {
+    return (
+      !savedAnimeIds.value.includes(a.mal_id) && (a.title.toLowerCase().includes(term) ||
+        (a.title_english && a.title_english.toLowerCase().includes(term)) ||
+        a.synopsis.toLowerCase().includes(term))
+    )
   })
 })
 
@@ -74,7 +83,8 @@ onMounted(async () => {
 const searchMAL = async () => {
   const res = await animeClient.getAnimeSearch({
     q: titlebarStore.getSearch(),
-    sfw: true
+    sfw: true,
+    type: "TV"
   })
 
   titlebarStore.setSearch("");

@@ -7,7 +7,7 @@
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.title">{{ anime.title }}</span>
+      <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
       <p class="info capitalize" v-if="anime.year > 0">{{ anime.season }} {{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -50,8 +50,8 @@ const filteredAnimes = computed(() => {
   }).filter((a) => {
     return (
       a.title.toLowerCase().includes(term) ||
-      a.synopsis.toLowerCase().includes(term) /* ||
-      a.characters.map((c) => c.name).filter((n) => n.toLowerCase().includes(term)).length > 0 */
+      (a.title_english && a.title_english.toLowerCase().includes(term)) ||
+      a.synopsis.toLowerCase().includes(term)
     )
   }).sort(
     (a, b) => {
