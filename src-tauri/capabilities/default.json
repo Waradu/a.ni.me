@@ -28,6 +28,7 @@
     "core:window:default",
     "core:webview:default",
     "core:window:allow-set-ignore-cursor-events",
-    "window-state:default"
+    "window-state:default",
+    "prevent-default:default"
   ]
 }

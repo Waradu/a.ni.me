@@ -1,6 +1,22 @@
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+#[cfg(debug_assertions)]
+fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
+    use tauri_plugin_prevent_default::Flags;
+
+    tauri_plugin_prevent_default::Builder::new()
+        .with_flags(Flags::empty())
+        .build()
+}
+
+#[cfg(not(debug_assertions))]
+fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
+    tauri_plugin_prevent_default::Builder::new()
+        .with_flags(Flags::all().difference(Flags::FIND | Flags::RELOAD))
+        .build()
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let anime_table = include_str!("migrations/animes.sql");
@@ -28,6 +44,8 @@ pub fn run() {
             .add_migrations("sqlite:a.ni.me.db", migrations)
             .build(),
     );
+
+    builder = builder.plugin(prevent_default());
 
     builder
         .run(tauri::generate_context!())
