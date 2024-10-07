@@ -1,6 +1,6 @@
 <template>
   <div class="select">
-    <h1>Pick Your Favorites (Optional)</h1>
+    <h1>Some recommendations (Click to add) (Optional)</h1>
     <div class="animes">
       <label class="anime" v-for="anime in animes" :key="anime.mal_id" :for="anime.mal_id.toString()">
         <div class="cover">
