@@ -29,6 +29,8 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [x] Add more info like characters/genres
   - [ ] Add settings
   - [X] Add Get-Started / Welcome screen
+  - [ ] Tagging
+  - [ ] Episode Tracking
   - [ ] Add filtering / sorting
   - [ ] Add share option
   - [ ] Add export/import
@@ -38,8 +40,12 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
-  - [ ] Add more content to website
   - [ ] Release v1
+- [ ] v1.1
+  - [ ] MacOS support
+  - [ ] Add more content to website
+  - [ ] Add news/blog to the website
+  - [ ] Release v1.1
 - [ ] v2
   - [ ] Add recommendations
   - [ ] Add cross-device sync
