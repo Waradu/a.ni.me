@@ -43,7 +43,7 @@ if (setupStore.finished) {
 
 const animeClient = new AnimeClient();
 
-const animeIds = [52034, 16498, 52211, 235]
+const animeIds = [52034, 16498, 52991, 9253]
 const animes = ref<Anime[]>([]);
 
 try {
