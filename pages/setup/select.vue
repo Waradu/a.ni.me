@@ -46,16 +46,14 @@ const animeClient = new AnimeClient();
 const animeIds = [52034, 16498, 52211, 235]
 const animes = ref<Anime[]>([]);
 
-onMounted(async () => {
-  try {
-    animeIds.forEach(async id => {
-      const response = await animeClient.getAnimeById(id);
-      animes.value.push(response.data);
-    })
-  } catch (error) {
-    console.error("Failed to fetch anime list", error);
-  }
-});
+try {
+  animeIds.forEach(async id => {
+    const response = await animeClient.getAnimeById(id);
+    animes.value.push(response.data);
+  })
+} catch (error) {
+  console.error("Failed to fetch anime list", error);
+}
 </script>
 
 <style lang="scss">
