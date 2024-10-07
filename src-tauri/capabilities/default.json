@@ -3,8 +3,7 @@
   "identifier": "default",
   "description": "enables the default permissions",
   "windows": [
-    "main",
-    "confetti"
+    "main"
   ],
   "permissions": [
     "core:app:default",
@@ -28,6 +27,7 @@
     "core:webview:allow-create-webview-window",
     "core:window:default",
     "core:webview:default",
-    "core:window:allow-set-ignore-cursor-events"
+    "core:window:allow-set-ignore-cursor-events",
+    "window-state:default"
   ]
 }
