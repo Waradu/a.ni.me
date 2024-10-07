@@ -66,7 +66,7 @@ try {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      width: 200px;
+      width: 180px;
       text-align: center;
 
       .cover {
