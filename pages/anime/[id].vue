@@ -54,27 +54,27 @@
     <div class="details" v-if="anime">
       <div class="detail">
         <div class="text">Score</div>
-        <div class="data">{{ anime.data.score }}</div>
+        <div class="data">{{ anime.data.score ? anime.data.score : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Scored By</div>
-        <div class="data">{{ anime.data.scored_by }}</div>
+        <div class="data">{{ anime.data.scored_by ? anime.data.scored_by : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Favorites</div>
-        <div class="data">{{ anime.data.favorites }}</div>
+        <div class="data">{{ anime.data.favorites ? anime.data.favorites : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Episodes</div>
-        <div class="data">{{ anime.data.episodes }}</div>
+        <div class="data">{{ anime.data.episodes ? anime.data.episodes : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Rating</div>
-        <div class="data">{{ anime.data.rating }}</div>
+        <div class="data">{{ anime.data.rating ? anime.data.rating : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Year</div>
-        <div class="data">{{ anime.data.year }}</div>
+        <div class="data">{{ anime.data.year ? anime.data.year : "N/A" }}</div>
       </div>
     </div>
     <div class="characters" ref="charactersContainer">
