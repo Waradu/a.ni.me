@@ -26,37 +26,44 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 ## 📝 TODO
 
 - [x] Finish this todo section
+
 - [ ] Finish the app (v1)
   - [x] Make search work
-  - [x] Add more info like characters/genres
-  - [ ] Add settings
-  - [X] Add Get-Started / Welcome screen
+  - [x] More info like characters/genres
+  - [ ] Settings
+  - [X] Get-Started & welcome screen
   - [ ] Tagging
   - [ ] Episode Tracking
-  - [ ] Add filtering / sorting
-  - [ ] Add share option
-  - [ ] Add export/import
-  - [ ] Add ability to hide animes
-  - [ ] Add Lightmode
-  - [ ] Add Notification
+  - [ ] Filtering & sorting
+  - [ ] Share option
+  - [ ] Export & import
+  - [ ] Hide animes
+  - [ ] Lightmode
+  - [ ] Some QOL features if needed
+  - [ ] Auto updated
+  - [ ] Notification
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
+  - [ ] Release beta builds (v0.X.Y)
   - [ ] Release v1
-- [ ] v1.1
-  - [ ] MacOS support
-  - [ ] Add more content to website
-  - [ ] Add news/blog to the website
+
+- [ ] Polishing v1 (v1.1)
+  - [ ] MacOS support (maybe)
+  - [ ] More content (website)
+  - [ ] News/blog (website)
   - [ ] Release v1.1
-- [ ] v2
-  - [ ] Add recommendations
-  - [ ] Add cross-device sync
-  - [ ] Add User profiles (maybe)
-  - [ ] Add feed (maybe)
-  - [ ] Waifu collection (maybe)
-  - [ ] Make it secure and private
-  - [ ] release v2
-- [ ] more to come
+
+- [ ] Complete the app (v2)
+  - [ ] Recommendations
+  - [ ] Cross-device sync
+  - [ ] User profiles (maybe)
+  - [ ] Feed (maybe)
+  - [ ] Waifu collection (don't ask why and what) (maybe)
+  - [ ] Make it secure and private :D
+  - [ ] Release v2
+
+- [ ] More to come
 
 <sup>Feel free to share your ideas or improvements by creating an issue [here](https://github.com/Waradu/a.ni.me/issues)!</sup>
 
