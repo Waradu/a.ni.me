@@ -73,6 +73,11 @@ h3 {
   @extend %title3;
 }
 
+a {
+  color: inherit;
+  text-decoration: unset;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.2s ease-in-out;
