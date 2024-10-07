@@ -30,7 +30,7 @@
     "wrdu-keyboard": "^1.1.1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.1",
+    "@tauri-apps/cli": "^2.0.2",
     "sass-loader": "^16.0.2"
   }
 }
