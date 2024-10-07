@@ -1,16 +1,8 @@
 <template>
   <main class="anime">
     <header v-if="anime">
-      <div class="image">
+      <div class="image" @click="showImage">
         <img :src="image" alt="">
-        <div class="overlay" @click="showImage">
-          <div class="wrapper" @click.stop>
-            <ShareIcon class="icon" />
-          </div>
-          <div class="wrapper" @click="del(anime.id)" @click.stop>
-            <DeleteIcon class="icon" />
-          </div>
-        </div>
       </div>
       <div class="text">
         <div class="name">
@@ -19,6 +11,17 @@
           </h1>
           <div class="airing">
             {{ anime.data.status }}
+          </div>
+          <div class="icons">
+            <div class="wrapper disabled">
+              <ShareIcon class="icon" />
+            </div>
+            <div class="wrapper">
+              <OptionsIcon class="icon" />
+            </div>
+            <div class="wrapper red" @click="del(anime.id)">
+              <DeleteIcon class="icon" />
+            </div>
           </div>
         </div>
         <div class="description" @click="show">
@@ -45,7 +48,7 @@
         <div class="big-image" ref="coverTilt">
           <ZoomImage :src="image" />
         </div>
-        <p class="center">Click to zoom</p>
+        <p class="center">Click and Scroll to zoom</p>
       </Modal>
     </header>
     <div class="details" v-if="anime">
@@ -88,6 +91,7 @@ import StarIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_regular.s
 import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_filled.svg";
 import ShareIcon from "~/node_modules/@fluentui/svg-icons/icons/share_28_regular.svg";
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
+import OptionsIcon from "~/node_modules/@fluentui/svg-icons/icons/options_32_regular.svg";
 import type { Modal } from '#build/components';
 import VanillaTilt from 'vanilla-tilt'
 import type { CombinedAnime } from "~/types/db";
@@ -252,6 +256,7 @@ main.anime {
       grid-template-rows: 100%;
       border-radius: 8px;
       overflow: hidden;
+      cursor: pointer;
 
       img {
         width: 100%;
@@ -263,52 +268,9 @@ main.anime {
         transition: .2s ease-in-out;
       }
 
-      .overlay {
-        grid-column: 1 / 2;
-        grid-row: 1 / 2;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: end;
-        transition: .2s ease-in-out;
-        opacity: 0;
-        background-image: linear-gradient(to bottom, transparent, black);
-
-        .wrapper {
-          aspect-ratio: 1/1;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-          transition: .2s ease-in-out;
-          translate: 0 100%;
-          cursor: pointer;
-          color: #ffffffaa;
-
-          .icon {
-            filter: drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000) drop-shadow(0 0 10px #000000);
-          }
-
-          &:hover {
-            background-color: #ffffff20;
-            color: #ffffff;
-
-            &:nth-child(2) {
-              background-color: #ff666620;
-              color: #ff6666aa;
-            }
-          }
-        }
-      }
-
       &:hover {
-        .overlay {
-          opacity: 1;
-
-          .wrapper {
-            translate: 0 0;
-          }
+        img {
+          scale: 1.2;
         }
       }
     }
@@ -345,6 +307,54 @@ main.anime {
           line-height: 1;
           background-color: #4e6e4e;
           white-space: nowrap;
+        }
+
+        .icons {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          margin-left: auto;
+
+          .wrapper {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            transition: .2s ease-in-out;
+            border-radius: 100px;
+            cursor: pointer;
+            height: 36px;
+            width: 36px;
+
+            .icon {
+              margin: 0;
+              opacity: .8;
+              color: white;
+              text-decoration: none;
+              width: 20px;
+              height: 20px;
+            }
+
+            &:hover {
+              background-color: #ffffff20;
+            }
+
+            &.red {
+              .icon {
+                color: #ff9898;
+              }
+
+              &:hover {
+                background-color: #ff888820;
+              }
+            }
+
+            &.disabled {
+              opacity: .5;
+              pointer-events: none;
+            }
+          }
         }
       }
 
