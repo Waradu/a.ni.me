@@ -28,7 +28,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [x] Make search work
   - [x] Add more info like characters/genres
   - [ ] Add settings
-  - [ ] Add Get-Started / Welcome screen
+  - [X] Add Get-Started / Welcome screen
   - [ ] Add filtering / sorting
   - [ ] Add share option
   - [ ] Add export/import
