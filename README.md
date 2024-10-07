@@ -10,7 +10,7 @@
 
 > \[!IMPORTANT]
 >
-> **Star this project**, to get notified when it releases
+> **Star this project**, to get notified when it releases.
 > 
 > Also I currently **<ins>won't accept PR's</ins>** please wait for v1 with contributing
 
