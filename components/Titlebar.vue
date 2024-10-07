@@ -1,5 +1,5 @@
 <template>
-  <header class="titlebar" data-tauri-drag-region>
+  <header class="titlebar" :class="{ inSetup: setupStore.inSetup }" data-tauri-drag-region>
     <div class="data" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
         <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="mounted && titlebarStore.getBackLink() != ''">
@@ -50,26 +50,15 @@ import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
-const { proxy } = useScriptNpm({
-  packageName: 'js-confetti',
-  file: 'dist/js-confetti.browser.js',
-  version: '0.12.0',
-  scriptOptions: {
-    //@ts-ignore
-    use: () => typeof window.JSConfetti !== 'undefined' && new window.JSConfetti()
-  },
-})
-
 const openSettings = () => {
-  proxy.addConfetti({
-    confettiRadius: 6,
-    confettiNumber: 500,
-  })
+  setupStore.$reset()
+  navigateTo("/setup/start")
 }
 
 const { $emitter } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
+const setupStore = useSetupStore();
 const router = useRouter()
 const route = useRoute()
 
@@ -231,6 +220,23 @@ header.titlebar {
           background-color: #ff888820;
         }
       }
+    }
+  }
+
+  &.inSetup {
+    grid-template-columns: 50% 50%;
+    gap: 0;
+
+    .data {
+      padding-left: 10px;
+
+      .icons {
+        display: none;
+      }
+    }
+
+    .input {
+      display: none;
     }
   }
 }
