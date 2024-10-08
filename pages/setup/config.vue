@@ -66,7 +66,7 @@ const tvInfoText = "Turning this on will show only the main anime series with ep
       accent-color: #385738;
       align-items: center;
 
-      * {
+      label {
         cursor: pointer;
       }
 
