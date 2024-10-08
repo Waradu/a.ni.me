@@ -126,6 +126,7 @@ header.titlebar {
   display: grid;
   height: 60px;
   padding: 12px;
+  padding-right: 13px;
   user-select: none;
   font-size: 20px;
   gap: 40px;
