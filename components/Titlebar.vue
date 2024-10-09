@@ -19,6 +19,9 @@
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
+        <div class="wrapper" @click="openMenu">
+          <FilterIcon class="icon" />
+        </div>
         <div class="wrapper" @click="openSettings">
           <SettingsIcon class="icon" />
         </div>
@@ -36,6 +39,14 @@
           <CloseIcon class="icon" />
         </div>
       </div>
+      <Modal header="Sort & Filter" ref="sortFilterModal" class="sortFilterModal">
+        <div class="sorting rows">
+          <div class="item">
+            <span>Sort By</span>
+            <Dropdown :items="sortByOptions" v-model="selected" />
+          </div>
+        </div>
+      </Modal>
     </div>
   </header>
 </template>
@@ -44,15 +55,37 @@
 import ArrowBackIcon from "@fluentui/svg-icons/icons/arrow_left_32_regular.svg";
 import HomeIcon from "@fluentui/svg-icons/icons/home_32_regular.svg";
 import SettingsIcon from "@fluentui/svg-icons/icons/settings_32_regular.svg";
+import FilterIcon from "@fluentui/svg-icons/icons/filter_32_regular.svg";
 import MaximizeIcon from "~/assets/svg/maximize.svg";
 import MinimizeIcon from "~/assets/svg/minimize.svg";
 import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import type { Modal } from "#build/components";
+import type { Item } from "~/types/types";
 
 const openSettings = () => {
   setupStore.$reset()
   navigateTo("/setup/start")
+}
+
+const sortByOptions: Item[] = [
+  { name: "Year", value: "year" },
+  { name: "Name", value: "name" },
+  { name: "Score", value: "score" },
+  { name: "Favorites", value: "favorites" },
+  { name: "Episodes", value: "episodes" },
+  { name: "Stars", value: "stars" },
+]
+
+const selected = ref(sortByOptions[0])
+
+const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
+
+const openMenu = () => {
+  if (!sortFilterModal.value) return;
+
+  sortFilterModal.value.show()
 }
 
 const { $emitter } = useNuxtApp();
@@ -186,7 +219,7 @@ header.titlebar {
   .icons {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 5px;
 
     .space {
       height: 20px;
@@ -238,6 +271,20 @@ header.titlebar {
 
     .input {
       display: none;
+    }
+  }
+
+  .sortFilterModal {
+    .sorting {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
   }
 }
