@@ -66,7 +66,7 @@ import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
-import type { Item, SortBy } from "~/types/types";
+import type { Item, Order, SortBy } from "~/types/types";
 
 const settingsStore = useSettingsStore();
 
@@ -89,8 +89,8 @@ const orderOptions: Item[] = [
   { name: "Descending", value: "desc" }
 ]
 
-const { selected: sortBySelected } = useDropdown(sortByOptions, settingsStore.sortBy);
-const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.sortBy);
+const { selected: sortBySelected } = useDropdown(sortByOptions, settingsStore.sortBy, (n) => { settingsStore.sortBy = n as SortBy; });
+const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.sortBy, (n) => { settingsStore.order = n as Order; });
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 
