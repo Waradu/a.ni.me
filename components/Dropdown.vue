@@ -1,6 +1,6 @@
 <template>
-  <div class="dropdown" :class="{ closed: !open }">
-    <div class="selected" @click="open = !open">
+  <div class="dropdown" :class="{ closed: !open }" ref="dropdown">
+    <div class="selected" @click="toggleDropdown">
       <span class="text">{{ model.name }}</span>
       <ArrowIcon class="icon" />
     </div>
@@ -17,26 +17,44 @@
 import ArrowIcon from "~/assets/svg/arrow.svg";
 import type { Item } from "~/types/types";
 
-const open = ref(false)
+const open = ref(false);
+const dropdown = ref<HTMLElement | null>(null);
 
 defineProps({
   items: {
     type: Array<Item>,
     required: true
   }
-})
+});
 
 const model = defineModel<Item>({
   required: true
-})
+});
 
 const setSelected = (item: Item) => {
   model.value = item;
-  console.log(model.value);
   open.value = false;
-  console.log(item);
-}
+};
+
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+    open.value = false;
+  }
+};
+
+const toggleDropdown = () => {
+  open.value = !open.value;
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
+
 
 <style lang="scss">
 .dropdown {
