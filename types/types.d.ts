@@ -20,5 +20,6 @@ export interface SettingsStore {
   showNSFW: boolean;
   tvOnly: boolean;
   sortBy: SortBy;
+  order: "asc" | "desc";
   filters: Filters;
 }
