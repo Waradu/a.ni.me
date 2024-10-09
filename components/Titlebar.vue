@@ -62,7 +62,9 @@ import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
-import type { Item } from "~/types/types";
+import type { Item, SortBy } from "~/types/types";
+
+const settingsStore = useSettingsStore();
 
 const openSettings = () => {
   setupStore.$reset()
@@ -76,9 +78,25 @@ const sortByOptions: Item[] = [
   { name: "Favorites", value: "favorites" },
   { name: "Episodes", value: "episodes" },
   { name: "Stars", value: "stars" },
-]
+];
 
-const selected = ref(sortByOptions[0])
+const selected = ref(
+  sortByOptions.find((option) => option.value === settingsStore.sortBy) || sortByOptions[0]
+);
+
+watch(selected, (newSelected) => {
+  settingsStore.sortBy = newSelected.value as SortBy;
+});
+
+watch(
+  () => settingsStore.sortBy,
+  (newSortBy) => {
+    const matchingOption = sortByOptions.find((option) => option.value === newSortBy);
+    if (matchingOption) {
+      selected.value = matchingOption;
+    }
+  }
+);
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 

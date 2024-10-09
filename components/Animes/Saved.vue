@@ -3,7 +3,8 @@
     <NuxtLink class="image" @click.prevent="redirect(anime.mal_id)">
       <OpenIcon class="open" />
       <div class="cover">
-        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url" onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
+        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url"
+          onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
     <div class="text">
@@ -34,6 +35,7 @@ import type { CombinedAnime } from "~/types/db";
 
 const { $database, $emitter } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
+const settingsStore = useSettingsStore();
 
 const animes = ref<CombinedAnime[]>([]);
 const loading = ref(true)
@@ -45,27 +47,63 @@ $emitter.on('dataUpdated', async () => {
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
 
-  return animes.value.map(a => {
-    return a.data;
-  }).filter((a) => {
+  return animes.value.filter((a) => {
     return (
-      a.title.toLowerCase().includes(term) ||
-      (a.title_english && a.title_english.toLowerCase().includes(term)) ||
-      a.synopsis.toLowerCase().includes(term)
+      a.data.title.toLowerCase().includes(term) ||
+      (a.data.title_english && a.data.title_english.toLowerCase().includes(term)) ||
+      a.data.synopsis.toLowerCase().includes(term)
     )
   }).sort(
     (a, b) => {
-      if (a.year > b.year) {
+      const sortBy = settingsStore.sortBy;
+      if (sortBy == "stars") {
+        if (a.stars > b.stars) {
+          return -1
+        }
+
+        if (a.stars < b.stars) {
+          return 1
+        }
+
+        return 0
+      };
+
+      var aItem;
+      var bItem;
+
+      if (sortBy == "name") {
+        aItem = a.data.title_english
+        bItem = b.data.title_english
+
+        if (!aItem) {
+          aItem = a.data.title
+        };
+
+        if (!bItem) {
+          bItem = b.data.title
+        };
+
+        return aItem.localeCompare(bItem);
+      } else {
+        aItem = a[sortBy as keyof typeof a]
+        bItem = b[sortBy as keyof typeof b]
+      }
+
+      if (!aItem || !bItem) return 0;
+
+      if (aItem > bItem) {
         return -1
       }
 
-      if (a.year < b.year) {
+      if (aItem < bItem) {
         return 1
       }
 
       return 0
     }
-  );
+  ).map(a => {
+    return a.data;
+  });
 })
 
 const redirect = (id: number) => {
