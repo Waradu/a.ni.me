@@ -43,7 +43,11 @@
         <div class="sorting rows">
           <div class="item">
             <span>Sort By</span>
-            <Dropdown :items="sortByOptions" v-model="selected" />
+            <Dropdown :items="sortByOptions" v-model="sortBySelected" />
+          </div>
+          <div class="item">
+            <span>Order</span>
+            <Dropdown :items="orderOptions" v-model="orderSelected" />
           </div>
         </div>
       </Modal>
@@ -80,23 +84,13 @@ const sortByOptions: Item[] = [
   { name: "Stars", value: "stars" },
 ];
 
-const selected = ref(
-  sortByOptions.find((option) => option.value === settingsStore.sortBy) || sortByOptions[0]
-);
+const orderOptions: Item[] = [
+  { name: "Ascending", value: "asc" },
+  { name: "Descending", value: "desc" }
+]
 
-watch(selected, (newSelected) => {
-  settingsStore.sortBy = newSelected.value as SortBy;
-});
-
-watch(
-  () => settingsStore.sortBy,
-  (newSortBy) => {
-    const matchingOption = sortByOptions.find((option) => option.value === newSortBy);
-    if (matchingOption) {
-      selected.value = matchingOption;
-    }
-  }
-);
+const { selected: sortBySelected } = useDropdown(sortByOptions, settingsStore.sortBy);
+const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.sortBy);
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -297,6 +291,7 @@ header.titlebar {
       display: flex;
       flex-direction: column;
       margin-top: 20px;
+      gap: 10px;
 
       .item {
         display: flex;
