@@ -98,9 +98,11 @@ onBeforeUnmount(() => {
     margin-top: 5px;
     background-color: #111111;
     overflow: hidden;
-    height: 200px;
+    max-height: 200px;
     overflow-y: auto;
     transition: .2s ease-in-out;
+    scale: 1 1;
+    transform-origin: top center;
 
     &::-webkit-scrollbar-track {
       margin-block: 0;
@@ -132,7 +134,7 @@ onBeforeUnmount(() => {
     }
 
     .items {
-      height: 0px;
+      scale: 1 0;
       opacity: 0;
       pointer-events: none;
     }
