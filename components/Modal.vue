@@ -35,7 +35,7 @@ const props = defineProps({
 
 const shown = ref(false)
 const actuallyShown = ref(false)
-const modal = ref()
+const modal = ref<HTMLElement | null>(null)
 
 function show() {
   shown.value = true
