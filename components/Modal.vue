@@ -82,6 +82,7 @@ defineExpose({
   &>* {
     transition: .1s ease-in-out;
     scale: 0.8;
+    opacity: 0;
   }
 
   header.min-titlebar {
@@ -98,7 +99,6 @@ defineExpose({
     min-width: 400px;
     max-width: min(800px, calc(100% - 40px));
     border-radius: 8px;
-    overflow: hidden;
     padding: 20px;
     padding-left: 25px;
     border: 1px solid #ffffff10;
@@ -167,6 +167,7 @@ defineExpose({
 
     &>* {
       scale: 1;
+      opacity: 1;
     }
   }
 }
