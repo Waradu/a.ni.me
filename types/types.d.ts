@@ -16,10 +16,12 @@ export type SortBy =
   | "episodes"
   | "stars";
 
+export type Order = "asc" | "desc"
+
 export interface SettingsStore {
   showNSFW: boolean;
   tvOnly: boolean;
   sortBy: SortBy;
-  order: "asc" | "desc";
+  order: Order;
   filters: Filters;
 }
