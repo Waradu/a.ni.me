@@ -32,7 +32,6 @@ body,
 main {
   overflow: auto;
   width: 100%;
-  /* max-width: 1400px; */
 }
 
 ::-webkit-scrollbar {
