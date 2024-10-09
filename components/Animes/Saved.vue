@@ -47,7 +47,7 @@ $emitter.on('dataUpdated', async () => {
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
 
-  return animes.value.filter((a) => {
+  var res = animes.value.filter((a) => {
     return (
       a.data.title.toLowerCase().includes(term) ||
       (a.data.title_english && a.data.title_english.toLowerCase().includes(term)) ||
@@ -104,6 +104,12 @@ const filteredAnimes = computed(() => {
   ).map(a => {
     return a.data;
   });
+
+  if (settingsStore.order == "desc") {
+    res = res.reverse();
+  }
+
+  return res;
 })
 
 const redirect = (id: number) => {
