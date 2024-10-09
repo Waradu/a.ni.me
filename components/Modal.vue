@@ -1,7 +1,7 @@
 <template>
-  <div class="modal" v-if="shown" :class="{ shown: actuallyShown }" @click="hide">
+  <div class="modal" v-if="shown" :class="{ shown: actuallyShown }" @click="hideLocally">
     <header class="min-titlebar" data-tauri-drag-region @click.stop></header>
-    <div class="modal-wrapper" @click.stop>
+    <div class="modal-wrapper" ref="modal">
       <div v-if="props.header" class="header">
         <h3>{{ props.header }}</h3>
         <div class="icons">
@@ -35,6 +35,7 @@ const props = defineProps({
 
 const shown = ref(false)
 const actuallyShown = ref(false)
+const modal = ref()
 
 function show() {
   shown.value = true
@@ -49,6 +50,12 @@ function hide() {
   setTimeout(() => {
     shown.value = false
   }, 200)
+}
+
+function hideLocally(event: MouseEvent) {
+  if (modal.value && !modal.value.contains(event.target as Node)) {
+    hide()
+  }
 }
 
 function status() {
@@ -116,7 +123,7 @@ defineExpose({
     .content {
       @extend %text1;
       color: #ffffffaa;
-      
+
       .big-image {
         width: 100%;
         border-radius: 8px;
