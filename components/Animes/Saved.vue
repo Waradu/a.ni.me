@@ -85,8 +85,8 @@ const filteredAnimes = computed(() => {
 
         return aItem.localeCompare(bItem);
       } else {
-        aItem = a[sortBy as keyof typeof a]
-        bItem = b[sortBy as keyof typeof b]
+        aItem = a.data[sortBy as keyof typeof a.data]
+        bItem = b.data[sortBy as keyof typeof b.data]
       }
 
       if (!aItem || !bItem) return 0;
