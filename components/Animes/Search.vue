@@ -66,6 +66,7 @@ const filteredAnimes = computed(() => {
 
 const add = async (id: number) => {
   await $database.add(id)
+  titlebarStore.setSearch("");
   $emitter.emit("stopSearch")
 }
 
