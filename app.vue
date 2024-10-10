@@ -75,6 +75,10 @@ h3 {
 a {
   color: inherit;
   text-decoration: unset;
+
+  &.underline {
+    text-decoration: underline;
+  }
 }
 
 .page-enter-active,
