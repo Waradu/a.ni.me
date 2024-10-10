@@ -96,11 +96,6 @@ const searchMAL = async () => {
     sfw: true,
   })
 
-  const resMovies = await animeClient.getAnimeSearch({
-    q: titlebarStore.getSearch(),
-    sfw: true,
-  })
-
   titlebarStore.setSearch("")
 
   animes.value = res.data.map(a => {
