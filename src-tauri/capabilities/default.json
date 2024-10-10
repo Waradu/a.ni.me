@@ -29,6 +29,8 @@
     "core:webview:default",
     "core:window:allow-set-ignore-cursor-events",
     "window-state:default",
-    "prevent-default:default"
+    "prevent-default:default",
+    "shell:default",
+    "shell:allow-open"
   ]
 }

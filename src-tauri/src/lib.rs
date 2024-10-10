@@ -39,6 +39,8 @@ pub fn run() {
 
     builder = builder.plugin(tauri_plugin_window_state::Builder::default().build());
 
+    builder = builder.plugin(tauri_plugin_shell::init());
+
     builder = builder.plugin(
         tauri_plugin_sql::Builder::default()
             .add_migrations("sqlite:a.ni.me.db", migrations)
