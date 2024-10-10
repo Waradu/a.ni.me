@@ -94,7 +94,11 @@ const searchMAL = async () => {
   const res = await animeClient.getAnimeSearch({
     q: titlebarStore.getSearch(),
     sfw: true,
-    type: "TV"
+  })
+
+  const resMovies = await animeClient.getAnimeSearch({
+    q: titlebarStore.getSearch(),
+    sfw: true,
   })
 
   titlebarStore.setSearch("")
@@ -109,6 +113,8 @@ const searchMAL = async () => {
       watched: false,
       data: a
     }
+  }).filter(a => {
+    return a.data.type == "TV" || a.data.type == "Movie"
   })
 }
 </script>

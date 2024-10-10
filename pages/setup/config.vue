@@ -12,11 +12,11 @@
       </div>
       <div class="setting">
         <label for="tv" class="container">
-          <input type="checkbox" name="tv" id="tv" v-model="setupStore.tvOnly">
+          <input type="checkbox" name="tv" id="tv" v-model="setupStore.tvAndMovieOnly">
           <span class="checkmark"></span>
         </label>
-        <label for="tv">Show only anime shows (no movies or specials)</label>
-        <Info :text="tvInfoText"></Info>
+        <label for="tv">Only show anime shows and movies</label>
+        <Info :text="tvAndMovieInfoText"></Info>
         <div class="recommended">recommended</div>
       </div>
     </div>
@@ -49,7 +49,7 @@ if (setupStore.finished) {
 }
 
 const nsfwInfoText = "Turning this on means you're okay with spicy content. If you'd rather keep things wholesome, just leave it off."
-const tvInfoText = "Turning this on will show only the main anime series with episodes, skipping movies and extras. Keeps your list neat and easy to track."
+const tvAndMovieInfoText = "Turning this on will show only the main anime series with episodes, skipping music and extras. Keeps your list neat and easy to track."
 </script>
 
 <style lang="scss">

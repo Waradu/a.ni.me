@@ -2,7 +2,7 @@ export const useSetupStore = defineStore("setupStore", {
   state: () => ({
     inSetup: false,
     showNSFW: false,
-    tvOnly: true,
+    tvAndMovieOnly: true,
     selectedAnimes: [],
     finished: false
   }),

@@ -3,7 +3,7 @@ import type { SettingsStore } from "~/types/types";
 export const useSettingsStore = defineStore("settingsStore", {
   state: (): SettingsStore => ({
     showNSFW: false,
-    tvOnly: true,
+    tvAndMovieOnly: true,
     sortBy: "year",
     order: "asc",
     filters: {
