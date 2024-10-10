@@ -1,11 +1,21 @@
+export type ItemType = string | number | boolean | null;
+
 export interface Item {
   name: string;
-  value: string;
+  value: ItemType;
+}
+
+export type FilterType = "e" | "eq" | "gt" | "st";
+export type FilterValue<T> = T | null;
+
+export interface Filter<T> {
+  value: FilterValue<T>;
+  type: FilterType;
 }
 
 export interface Filters {
-  watched: boolean | null;
-  stars: number | null;
+  watched: FilterValue<boolean>;
+  stars: Filter<number>;
 }
 
 export type SortBy =
@@ -16,7 +26,7 @@ export type SortBy =
   | "episodes"
   | "stars";
 
-export type Order = "asc" | "desc"
+export type Order = "asc" | "desc";
 
 export interface SettingsStore {
   showNSFW: boolean;

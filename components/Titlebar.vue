@@ -50,6 +50,23 @@
             <Dropdown :items="orderOptions" v-model="orderSelected" />
           </div>
         </div>
+        <hr>
+        <div class="filtering rows">
+          <div class="item">
+            <span>Stars</span>
+            <div class="dropdowns">
+              <Dropdown :items="filterOptions" v-model="filterStarsTypeSelected"
+                v-if="filterStarsSelected.value != null" />
+              <Dropdown :items="filterStarsOptions" v-model="filterStarsSelected" />
+            </div>
+          </div>
+          <div class="item">
+            <span>Watched</span>
+            <div class="dropdowns">
+              <Dropdown :items="filterWatchedOptions" v-model="filterWatchedSelected" />
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   </header>
@@ -66,7 +83,7 @@ import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
-import type { Item, Order, SortBy } from "~/types/types";
+import type { Filter, FilterType, FilterValue, Item, ItemType, Order, SortBy } from "~/types/types";
 
 const settingsStore = useSettingsStore();
 
@@ -90,7 +107,34 @@ const orderOptions: Item[] = [
 ]
 
 const { selected: sortBySelected } = useDropdown(sortByOptions, settingsStore.sortBy, (n) => { settingsStore.sortBy = n as SortBy; });
-const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.sortBy, (n) => { settingsStore.order = n as Order; });
+const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.order, (n) => { settingsStore.order = n as Order; });
+
+const filterOptions: Item[] = [
+  { name: "Equal", value: "e" },
+  { name: "Not Equal", value: "eq" },
+  { name: "Greater then", value: "gt" },
+  { name: "Smaller then", value: "st" },
+]
+
+const filterStarsOptions: Item[] = [
+  { name: "All", value: null },
+  { name: "1", value: 1 },
+  { name: "2", value: 2 },
+  { name: "3", value: 3 },
+  { name: "4", value: 4 },
+  { name: "5", value: 5 },
+]
+
+const filterWatchedOptions: Item[] = [
+  { name: "All", value: null },
+  { name: "Watched", value: true },
+  { name: "Not Watched", value: false },
+]
+
+const { selected: filterStarsTypeSelected } = useDropdown(filterOptions, settingsStore.filters.stars.type, (n) => { settingsStore.filters.stars.type = n as FilterType; });
+const { selected: filterStarsSelected } = useDropdown(filterStarsOptions, settingsStore.filters.stars.value, (n) => { settingsStore.filters.stars.value = n as FilterValue<number>; });
+
+const { selected: filterWatchedSelected } = useDropdown(filterWatchedOptions, settingsStore.filters.watched, (n) => { settingsStore.filters.watched = n as FilterValue<boolean>; });
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 
@@ -287,17 +331,33 @@ header.titlebar {
   }
 
   .sortFilterModal {
-    .sorting {
+    .rows {
       display: flex;
       flex-direction: column;
       margin-top: 20px;
       gap: 10px;
+      min-width: 500px;
 
       .item {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 40px;
+
+        .dropdowns {
+          display: flex;
+          gap: 10px;
+        }
       }
+    }
+
+    hr {
+      margin: 20px;
+      margin-inline: 0;
+      background-color: #ffffff10;
+      border: none;
+      height: 2px;
+      border-radius: 12px;
     }
   }
 }

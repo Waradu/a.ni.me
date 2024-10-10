@@ -8,7 +8,10 @@ export const useSettingsStore = defineStore("settingsStore", {
     order: "asc",
     filters: {
       watched: null,
-      stars: null,
+      stars: {
+        value: null,
+        type: "e",
+      },
     },
   }),
 

@@ -1,4 +1,6 @@
-export function useDropdown<T extends string | number>(
+import type { ItemType } from "~/types/types";
+
+export function useDropdown<T extends ItemType>(
   options: { name: string; value: T }[],
   storeValue: T,
   setStoreValue: (value: T) => void
