@@ -18,7 +18,21 @@ const { $emitter } = useNuxtApp();
 
 const searching = ref(false)
 
-$emitter.on('search', async () => {
+const keyboard = useKeyboard()
+
+keyboard.up("Escape", async () => {
+  searching.value = false;
+  titlebarStore.setTitle("Animes")
+})
+
+onMounted(() => {
+  $emitter.off('search');
+  $emitter.off('stopSearch');
+
+  $emitter.on('search', search)
+})
+
+const search = () => {
   if (titlebarStore.getSearch().length < 1) {
     titlebarStore.setTitle("Animes")
     searching.value = false;
@@ -27,19 +41,7 @@ $emitter.on('search', async () => {
 
   searching.value = true
   titlebarStore.setTitle("Searching")
-})
-
-$emitter.on('stopSearch', async () => {
-  searching.value = false
-  titlebarStore.setTitle("Animes")
-})
-
-const keyboard = useKeyboard()
-
-keyboard.up("Escape", async () => {
-  searching.value = false;
-  titlebarStore.setTitle("Animes")
-})
+}
 
 onBeforeUnmount(() => {
   keyboard.stop()

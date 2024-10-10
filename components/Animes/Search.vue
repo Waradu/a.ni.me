@@ -27,7 +27,8 @@
     </div>
   </div>
   <Modal header="You are being rate-limited" ref="errorModal">
-    <p>Please slow down and try again later.<br>If you think this is a mistake, please open an issue on <a class="underline" @click="open('https://github.com/Waradu/a.ni.me/issues/new')" href="#">github</a>.</p>
+    <p>Please slow down and try again later.<br>If you think this is a mistake, please open an issue on <a
+        class="underline" @click="open('https://github.com/Waradu/a.ni.me/issues/new')" href="#">github</a>.</p>
   </Modal>
 </template>
 
@@ -41,6 +42,8 @@ import { open } from "@tauri-apps/plugin-shell";
 const { $database, $emitter } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
+
+const router = useRouter()
 
 const animes = ref<CombinedAnime[]>([]);
 
@@ -73,7 +76,9 @@ const errorModal = ref<InstanceType<typeof Modal> | null>(null);
 const add = async (id: number) => {
   await $database.add(id)
   titlebarStore.setSearch("");
-  $emitter.emit("stopSearch")
+  titlebarStore.setTitle("Animes")
+  await router.replace({ path: '/redirect' })
+  await router.replace({ path: '/' })
 }
 
 const animeClient = new AnimeClient();
