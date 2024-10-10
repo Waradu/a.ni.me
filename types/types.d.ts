@@ -5,7 +5,7 @@ export interface Item {
   value: ItemType;
 }
 
-export type FilterType = "e" | "eq" | "gt" | "st";
+export type FilterType = "e" | "ne" | "gt" | "st";
 export type FilterValue<T> = T | null;
 
 export interface Filter<T> {
