@@ -87,18 +87,17 @@ onMounted(async () => {
 })
 
 const searchMAL = async () => {
-  const search = titlebarStore.getSearch()
-  titlebarStore.setSearch("")
-
-  if (search == "") {
+  if (titlebarStore.getSearch() == "") {
     return;
   }
 
   const res = await animeClient.getAnimeSearch({
-    q: search,
+    q: titlebarStore.getSearch(),
     sfw: true,
     type: "TV"
   })
+
+  titlebarStore.setSearch("")
 
   animes.value = res.data.map(a => {
     return {
