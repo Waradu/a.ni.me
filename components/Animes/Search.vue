@@ -48,7 +48,6 @@ const savedAnimeIds = computed(() => {
 });
 
 const loading = ref(true);
-var lastSearch = "";
 
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
@@ -73,6 +72,12 @@ const add = async (id: number) => {
 const animeClient = new AnimeClient();
 
 onMounted(async () => {
+  $emitter.off('search');
+
+  $emitter.on('search', async () => {
+    searchMAL()
+  });
+
   try {
     await searchMAL()
     savedAnimes.value = await $database.animes();
@@ -82,13 +87,18 @@ onMounted(async () => {
 })
 
 const searchMAL = async () => {
+  const search = titlebarStore.getSearch()
+  titlebarStore.setSearch("")
+
+  if (search == "") {
+    return;
+  }
+
   const res = await animeClient.getAnimeSearch({
-    q: titlebarStore.getSearch(),
+    q: search,
     sfw: true,
     type: "TV"
   })
-
-  titlebarStore.setSearch("");
 
   animes.value = res.data.map(a => {
     return {
@@ -102,14 +112,4 @@ const searchMAL = async () => {
     }
   })
 }
-
-$emitter.on('search', async () => {
-  if (titlebarStore.getSearch() == "" || lastSearch == titlebarStore.getSearch()) {
-    return;
-  }
-
-  searchMAL()
-
-  lastSearch = titlebarStore.getSearch()
-});
 </script>
