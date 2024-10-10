@@ -26,12 +26,17 @@
       <p class="info"></p>
     </div>
   </div>
+  <Modal header="You are being rate-limited" ref="errorModal">
+    <p>Please slow down and try again later.<br>If you think this is a mistake, please open an issue on <a class="underline" @click="open('https://github.com/Waradu/a.ni.me/issues/new')" href="#">github</a>.</p>
+  </Modal>
 </template>
 
 <script lang="ts" setup>
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 import { AnimeClient } from '@tutkli/jikan-ts';
 import type { CombinedAnime } from "~/types/db";
+import type { Modal } from "#build/components";
+import { open } from "@tauri-apps/plugin-shell";
 
 const { $database, $emitter } = useNuxtApp();
 
@@ -63,6 +68,8 @@ const filteredAnimes = computed(() => {
   })
 })
 
+const errorModal = ref<InstanceType<typeof Modal> | null>(null);
+
 const add = async (id: number) => {
   await $database.add(id)
   titlebarStore.setSearch("");
@@ -91,25 +98,34 @@ const searchMAL = async () => {
     return;
   }
 
-  const res = await animeClient.getAnimeSearch({
-    q: titlebarStore.getSearch(),
-    sfw: true,
-  })
+  try {
+    const res = await animeClient.getAnimeSearch({
+      q: titlebarStore.getSearch(),
+      sfw: true,
+    })
 
-  titlebarStore.setSearch("")
+    titlebarStore.setSearch("")
 
-  animes.value = res.data.map(a => {
-    return {
-      id: 0,
-      created_at: "",
-      stars: 0,
-      rewatch_count: 0,
-      recommended_by: "",
-      watched: false,
-      data: a
+    animes.value = res.data.map(a => {
+      return {
+        id: 0,
+        created_at: "",
+        stars: 0,
+        rewatch_count: 0,
+        recommended_by: "",
+        watched: false,
+        data: a
+      }
+    }).filter(a => {
+      return a.data.type == "TV" || a.data.type == "Movie"
+    })
+  } catch (error: any) {
+    if (error.response && error.response.status === 429) {
+      if (!errorModal.value) return;
+      errorModal.value.show()
+    } else {
+      console.error('An error occurred:', error.message);
     }
-  }).filter(a => {
-    return a.data.type == "TV" || a.data.type == "Movie"
-  })
+  }
 }
 </script>
