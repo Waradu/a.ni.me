@@ -24,7 +24,8 @@ export type SortBy =
   | "score"
   | "favorites"
   | "episodes"
-  | "stars";
+  | "stars"
+  | "date_added";
 
 export type Order = "asc" | "desc";
 

@@ -68,6 +68,10 @@ const filteredAnimes = computed(() => {
         return 0
       };
 
+      if (sortBy == "date_added") {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      };
+
       var aItem;
       var bItem;
 

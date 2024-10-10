@@ -99,6 +99,7 @@ const sortByOptions: Item[] = [
   { name: "Favorites", value: "favorites" },
   { name: "Episodes", value: "episodes" },
   { name: "Stars", value: "stars" },
+  { name: "Date Added", value: "date_added" },
 ];
 
 const orderOptions: Item[] = [
