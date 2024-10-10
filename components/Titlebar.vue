@@ -110,8 +110,8 @@ const { selected: sortBySelected } = useDropdown(sortByOptions, settingsStore.so
 const { selected: orderSelected } = useDropdown(orderOptions, settingsStore.order, (n) => { settingsStore.order = n as Order; });
 
 const filterOptions: Item[] = [
-  { name: "Equal", value: "e" },
-  { name: "Not Equal", value: "eq" },
+  { name: "Equal to", value: "e" },
+  { name: "Not Equal to", value: "ne" },
   { name: "Greater then", value: "gt" },
   { name: "Smaller then", value: "st" },
 ]

@@ -101,15 +101,45 @@ const filteredAnimes = computed(() => {
 
       return 0
     }
-  ).map(a => {
-    return a.data;
-  });
+  );
 
   if (settingsStore.order == "desc") {
     res = res.reverse();
   }
 
-  return res;
+  if (settingsStore.filters.watched != null) {
+    console.log(settingsStore.filters.watched);
+    res = res.filter(a => a.watched == settingsStore.filters.watched)
+  }
+
+  if (settingsStore.filters.stars.value != null) {
+    const val = settingsStore.filters.stars.value;
+    const type = settingsStore.filters.stars.type;
+
+    res = res.filter(a => {
+      if (type == "e") {
+        return a.stars == val;
+      }
+
+      if (type == "ne") {
+        return a.stars != val;
+      }
+
+      if (type == "gt") {
+        return a.stars > val;
+      }
+
+      if (type == "st") {
+        return a.stars < val;
+      }
+
+      return true;
+    })
+  }
+
+  return res.map(a => {
+    return a.data;
+  });
 })
 
 const redirect = (id: number) => {
