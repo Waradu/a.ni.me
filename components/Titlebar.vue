@@ -1,6 +1,6 @@
 <template>
   <header class="titlebar" :class="{ inSetup: setupStore.inSetup }" data-tauri-drag-region>
-    <div class="data" data-tauri-drag-region>
+    <div class="data disableOnModal" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
         <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="mounted && titlebarStore.getBackLink() != ''">
           <ArrowBackIcon class="icon" />
@@ -13,16 +13,16 @@
         {{ titlebarStore.getTitle() }}
       </h3>
     </div>
-    <div class="input" data-tauri-drag-region>
+    <div class="input disableOnModal" data-tauri-drag-region>
       <input type="text" placeholder="Search" ref="input" :value="mounted ? titlebarStore.search : ''" @input="search"
         @keydown.enter="add" v-if="mounted">
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
-        <div class="wrapper" @click="openMenu">
+        <div class="wrapper disableOnModal" @click="openMenu">
           <FilterIcon class="icon" />
         </div>
-        <div class="wrapper" @click="openSettings">
+        <div class="wrapper disableOnModal" @click="openSettings">
           <SettingsIcon class="icon" />
         </div>
         <div class="space" data-tauri-drag-region></div>
@@ -358,6 +358,19 @@ header.titlebar {
       border: none;
       height: 2px;
       border-radius: 12px;
+    }
+  }
+
+  .disableOnModal {
+    transition: opacity .2s ease-in-out;
+  }
+}
+
+html:has(.modal.shown) {
+  header.titlebar {
+    .disableOnModal {
+      pointer-events: none;
+      opacity: .5;
     }
   }
 }
