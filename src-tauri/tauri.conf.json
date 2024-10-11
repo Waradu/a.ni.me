@@ -40,13 +40,23 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true
   },
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "plugins": {
     "sql": {
       "preload": [
         "sqlite:a.ni.me.db"
+      ]
+    },
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
+      "endpoints": [
+        "https://a.ni.me-update-server.waradu.dev/v1/{{target}}/{{arch}}/{{current_version}}",
+        "https://anime-update-server.wrdu.workers.dev/v1/{{target}}/{{arch}}/{{current_version}}",
+        "https://a.ni.me-update-server.waradu.dev/{{target}}/{{arch}}/{{current_version}}",
+        "https://anime-update-server.wrdu.workers.dev/{{target}}/{{arch}}/{{current_version}}"
       ]
     }
   }

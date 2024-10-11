@@ -28,7 +28,8 @@ pub fn run() {
         kind: MigrationKind::Up,
     }];
 
-    let mut builder = tauri::Builder::default();
+    let mut builder =
+        tauri::Builder::default().plugin(tauri_plugin_updater::Builder::new().build());
 
     builder = builder.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
         let _ = app
@@ -42,7 +43,7 @@ pub fn run() {
     builder = builder.plugin(tauri_plugin_shell::init());
 
     builder = builder.plugin(tauri_plugin_fs::init());
-    
+
     builder = builder.plugin(tauri_plugin_dialog::init());
 
     builder = builder.plugin(
