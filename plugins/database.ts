@@ -80,7 +80,14 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         console.log(e);
       }
     },
-    async addWithData(anime: { id: number | string, created_at: string, stars: number, rewatch_count: number, recommended_by: string, watched: boolean }) {
+    async addWithData(anime: {
+      id: number | string;
+      created_at: string;
+      stars: number;
+      rewatch_count: number;
+      recommended_by: string;
+      watched: boolean;
+    }) {
       try {
         const query = `
           INSERT INTO animes (id, created_at, stars, rewatch_count, recommended_by, watched)
@@ -106,6 +113,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     },
     async deleteAll() {
       await db.execute(`delete from animes`);
+    },
+    async hidden(id: number, hidden: boolean) {
+      try {
+        await db.execute(`update animes set is_hidden = ${hidden} where id = ${id}`);
+      } catch (e) {
+        console.log(e);
+      }
     },
   };
 

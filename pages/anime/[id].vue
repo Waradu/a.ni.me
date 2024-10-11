@@ -13,8 +13,10 @@
             {{ anime.data.status }}
           </div>
           <div class="icons">
-            <div class="wrapper">
-              <OptionsIcon class="icon" />
+            <div class="wrapper eye" title="hide / show anime from list" :class="{ hidden: anime.is_hidden }"
+              @click="hidden">
+              <EyeIcon class="icon" />
+              <EyeOffIcon class="icon off" />
             </div>
             <div class="wrapper red" @click="del(anime.id)">
               <DeleteIcon class="icon" />
@@ -82,9 +84,9 @@
 <script lang="ts" setup>
 import StarIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_regular.svg";
 import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_filled.svg";
-import ShareIcon from "~/node_modules/@fluentui/svg-icons/icons/share_28_regular.svg";
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
-import OptionsIcon from "~/node_modules/@fluentui/svg-icons/icons/options_32_regular.svg";
+import EyeIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_32_regular.svg";
+import EyeOffIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_off_32_regular.svg";
 import type { Modal } from '#build/components';
 import VanillaTilt from 'vanilla-tilt'
 import type { CombinedAnime } from "~/types/db";
@@ -108,6 +110,13 @@ const image = computed(() => {
 
   return anime.value.data.images.jpg.large_image_url || anime.value.data.images.jpg.image_url;
 })
+
+const hidden = () => {
+  if (!anime.value) return;
+
+  anime.value.is_hidden = !anime.value.is_hidden
+  $database.hidden(anime.value.id, anime.value.is_hidden)
+}
 
 const coverTilt = ref(null)
 
@@ -346,6 +355,39 @@ main.anime {
             &.disabled {
               opacity: .5;
               pointer-events: none;
+            }
+
+            &.eye {
+              position: relative;
+
+              .icon {
+                transition: .3s ease-in-out;
+                position: absolute;
+
+                scale: 1;
+                opacity: 0.8;
+                filter: blur(0);
+
+                &.off {
+                  scale: 0;
+                  opacity: 0;
+                  filter: blur(10px);
+                }
+              }
+
+              &.hidden {
+                .icon {
+                  scale: 0;
+                  opacity: 0;
+                  filter: blur(10px);
+
+                  &.off {
+                    scale: 1;
+                    opacity: 0.8;
+                    filter: blur(0);
+                  }
+                }
+              }
             }
           }
         }
