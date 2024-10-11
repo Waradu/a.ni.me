@@ -23,7 +23,6 @@ export type SortBy =
   | "name"
   | "score"
   | "favorites"
-  | "episodes"
   | "stars"
   | "date_added";
 

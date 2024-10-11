@@ -62,10 +62,6 @@
         <div class="data">{{ anime.data.favorites ? anime.data.favorites : "N/A" }}</div>
       </div>
       <div class="detail">
-        <div class="text">Episodes</div>
-        <div class="data">{{ anime.data.episodes ? anime.data.episodes : "N/A" }}</div>
-      </div>
-      <div class="detail">
         <div class="text">Rating</div>
         <div class="data">{{ anime.data.rating ? anime.data.rating : "N/A" }}</div>
       </div>

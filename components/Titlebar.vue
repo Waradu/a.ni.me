@@ -142,7 +142,6 @@ const sortByOptions: Item[] = [
   { name: "Name", value: "name" },
   { name: "Score", value: "score" },
   { name: "Favorites", value: "favorites" },
-  { name: "Episodes", value: "episodes" },
   { name: "Stars", value: "stars" },
   { name: "Date Added", value: "date_added" },
 ];

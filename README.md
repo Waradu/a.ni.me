@@ -33,7 +33,6 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Settings
   - [X] Get-Started & welcome screen
   - [ ] Tagging
-  - [ ] Episode Tracking
   - [X] Filtering & sorting
   - [X] Export & import
   - [ ] Hide animes
