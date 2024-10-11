@@ -40,10 +40,6 @@ const settingsStore = useSettingsStore();
 const animes = ref<CombinedAnime[]>([]);
 const loading = ref(true)
 
-$emitter.on('dataUpdated', async () => {
-  animes.value = await $database.animes();
-});
-
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
 
