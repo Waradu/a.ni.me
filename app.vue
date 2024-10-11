@@ -6,16 +6,17 @@
 </template>
 
 <script lang="ts" setup>
-import tippy from 'tippy.js'
+import tippy, { roundArrow } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/perspective.css';
+import 'tippy.js/dist/svg-arrow.css';
 
-onMounted(() => {
-  tippy(".infoTooltip", {
-    animation: "perspective",
-    content: (reference) => reference.getAttribute('title') ?? "",
-    interactive: true
-  })
+tippy.setDefaultProps({
+  animation: "perspective",
+  content: (reference) => reference.getAttribute('title') ?? "",
+  interactive: true,
+  maxWidth: 250,
+  arrow: roundArrow
 })
 </script>
 

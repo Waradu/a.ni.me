@@ -8,7 +8,7 @@
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title infoTooltip" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
+      <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
       <p class="info capitalize" v-if="anime.year > 0">{{ anime.season }} {{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -33,7 +33,7 @@ import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.sv
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_filled.svg";
 import type { CombinedAnime } from "~/types/db";
 
-const { $database, $emitter } = useNuxtApp();
+const { $database } = useNuxtApp();
 const titlebarStore = useTitlebarStore();
 const settingsStore = useSettingsStore();
 
