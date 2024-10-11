@@ -4,6 +4,11 @@
   </main>
 </template>
 
+<script lang="ts" setup>
+const titlebarStore = useTitlebarStore();
+titlebarStore.setTitle("Setup")
+</script>
+
 <style lang="scss">
 main.setup {
   overflow: hidden;
