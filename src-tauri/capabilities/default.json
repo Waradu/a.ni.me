@@ -31,6 +31,9 @@
     "window-state:default",
     "prevent-default:default",
     "shell:default",
-    "shell:allow-open"
+    "shell:allow-open",
+    "dialog:default",
+    "fs:default",
+    "fs:write-all"
   ]
 }
