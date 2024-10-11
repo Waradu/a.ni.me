@@ -366,7 +366,7 @@ main {
 }
 
 header.titlebar {
-  display: grid;
+  display: flex;
   height: 60px;
   padding: 12px;
   padding-right: 13px;
@@ -379,7 +379,6 @@ header.titlebar {
   left: 0;
   max-width: 100vw;
   width: 100%;
-  grid-template-columns: 30% calc(70% - 340px) 300px;
   z-index: 1000;
 
   .data {
