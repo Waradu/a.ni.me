@@ -32,24 +32,24 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [x] More info like characters/genres
   - [ ] Settings
   - [X] Get-Started & welcome screen
-  - [ ] Tagging
   - [X] Filtering & sorting
   - [X] Export & import
   - [X] Hide animes
-  - [ ] Lightmode
-  - [ ] Some QOL features if needed
-  - [ ] Auto updated
-  - [ ] Notification
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
+  - [ ] Auto updater
   - [ ] Release beta builds (v0.X.Y)
   - [ ] Release v1
 
 - [ ] Polishing v1 (v1.1)
+  - [ ] Tagging
   - [ ] MacOS support (maybe)
+  - [ ] Notification (maybe)
+  - [ ] Some QOL features if needed (maybe)
   - [ ] More content (website)
   - [ ] News/blog (website)
+  - [ ] Lightmode
   - [ ] Release v1.1
 
 - [ ] Complete the app (v2)
