@@ -1,10 +1,9 @@
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
+use tauri_plugin_prevent_default::Flags;
 
 #[cfg(debug_assertions)]
 fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
-    use tauri_plugin_prevent_default::Flags;
-
     tauri_plugin_prevent_default::Builder::new()
         .with_flags(Flags::empty())
         .build()
