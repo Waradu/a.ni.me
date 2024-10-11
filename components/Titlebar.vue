@@ -271,6 +271,10 @@ async function importFile() {
     ],
   });
 
+  if (exportImportSettings.value.overrideData) {
+    await $database.deleteAll();
+  }
+
   if (selectedPath) {
     const csvContent = await readTextFile(selectedPath);
     const lines = csvContent.split("\n");
