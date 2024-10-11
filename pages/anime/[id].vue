@@ -13,9 +13,6 @@
             {{ anime.data.status }}
           </div>
           <div class="icons">
-            <div class="wrapper disabled">
-              <ShareIcon class="icon" />
-            </div>
             <div class="wrapper">
               <OptionsIcon class="icon" />
             </div>
@@ -312,7 +309,7 @@ main.anime {
         .icons {
           display: flex;
           align-items: center;
-          gap: 2px;
+          gap: 5px;
           margin-left: auto;
 
           .wrapper {

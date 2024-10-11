@@ -35,7 +35,6 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Tagging
   - [ ] Episode Tracking
   - [X] Filtering & sorting
-  - [ ] Share option
   - [X] Export & import
   - [ ] Hide animes
   - [ ] Lightmode
