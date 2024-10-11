@@ -1,5 +1,5 @@
 <template>
-  <div class="infoTooltip" id="text" ref="infoIconRef" :title="text">
+  <div ref="infoIconRef" :title="text" v-tippy>
     <InfoIcon />
   </div>
 </template>
