@@ -12,6 +12,7 @@ export const useSettingsStore = defineStore("settingsStore", {
         value: null,
         type: "e",
       },
+      showHidden: false
     },
   }),
 

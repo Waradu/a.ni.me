@@ -107,6 +107,10 @@ const filteredAnimes = computed(() => {
     res = res.reverse();
   }
 
+  if (!settingsStore.filters.showHidden) {
+    res = res.filter(a => !a.is_hidden);
+  }
+
   if (settingsStore.filters.watched != null) {
     console.log(settingsStore.filters.watched);
     res = res.filter(a => a.watched == settingsStore.filters.watched)

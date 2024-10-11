@@ -29,16 +29,16 @@
           <SettingsIcon class="icon" />
         </div>
         <div class="space" data-tauri-drag-region></div>
-        <div class="wrapper" @click="async () => getCurrentWindow().minimize()">
+        <div class="wrapper control" @click="async () => getCurrentWindow().minimize()">
           <MinimizeIcon class="icon" />
         </div>
-        <div class="wrapper" v-if="isMaximized" @click="async () => getCurrentWindow().toggleMaximize()">
+        <div class="wrapper control" v-if="isMaximized" @click="async () => getCurrentWindow().toggleMaximize()">
           <RestoreIcon class="icon" />
         </div>
-        <div class="wrapper" v-else @click="async () => getCurrentWindow().toggleMaximize()">
+        <div class="wrapper control" v-else @click="async () => getCurrentWindow().toggleMaximize()">
           <MaximizeIcon class="icon" />
         </div>
-        <div class="wrapper red" @click="() => getCurrentWindow().close()">
+        <div class="wrapper control red" @click="() => getCurrentWindow().close()">
           <CloseIcon class="icon" />
         </div>
       </div>
@@ -68,6 +68,13 @@
             <div class="dropdowns">
               <Dropdown :items="filterWatchedOptions" v-model="filterWatchedSelected" />
             </div>
+          </div>
+          <div class="item">
+            <label for="showHidden" class="text">Show hidden</label>
+            <label for="showHidden" class="container">
+              <input type="checkbox" name="showHidden" id="showHidden" v-model="settingsStore.filters.showHidden">
+              <span class="checkmark"></span>
+            </label>
           </div>
         </div>
       </Modal>
@@ -416,6 +423,10 @@ header.titlebar {
     align-items: center;
     justify-content: end;
     width: 100%;
+
+    .control {
+      z-index: 101;
+    }
   }
 
   .icons {
@@ -483,18 +494,6 @@ header.titlebar {
       margin-top: 20px;
       gap: 10px;
       min-width: 500px;
-
-      .item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 40px;
-
-        .dropdowns {
-          display: flex;
-          gap: 10px;
-        }
-      }
     }
   }
 
@@ -515,93 +514,6 @@ header.titlebar {
         justify-content: space-between;
         align-items: center;
         gap: 40px;
-
-        .text {
-          width: 100%;
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
-
-        .container {
-          display: block;
-          position: relative;
-          cursor: pointer;
-          font-size: 22px;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          height: 25px;
-          width: 25px;
-          margin-top: 1px;
-
-          input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
-          }
-
-          .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 25px;
-            width: 25px;
-            background-color: #ffffff20;
-            border-radius: 4px;
-            transition: .2s ease-in-out;
-
-            &:after {
-              content: "";
-              position: absolute;
-              opacity: 0;
-              transition: .2s ease-in-out;
-              left: 9px;
-              top: 5px;
-              width: 4px;
-              height: 9px;
-              border: solid white;
-              border-width: 0 3px 3px 0;
-              -webkit-transform: rotate(45deg);
-              -ms-transform: rotate(45deg);
-              transform: rotate(45deg);
-            }
-          }
-
-          &:has(:checked) {
-            .checkmark {
-              background-color: #4a794a80;
-
-              &.red {
-                background-color: #a0484880;
-              }
-
-              &:after {
-                opacity: 1;
-              }
-            }
-          }
-        }
-
-        &:hover {
-          .checkmark {
-            background-color: #ffffff40;
-          }
-
-          &:has(:checked) {
-            .checkmark {
-              background-color: #4a794add;
-
-              &.red {
-                background-color: #a04848dd;
-              }
-            }
-
-          }
-        }
       }
     }
 
@@ -628,6 +540,110 @@ header.titlebar {
     }
   }
 
+  .sortFilterModal,
+  .exportImportModal {
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+
+      .dropdowns {
+        display: flex;
+        gap: 10px;
+      }
+
+      .text {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .container {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        height: 25px;
+        width: 25px;
+        min-height: 25px;
+        min-width: 25px;
+        margin-top: 1px;
+
+        input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+        }
+
+        .checkmark {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 25px;
+          width: 25px;
+          background-color: #ffffff20;
+          border-radius: 4px;
+          transition: .2s ease-in-out;
+
+          &:after {
+            content: "";
+            position: absolute;
+            opacity: 0;
+            transition: .2s ease-in-out;
+            left: 9px;
+            top: 5px;
+            width: 4px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+          }
+        }
+
+        &:has(:checked) {
+          .checkmark {
+            background-color: #4a794a80;
+
+            &.red {
+              background-color: #a0484880;
+            }
+
+            &:after {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      &:hover {
+        .checkmark {
+          background-color: #ffffff40;
+        }
+
+        &:has(:checked) {
+          .checkmark {
+            background-color: #4a794add;
+
+            &.red {
+              background-color: #a04848dd;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
   .disableOnModal {
     transition: opacity .2s ease-in-out;
   }
@@ -638,6 +654,13 @@ html:has(.modal.shown) {
     .disableOnModal {
       pointer-events: none;
       opacity: .5;
+    }
+  }
+
+  header.titlebar:has(.modal.shown) {
+    .disableOnModal {
+      pointer-events: none;
+      opacity: 1;
     }
   }
 }

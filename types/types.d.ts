@@ -16,6 +16,7 @@ export interface Filter<T> {
 export interface Filters {
   watched: FilterValue<boolean>;
   stars: Filter<number>;
+  showHidden: boolean;
 }
 
 export type SortBy =
