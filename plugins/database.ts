@@ -68,7 +68,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return null;
       }
     },
-    async add(id: number) {
+    async add(id: number | string) {
       try {
         const query = `
           INSERT INTO animes (id)
@@ -80,11 +80,32 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         console.log(e);
       }
     },
+    async addWithData(anime: { id: number | string, created_at: string, stars: number, rewatch_count: number, recommended_by: string, watched: boolean }) {
+      try {
+        const query = `
+          INSERT INTO animes (id, created_at, stars, rewatch_count, recommended_by, watched)
+          VALUES 
+          (${anime.id}, '${anime.created_at}', ${anime.stars}, ${anime.rewatch_count}, '${anime.recommended_by}', ${anime.watched})
+          ON CONFLICT (id) DO UPDATE SET
+            created_at = EXCLUDED.created_at,
+            stars = EXCLUDED.stars,
+            rewatch_count = EXCLUDED.rewatch_count,
+            recommended_by = EXCLUDED.recommended_by,
+            watched = EXCLUDED.watched;
+        `;
+        await db.execute(query);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async stars(id: number, stars: number) {
       await db.execute(`update animes set stars = ${stars} where id = ${id}`);
     },
     async delete(id: number) {
       await db.execute(`delete from animes where id = ${id}`);
+    },
+    async deleteAll() {
+      await db.execute(`delete from animes`);
     },
   };
 

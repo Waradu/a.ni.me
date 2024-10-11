@@ -106,7 +106,7 @@
         </div>
         <hr>
         <div class="buttons">
-          <button>Import</button>
+          <button @click="importFile">Import</button>
           <button @click="exportFile">Export</button>
         </div>
       </Modal>
@@ -127,8 +127,8 @@ import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
 import type { FilterType, FilterValue, Item, Order, SortBy } from "~/types/types";
-import { save } from '@tauri-apps/plugin-dialog';
-import { writeTextFile } from '@tauri-apps/plugin-fs';
+import { save, open } from '@tauri-apps/plugin-dialog';
+import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 
 const settingsStore = useSettingsStore();
 
@@ -263,6 +263,52 @@ onMounted(async () => {
   document.documentElement.style.setProperty('--height', height.value + 'px');
 })
 
+async function importFile() {
+  const selectedPath = await open({
+    title: "Import Anime List",
+    filters: [
+      { name: "CSV File", extensions: ["csv"] }
+    ],
+  });
+
+  if (selectedPath) {
+    const csvContent = await readTextFile(selectedPath);
+    const lines = csvContent.split("\n");
+
+    const headers = lines[0].split(",");
+    const dataLines = lines.slice(1);
+
+    if (headers.length === 1 && headers[0] === 'id') {
+      for (const line of dataLines) {
+        const id = line.trim();
+        if (id) {
+          await $database.add(id.trim());
+        }
+      }
+    } else if (headers.length === 6 && headers[0] === 'id') {
+      for (const line of dataLines) {
+        const [id, created_at, stars, rewatch_count, recommended_by, watched] = line.split(",");
+        if (id) {
+          await $database.addWithData({
+            id: id.trim(),
+            created_at: new Date(created_at).toISOString(),
+            stars: parseFloat(stars),
+            rewatch_count: parseInt(rewatch_count),
+            recommended_by: recommended_by.trim(),
+            watched: watched.trim() === 'true'
+          });
+        }
+      }
+    }
+
+    await router.replace({ path: '/redirect' })
+    await router.replace({ path: '/' })
+  }
+
+  if (!exportImportModal.value) return;
+  exportImportModal.value.hide()
+}
+
 async function exportFile() {
   const selectedPath = await save({
     title: "Export Anime List",
@@ -297,6 +343,9 @@ async function exportFile() {
       await writeTextFile(selectedPath, csvContent);
     }
   }
+
+  if (!exportImportModal.value) return;
+  exportImportModal.value.hide()
 }
 </script>
 
