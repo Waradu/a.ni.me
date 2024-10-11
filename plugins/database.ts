@@ -87,6 +87,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       rewatch_count: number;
       recommended_by: string;
       watched: boolean;
+      is_hidden: boolean;
+      tags: string
     }) {
       try {
         const query = `

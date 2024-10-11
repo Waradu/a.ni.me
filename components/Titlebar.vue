@@ -297,7 +297,7 @@ async function importFile() {
       }
     } else if (headers.length === 6 && headers[0] === 'id') {
       for (const line of dataLines) {
-        const [id, created_at, stars, rewatch_count, recommended_by, watched] = line.split(",");
+        const [id, created_at, stars, rewatch_count, recommended_by, watched, is_hidden, tags] = line.split(",");
         if (id) {
           await $database.addWithData({
             id: id.trim(),
@@ -305,7 +305,9 @@ async function importFile() {
             stars: parseFloat(stars),
             rewatch_count: parseInt(rewatch_count),
             recommended_by: recommended_by.trim(),
-            watched: watched.trim() === 'true'
+            watched: watched.trim() === 'true',
+            is_hidden: is_hidden.trim() === "true",
+            tags: tags.trim()
           });
         }
       }
@@ -343,7 +345,7 @@ async function exportFile() {
       await writeTextFile(selectedPath, csvContent);
     }
   } else {
-    const headers = ['id', 'created_at', 'stars', 'rewatch_count', 'recommended_by', 'watched'];
+    const headers = ['id', 'created_at', 'stars', 'rewatch_count', 'recommended_by', 'watched', 'is_hidden', 'tags'];
     const csvContent = [
       headers.join(","),
       ...animes.map(anime => Object.values(anime).join(","))

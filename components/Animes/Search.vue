@@ -119,6 +119,8 @@ const searchMAL = async () => {
         rewatch_count: 0,
         recommended_by: "",
         watched: false,
+        is_hidden: false,
+        tags: "",
         data: a
       }
     }).filter(a => {
