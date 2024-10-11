@@ -19,7 +19,10 @@
     </div>
     <div class="controls" data-tauri-drag-region>
       <div class="icons" data-tauri-drag-region>
-        <div class="wrapper disableOnModal" @click="openMenu">
+        <div class="wrapper disableOnModal" @click="openExportImportMenu">
+          <ArrowSwapIcon class="icon" />
+        </div>
+        <div class="wrapper disableOnModal" @click="openSortingFilterMenu">
           <FilterIcon class="icon" />
         </div>
         <div class="wrapper disableOnModal" @click="openSettings">
@@ -68,6 +71,38 @@
           </div>
         </div>
       </Modal>
+      <Modal header="Export & Import" ref="exportImportModal" class="exportImportModal">
+        <div class="export rows">
+          <h3 class="sectionTitle">Export</h3>
+          <div class="item">
+            <label for="exportData" class="text">Export data too
+              <Info text="Like stars, watched, date added etc..." />
+            </label>
+            <label for="exportData" class="container">
+              <input type="checkbox" name="exportData" id="exportData">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="import rows">
+          <h3 class="sectionTitle">Import</h3>
+          <div class="item">
+            <label for="overrideData" class="text">Override on import
+              <Info text="Replaces your current anime list" />
+            </label>
+            <label for="overrideData" class="container">
+              <input type="checkbox" name="overrideData" id="overrideData">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="buttons">
+          <button>Import</button>
+          <button>Export</button>
+        </div>
+      </Modal>
     </div>
   </header>
 </template>
@@ -77,13 +112,14 @@ import ArrowBackIcon from "@fluentui/svg-icons/icons/arrow_left_32_regular.svg";
 import HomeIcon from "@fluentui/svg-icons/icons/home_32_regular.svg";
 import SettingsIcon from "@fluentui/svg-icons/icons/settings_32_regular.svg";
 import FilterIcon from "@fluentui/svg-icons/icons/filter_32_regular.svg";
+import ArrowSwapIcon from "@fluentui/svg-icons/icons/arrow_swap_28_regular.svg";
 import MaximizeIcon from "~/assets/svg/maximize.svg";
 import MinimizeIcon from "~/assets/svg/minimize.svg";
 import RestoreIcon from "~/assets/svg/restore.svg";
 import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
-import type { Filter, FilterType, FilterValue, Item, ItemType, Order, SortBy } from "~/types/types";
+import type { FilterType, FilterValue, Item, Order, SortBy } from "~/types/types";
 
 const settingsStore = useSettingsStore();
 
@@ -138,11 +174,18 @@ const { selected: filterStarsSelected } = useDropdown(filterStarsOptions, settin
 const { selected: filterWatchedSelected } = useDropdown(filterWatchedOptions, settingsStore.filters.watched, (n) => { settingsStore.filters.watched = n as FilterValue<boolean>; });
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
+const exportImportModal = ref<InstanceType<typeof Modal> | null>(null);
 
-const openMenu = () => {
+const openSortingFilterMenu = () => {
   if (!sortFilterModal.value) return;
 
   sortFilterModal.value.show()
+}
+
+const openExportImportMenu = () => {
+  if (!exportImportModal.value) return;
+
+  exportImportModal.value.show()
 }
 
 const { $emitter } = useNuxtApp();
@@ -219,14 +262,14 @@ header.titlebar {
   padding-right: 13px;
   user-select: none;
   font-size: 20px;
-  gap: 40px;
+  gap: 20px;
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   max-width: 100vw;
   width: 100%;
-  grid-template-columns: 30% calc(40% - 80px) 30%;
+  grid-template-columns: 30% calc(70% - 340px) 300px;
   z-index: 1000;
 
   .data {
@@ -256,7 +299,6 @@ header.titlebar {
       padding-inline: 12px;
       width: 100%;
       max-width: 500px;
-      min-width: 200px;
       outline: none;
       border: 1px solid #ffffff10;
       border-radius: 4px;
@@ -351,14 +393,134 @@ header.titlebar {
         }
       }
     }
+  }
 
-    hr {
-      margin: 20px;
-      margin-inline: 0;
-      background-color: #ffffff10;
-      border: none;
-      height: 2px;
-      border-radius: 12px;
+  .exportImportModal {
+    h3.sectionTitle {
+      color: #ffffffcc;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      gap: 10px;
+      min-width: 400px;
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 40px;
+
+        .text {
+          width: 100%;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+
+        .container {
+          display: block;
+          position: relative;
+          cursor: pointer;
+          font-size: 22px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          height: 25px;
+          width: 25px;
+          margin-top: 1px;
+
+          input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+          }
+
+          .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #ffffff20;
+            border-radius: 4px;
+            transition: .2s ease-in-out;
+
+            &:after {
+              content: "";
+              position: absolute;
+              opacity: 0;
+              transition: .2s ease-in-out;
+              left: 9px;
+              top: 5px;
+              width: 4px;
+              height: 9px;
+              border: solid white;
+              border-width: 0 3px 3px 0;
+              -webkit-transform: rotate(45deg);
+              -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+            }
+          }
+
+          &:has(:checked) {
+            .checkmark {
+              background-color: #4a794a80;
+
+              &.red {
+                background-color: #a0484880;
+              }
+
+              &:after {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          .checkmark {
+            background-color: #ffffff40;
+          }
+
+          &:has(:checked) {
+            .checkmark {
+              background-color: #4a794add;
+
+              &.red {
+                background-color: #a04848dd;
+              }
+            }
+
+          }
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: none;
+        background-color: #ffffff40;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: .2s ease-in-out;
+
+        &:hover {
+          background-color: #ffffff30;
+        }
+      }
     }
   }
 
