@@ -137,6 +137,15 @@ defineExpose({
         text-align: center;
         padding: 10px;
       }
+
+      hr {
+        margin: 20px;
+        margin-inline: 0;
+        background-color: #ffffff10;
+        border: none;
+        height: 2px;
+        border-radius: 12px;
+      }
     }
   }
 
