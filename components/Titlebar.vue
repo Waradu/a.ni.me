@@ -75,11 +75,18 @@
         <div class="export rows">
           <h3 class="sectionTitle">Export</h3>
           <div class="item">
-            <label for="exportData" class="text">Export data too
+            <label for="exportData" class="text">Export all data
               <Info text="Like stars, watched, date added etc..." />
             </label>
             <label for="exportData" class="container">
-              <input type="checkbox" name="exportData" id="exportData">
+              <input type="checkbox" name="exportData" id="exportData" v-model="exportImportSettings.exportData">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="item">
+            <label for="exportHidden" class="text">Export hidden</label>
+            <label for="exportHidden" class="container">
+              <input type="checkbox" name="exportHidden" id="exportHidden" v-model="exportImportSettings.exportHidden">
               <span class="checkmark"></span>
             </label>
           </div>
@@ -89,18 +96,18 @@
           <h3 class="sectionTitle">Import</h3>
           <div class="item">
             <label for="overrideData" class="text">Override on import
-              <Info text="Replaces your current anime list" />
+              <Info text="Replaces your current anime list. NO GOING BACK." />
             </label>
             <label for="overrideData" class="container">
-              <input type="checkbox" name="overrideData" id="overrideData">
-              <span class="checkmark"></span>
+              <input type="checkbox" name="overrideData" id="overrideData" v-model="exportImportSettings.overrideData">
+              <span class="checkmark red"></span>
             </label>
           </div>
         </div>
         <hr>
         <div class="buttons">
           <button>Import</button>
-          <button>Export</button>
+          <button @click="exportFile">Export</button>
         </div>
       </Modal>
     </div>
@@ -120,6 +127,8 @@ import CloseIcon from "~/assets/svg/close.svg";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { Modal } from "#build/components";
 import type { FilterType, FilterValue, Item, Order, SortBy } from "~/types/types";
+import { save } from '@tauri-apps/plugin-dialog';
+import { writeTextFile } from '@tauri-apps/plugin-fs';
 
 const settingsStore = useSettingsStore();
 
@@ -188,7 +197,13 @@ const openExportImportMenu = () => {
   exportImportModal.value.show()
 }
 
-const { $emitter } = useNuxtApp();
+const exportImportSettings = ref({
+  exportData: false,
+  exportHidden: false,
+  overrideData: false
+})
+
+const { $emitter, $database } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
 const setupStore = useSetupStore();
@@ -247,6 +262,42 @@ onMounted(async () => {
 
   document.documentElement.style.setProperty('--height', height.value + 'px');
 })
+
+async function exportFile() {
+  const selectedPath = await save({
+    title: "Export Anime List",
+    defaultPath: `a.ni.me_export_${Date.now().toString()}.csv`,
+    filters: [
+      { name: "CSV File", extensions: ["csv"] }
+    ],
+  });
+
+  const animes = await $database.animesPlain();
+
+
+  if (!exportImportSettings.value.exportData) {
+    const animesId = animes.map(a => a.id);
+    const headers = ['id'];
+    const csvContent = [
+      headers.join(","),
+      ...animesId.map(id => id)
+    ].join("\n");
+
+    if (selectedPath) {
+      await writeTextFile(selectedPath, csvContent);
+    }
+  } else {
+    const headers = ['id', 'created_at', 'stars', 'rewatch_count', 'recommended_by', 'watched'];
+    const csvContent = [
+      headers.join(","),
+      ...animes.map(anime => Object.values(anime).join(","))
+    ].join("\n");
+
+    if (selectedPath) {
+      await writeTextFile(selectedPath, csvContent);
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -516,6 +567,7 @@ header.titlebar {
         border-radius: 4px;
         cursor: pointer;
         transition: .2s ease-in-out;
+        outline: none;
 
         &:hover {
           background-color: #ffffff30;

@@ -37,6 +37,18 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return [];
       }
     },
+    async animesPlain() {
+      try {
+        const animes = await db.select<DbAnime[]>("select * from animes");
+
+        if (!animes) return [];
+
+        return animes;
+      } catch (e) {
+        console.log(e);
+        return [];
+      }
+    },
     async anime(id: number): Promise<CombinedAnime | null> {
       try {
         const animes = await db.select<DbAnime[]>(
