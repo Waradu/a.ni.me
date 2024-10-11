@@ -8,7 +8,7 @@
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
+      <span class="title infoTooltip" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
       <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>

@@ -5,6 +5,20 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/animations/perspective.css';
+
+onMounted(() => {
+  tippy(".infoTooltip", {
+    animation: "perspective",
+    content: (reference) => reference.getAttribute('title') ?? "",
+    interactive: true
+  })
+})
+</script>
+
 <style lang="scss">
 * {
   margin: 0;
