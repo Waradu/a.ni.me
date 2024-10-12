@@ -32,6 +32,7 @@ tippy.setDefaultProps({
   padding: 0;
   box-sizing: border-box;
   letter-spacing: 0.1px;
+  background-color: red;
 }
 
 html,
