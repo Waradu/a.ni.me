@@ -1,5 +1,6 @@
 <template>
   <main class="index">
+    TEST#1
     <div class="grid-container">
       <div class="grid">
         <AnimesSearch v-if="searching" />
