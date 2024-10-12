@@ -13,6 +13,8 @@ import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 
+const { $cache } = useNuxtApp();
+
 try {
   const update = await check();
   if (update) {
@@ -49,6 +51,10 @@ tippy.setDefaultProps({
   interactive: true,
   maxWidth: 250,
   arrow: roundArrow
+})
+
+onMounted(() => {
+  (window as any)._get = $cache.get
 })
 </script>
 
