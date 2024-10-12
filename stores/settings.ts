@@ -4,7 +4,7 @@ export const useSettingsStore = defineStore("settingsStore", {
   state: (): SettingsStore => ({
     showNSFW: false,
     tvAndMovieOnly: true,
-    sortBy: "year",
+    sortBy: "date_added",
     order: "asc",
     filters: {
       watched: null,

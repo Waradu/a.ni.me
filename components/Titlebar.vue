@@ -145,12 +145,12 @@ const openSettings = () => {
 }
 
 const sortByOptions: Item[] = [
-  { name: "Year", value: "year" },
+  { name: "Date Added", value: "date_added" },
+  { name: "Stars", value: "stars" },
   { name: "Name", value: "name" },
   { name: "Score", value: "score" },
   { name: "Favorites", value: "favorites" },
-  { name: "Stars", value: "stars" },
-  { name: "Date Added", value: "date_added" },
+  { name: "Year", value: "year" },
 ];
 
 const orderOptions: Item[] = [
