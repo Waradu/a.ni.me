@@ -1,5 +1,4 @@
 import Database from "@tauri-apps/plugin-sql";
-import { AnimeClient, type Anime } from "@tutkli/jikan-ts";
 import type { CombinedAnime, DbAnime } from "~/types/db";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
@@ -13,8 +12,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   if (import.meta.client) {
     db = await Database.load("sqlite:a.ni.me.db");
   }
-  
-  const animeClient = new AnimeClient();
+
+  const { $cache } = useNuxtApp();
 
   const database = {
     async animes(): Promise<CombinedAnime[]> {
@@ -25,13 +24,18 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         return await Promise.all(
           animes.map(async (anime) => {
-            const data = (await animeClient.getAnimeById(anime.id)).data;
+            const data = await $cache.get(anime.id);
+
+            if (data === null) {
+              return null;
+            }
+
             return {
               ...anime,
               data: data,
             };
           })
-        );
+        ).then((results) => results.filter((anime) => anime !== null));
       } catch (e) {
         console.log(e);
         return [];
@@ -55,13 +59,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           `select * from animes where id = ${id}`
         );
 
-        const response = await animeClient.getAnimeById(id);
+        const anime = await $cache.get(id);
 
-        if (!response.data) return null;
+        if (!anime) return null;
 
         return {
           ...animes[0],
-          data: response.data,
+          data: anime,
         };
       } catch (e) {
         console.log(e);

@@ -36,6 +36,24 @@
     "fs:default",
     "fs:write-all",
     "fs:read-all",
+    "fs:allow-appdata-read-recursive",
+    "fs:allow-appdata-write-recursive",
+    "fs:allow-appdata-meta-recursive",
+    "fs:allow-exists",
+    {
+      "identifier": "fs:allow-exists",
+      "allow": [
+        {
+          "path": "$APPDATA"
+        },
+        {
+          "path": "$APPDATA/*"
+        },
+        {
+          "path": "$APPDATA/**"
+        }
+      ]
+    },
     "updater:default",
     "updater:allow-check",
     "updater:allow-download-and-install",
@@ -43,7 +61,6 @@
     "updater:allow-install",
     "process:default",
     "process:allow-restart",
-    "process:allow-exit",
-    "fs:default"
+    "process:allow-exit"
   ]
 }
