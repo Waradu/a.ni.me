@@ -1,6 +1,6 @@
 [package]
 name = "a_ni_me"
-version = "0.1.1"
+version = "0.1.0"
 description = "Manage your animes in one place"
 authors = ["Waradu"]
 license = ""

@@ -1,6 +1,6 @@
 {
   "productName": "a.ni.me",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "identifier": "dev.waradu.a.ni.me",
   "build": {
     "frontendDist": "../dist",
@@ -53,10 +53,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
       "endpoints": [
-        "https://a.ni.me-update-server.waradu.dev/v1/{{target}}/{{arch}}/{{current_version}}",
-        "https://anime-update-server.wrdu.workers.dev/v1/{{target}}/{{arch}}/{{current_version}}",
-        "https://a.ni.me-update-server.waradu.dev/{{target}}/{{arch}}/{{current_version}}",
-        "https://anime-update-server.wrdu.workers.dev/{{target}}/{{arch}}/{{current_version}}"
+        "https://github.com/Waradu/a.ni.me/releases/latest/download/latest.json"
       ]
     }
   }
