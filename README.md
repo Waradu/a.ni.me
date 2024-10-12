@@ -31,7 +31,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [x] Make search work
   - [x] More info like characters/genres
   - [ ] Settings
-  - [ ] Local caching 
+  - [X] Local caching 
   - [X] Get-Started & welcome screen
   - [X] Filtering & sorting
   - [X] Export & import
@@ -39,12 +39,13 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Clean up design
   - [ ] Clean up spaghetti code
   - [ ] Fix bugs
-  - [ ] Auto updater
-  - [ ] Release beta builds (v0.X.Y)
+  - [x] Auto updater
+  - [x] Release beta builds (v0.X.Y)
   - [ ] Release v1
 
 - [ ] Polishing v1 (v1.1)
   - [ ] Tagging
+  - [ ] Faster caching
   - [ ] MacOS support (maybe)
   - [ ] Notification (maybe)
   - [ ] Some QOL features if needed (maybe)
