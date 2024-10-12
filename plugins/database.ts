@@ -13,7 +13,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   if (import.meta.client) {
     db = await Database.load("sqlite:a.ni.me.db");
   }
-
+  
   const animeClient = new AnimeClient();
 
   const database = {
@@ -88,7 +88,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       recommended_by: string;
       watched: boolean;
       is_hidden: boolean;
-      tags: string
+      tags: string;
     }) {
       try {
         const query = `
@@ -118,7 +118,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     },
     async hidden(id: number, hidden: boolean) {
       try {
-        await db.execute(`update animes set is_hidden = ${hidden} where id = ${id}`);
+        await db.execute(
+          `update animes set is_hidden = ${hidden} where id = ${id}`
+        );
       } catch (e) {
         console.log(e);
       }

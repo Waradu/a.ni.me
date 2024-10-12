@@ -31,6 +31,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [x] Make search work
   - [x] More info like characters/genres
   - [ ] Settings
+  - [ ] Local caching 
   - [X] Get-Started & welcome screen
   - [X] Filtering & sorting
   - [X] Export & import

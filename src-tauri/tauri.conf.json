@@ -53,7 +53,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
       "endpoints": [
-        "https://a.ni.me-update-server.waradu.dev/api/latest"
+        "https://a.ni.me-backend.waradu.dev/api/latest"
       ]
     }
   }
