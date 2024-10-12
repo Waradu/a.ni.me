@@ -53,7 +53,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
       "endpoints": [
-        "https://github.com/Waradu/a.ni.me/releases/latest/download/latest.json"
+        "https://a.ni.me-update-server.waradu.dev/api/latest"
       ]
     }
   }
