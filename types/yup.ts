@@ -42,7 +42,8 @@ export const animeSchema = Yup.object().shape({
   title_japanese: Yup.string().required(),
   title_synonyms: Yup.array().of(Yup.string()).required(),
   type: Yup.string()
-    .oneOf(['TV', 'Movie', 'Ova', 'Special', 'Ona', 'Music'])
+    .lowercase()
+    .oneOf(['tv', 'movie', 'ova', 'special', 'ona', 'music'])
     .nullable()
     .required(),
   source: Yup.string().nullable().required(),
