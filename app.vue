@@ -13,9 +13,12 @@ import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
 
 const update = await check();
-if (update) {
-  console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
-}
+
+onMounted(() => {
+  if (update) {
+    console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
+  }
+})
 
 tippy.setDefaultProps({
   animation: "perspective",

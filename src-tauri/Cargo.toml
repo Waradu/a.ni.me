@@ -20,7 +20,7 @@ tauri-build = { version = "2.0.1", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "2.0.2", features = [] }
+tauri = { version = "2.0.2", features = ["devtools"] }
 tauri-plugin-sql = { version = "2.0.1", features = ["sqlite"] }
 tauri-plugin-prevent-default = "0.6.1"
 tauri-plugin-shell = "2"
