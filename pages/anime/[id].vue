@@ -23,8 +23,11 @@
             </div>
           </div>
         </div>
-        <div class="description" @click="show">
+        <div class="description" @click="show" v-if="anime.data.synopsis">
           <p v-html="anime.data.synopsis.replace('[Written by MAL Rewrite]', '')"></p>
+        </div>
+        <div class="description disabled" v-else>
+          <p>No description found!</p>
         </div>
         <div class="rating">
           <template v-for="i in 5">
@@ -40,7 +43,7 @@
           </div>
         </div>
       </div>
-      <Modal header="Synopsis" ref="synopsisModal">
+      <Modal header="Synopsis" ref="synopsisModal" v-if="anime.data.synopsis">
         <p v-html="anime.data.synopsis.replace('[Written by MAL Rewrite]', '')"></p>
       </Modal>
       <Modal header="Cover" ref="imageModal">
@@ -411,6 +414,20 @@ main.anime {
 
         &:hover {
           background-color: #ffffff10;
+        }
+
+        &.disabled {
+          cursor: default;
+          user-select: all;
+
+          p {
+            cursor: text;
+            width: max-content
+          }
+
+          &:hover {
+            background-color: transparent;
+          }
         }
       }
 

@@ -47,7 +47,7 @@ const filteredAnimes = computed(() => {
     return (
       a.data.title.toLowerCase().includes(term) ||
       (a.data.title_english && a.data.title_english.toLowerCase().includes(term)) ||
-      a.data.synopsis.toLowerCase().includes(term)
+      (a.data.synopsis && a.data.synopsis.toLowerCase().includes(term))
     )
   }).sort(
     (a, b) => {

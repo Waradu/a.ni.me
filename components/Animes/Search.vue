@@ -8,7 +8,8 @@
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.title_english || anime.title" v-tippy>{{ anime.title_english || anime.title }}</span>
+      <span class="title" :title="anime.title_english || anime.title" v-tippy>{{ anime.title_english || anime.title
+        }}</span>
       <p class="info" v-if="anime.year > 0">{{ anime.year }}</p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -66,7 +67,8 @@ const filteredAnimes = computed(() => {
     return (
       !savedAnimeIds.value.includes(a.mal_id) && (a.title.toLowerCase().includes(term) ||
         (a.title_english && a.title_english.toLowerCase().includes(term)) ||
-        a.synopsis.toLowerCase().includes(term))
+        (a.synopsis && a.synopsis.toLowerCase().includes(term))
+      )
     )
   })
 })
@@ -124,7 +126,7 @@ const searchMAL = async () => {
         data: a
       }
     }).filter(a => {
-      return a.data.type == "TV" || a.data.type == "Movie"
+      return a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona"
     })
   } catch (error: any) {
     if (error.response && error.response.status === 429) {
