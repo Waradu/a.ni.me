@@ -35,6 +35,8 @@
     "dialog:default",
     "fs:default",
     "fs:write-all",
-    "fs:read-all"
+    "fs:read-all",
+    "updater:default",
+    "updater:allow-check"
   ]
 }
