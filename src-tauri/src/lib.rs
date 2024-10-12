@@ -1,6 +1,6 @@
 use tauri::Manager;
-use tauri_plugin_sql::{Migration, MigrationKind};
 use tauri_plugin_prevent_default::Flags;
+use tauri_plugin_sql::{Migration, MigrationKind};
 
 #[cfg(debug_assertions)]
 fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
@@ -27,8 +27,9 @@ pub fn run() {
         kind: MigrationKind::Up,
     }];
 
-    let mut builder =
-        tauri::Builder::default().plugin(tauri_plugin_updater::Builder::new().build());
+    let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build());
 
     builder = builder.plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
         let _ = app

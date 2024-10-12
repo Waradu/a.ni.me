@@ -1,6 +1,6 @@
 {
   "productName": "a.ni.me",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "identifier": "dev.waradu.a.ni.me",
   "build": {
     "frontendDist": "../dist",
