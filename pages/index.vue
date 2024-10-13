@@ -6,6 +6,7 @@
         <AnimesSaved v-else />
       </div>
     </div>
+    <div class="footer" v-if="!searching">{{ titlebarStore.count }}/{{ count }} animes shown</div>
   </main>
 </template>
 
@@ -14,9 +15,10 @@ const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes")
 titlebarStore.setBackLink("")
 
-const { $emitter } = useNuxtApp();
+const { $emitter, $database } = useNuxtApp();
 
 const searching = ref(false)
+const count = ref(0)
 
 const keyboard = useKeyboard()
 
@@ -25,11 +27,12 @@ keyboard.up("Escape", async () => {
   titlebarStore.setTitle("Animes")
 })
 
-onMounted(() => {
+onMounted(async () => {
   $emitter.off('search');
-  $emitter.off('stopSearch');
 
   $emitter.on('search', search)
+
+  count.value = await $database.count()
 })
 
 const search = () => {
@@ -50,6 +53,10 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 main.index {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   .grid-container {
     width: 100%;
     display: flex;
@@ -64,6 +71,14 @@ main.index {
       width: 100%;
       height: max-content;
     }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 12px;
+    color: #ffffffaa;
   }
 }
 </style>

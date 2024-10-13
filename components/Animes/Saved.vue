@@ -141,6 +141,8 @@ const filteredAnimes = computed(() => {
     })
   }
 
+  titlebarStore.count = res.length;
+
   return res.map(a => {
     return a.data;
   });

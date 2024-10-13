@@ -2,7 +2,8 @@ export const useTitlebarStore = defineStore("titlebarStore", {
   state: () => ({
     title: "",
     backLink: "",
-    search: ""
+    search: "",
+    count: 0
   }),
 
   actions: {

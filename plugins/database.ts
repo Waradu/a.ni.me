@@ -41,6 +41,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return [];
       }
     },
+    async count() {
+      const animes = await db.select<DbAnime[]>("select * from animes");
+
+      if (!animes) return 0;
+
+      return animes.length;
+    },
     async animesPlain() {
       try {
         const animes = await db.select<DbAnime[]>("select * from animes");
