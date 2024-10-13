@@ -2,8 +2,15 @@
   <main class="index">
     <div class="grid-container">
       <div class="grid">
-        <AnimesSearch v-if="searching" />
-        <AnimesSaved v-else />
+        <Suspense>
+          <template #default>
+            <AnimesSearch v-if="searching" />
+            <AnimesSaved v-else />
+          </template>
+          <template #fallback>
+            <h3>Loading...</h3>
+          </template>
+        </Suspense>
       </div>
     </div>
     <div class="footer" v-if="!searching">{{ titlebarStore.count }}/{{ count }} animes shown</div>
