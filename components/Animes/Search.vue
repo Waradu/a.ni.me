@@ -126,7 +126,8 @@ const searchMAL = async () => {
         data: a
       }
     }).filter(a => {
-      return a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona"
+      if (!a.data.type) return false;
+      return a.data.type && a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona"
     })
   } catch (error: any) {
     if (error.response && error.response.status === 429) {
