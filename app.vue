@@ -135,7 +135,10 @@ a {
   }
 }
 
-.page-enter-active,
+.page-enter-active {
+  transition: all .3s ease-in-out;
+}
+
 .page-leave-active {
   transition: all 0.2s ease-in-out;
 }
