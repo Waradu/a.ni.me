@@ -74,7 +74,7 @@ export const animeSchema = Yup.object().shape({
   rating: Yup.string().nullable().optional(),
   score: Yup.number().nullable().optional(),
   scored_by: Yup.number().nullable().optional(),
-  rank: Yup.number().nullable().required(),
+  rank: Yup.number().nullable().optional(),
   popularity: Yup.number().nullable().required(),
   members: Yup.number().nullable().required(),
   favorites: Yup.number().nullable().required(),
