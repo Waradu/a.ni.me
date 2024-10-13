@@ -16,7 +16,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const { $cache } = useNuxtApp();
 
   const database = {
-    async animes(): Promise<CombinedAnime[]> {
+    async animes(cachedOnly: boolean = false): Promise<CombinedAnime[]> {
       try {
         const animes = await db.select<DbAnime[]>("select * from animes");
 
@@ -24,7 +24,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         return await Promise.all(
           animes.map(async (anime) => {
-            const data = await $cache.get(anime.id);
+            const data = await $cache.get(anime.id, { cachedOnly: cachedOnly });
 
             if (data === null) {
               return null;

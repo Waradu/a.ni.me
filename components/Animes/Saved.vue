@@ -152,9 +152,10 @@ const redirect = (id: number) => {
   navigateTo(`/anime/${id}`)
 }
 
-animes.value = await $database.animes();
+animes.value = await $database.animes(true);
 onMounted(async () => {
-  loading.value = false
+  loading.value = false;
+  animes.value = await $database.animes();
 })
 </script>
 

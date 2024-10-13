@@ -36,3 +36,8 @@ export interface SettingsStore {
   order: Order;
   filters: Filters;
 }
+
+export interface CacheOptions {
+  cachedOnly?: boolean;
+  invalidate?: boolean;
+}

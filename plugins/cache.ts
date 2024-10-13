@@ -7,6 +7,7 @@ import {
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
 import { AnimeClient, type Anime } from "@tutkli/jikan-ts";
+import type { CacheOptions } from "~/types/types";
 import { animeSchema } from "~/types/yup";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
@@ -14,18 +15,20 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   const animeClient = new AnimeClient();
 
   const cache = {
-    async get(id: number, invalidate: boolean = false): Promise<Anime | null> {
+    async get(id: number, options?: CacheOptions): Promise<Anime | null> {
       try {
         const animeExists = await cacheExists(id);
 
-        if (animeExists && !invalidate) {
+        if (animeExists && !(options && options.invalidate)) {
           const data = await readCache(id);
           if (data) {
             return data;
           }
         }
 
-        const anime = await animeClient.getAnimeById(id);
+        if (options && options.cachedOnly) return null;
+
+        const anime = await getAnimeWithRetry(id);
 
         await writeCache(id, anime.data);
 
@@ -62,6 +65,10 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         baseDir: BaseDirectory.AppData,
       });
     }
+
+    await writeTextFile(`cache/.do_not_edit`, "", {
+      baseDir: BaseDirectory.AppData,
+    });
   }
 
   async function cacheExists(id: number): Promise<boolean> {
@@ -113,6 +120,32 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     await writeTextFile(`cache/${id}.json`, JSON.stringify(data), {
       baseDir: BaseDirectory.AppData,
     });
+  }
+
+  async function getAnimeWithRetry(
+    id: number,
+    retries = 10,
+    delay = 1000
+  ): Promise<any> {
+    let attempt = 0;
+
+    while (attempt < retries) {
+      try {
+        const anime = await animeClient.getAnimeById(id);
+        return anime;
+      } catch (error: any) {
+        if (error.response && error.response.status === 429) {
+          attempt++;
+          if (attempt < retries) {
+            await new Promise((resolve) => setTimeout(resolve, delay));
+          } else {
+            throw new Error("Too many requests, retries exhausted");
+          }
+        } else {
+          throw error;
+        }
+      }
+    }
   }
 
   return {
