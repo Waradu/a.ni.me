@@ -87,7 +87,7 @@ defineExpose({
   transition: .2s ease-in-out;
 
   &>* {
-    transition: .1s ease-in-out;
+    transition: .2s ease-in-out;
     scale: 0.8;
     opacity: 0;
   }
