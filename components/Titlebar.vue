@@ -277,6 +277,8 @@ async function importFile() {
     ],
   });
 
+  if (!selectedPath) return;
+
   if (exportImportSettings.value.overrideData) {
     await $database.deleteAll();
   }
@@ -330,8 +332,9 @@ async function exportFile() {
     ],
   });
 
-  const animes = await $database.animesPlain();
+  if (!selectedPath) return;
 
+  const animes = await $database.animesPlain();
 
   if (!exportImportSettings.value.exportData) {
     const animesId = animes.map(a => a.id);
