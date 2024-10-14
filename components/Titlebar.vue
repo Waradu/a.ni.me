@@ -489,6 +489,12 @@ header.titlebar {
     .input {
       display: none;
     }
+
+    .controls {
+      .disableOnModal, .space {
+        display: none;
+      }
+    }
   }
 
   .sortFilterModal {
