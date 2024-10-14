@@ -15,6 +15,7 @@
 import DoneIcon from "@fluentui/svg-icons/icons/checkmark_32_filled.svg";
 
 const setupStore = useSetupStore();
+const settingsStore = useSettingsStore();
 
 const { proxy } = useScriptNpm({
   packageName: 'js-confetti',
@@ -28,6 +29,8 @@ const { proxy } = useScriptNpm({
 
 onMounted(() => {
   if (setupStore.finished != true) {
+    settingsStore.showNSFW = setupStore.showNSFW
+    settingsStore.tvAndMovieOnly = setupStore.tvAndMovieOnly
     proxy.addConfetti({
       confettiRadius: 6,
       confettiNumber: 800,

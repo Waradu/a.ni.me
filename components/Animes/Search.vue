@@ -3,7 +3,7 @@
     <NuxtLink class="image" @click.prevent="add(anime.mal_id)">
       <AddIcon class="open" />
       <div class="cover">
-        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url"
+        <img :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
           onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
@@ -83,7 +83,15 @@ const add = async (id: number) => {
   await router.replace({ path: '/' })
 }
 
-const animeClient = new AnimeClient();
+var animeClient = new AnimeClient();
+
+const settingsStore = useSettingsStore();
+
+if (settingsStore.jikanBaseUrl != "") {
+  animeClient = new AnimeClient({
+    baseURL: settingsStore.jikanBaseUrl,
+  });
+}
 
 onMounted(async () => {
   $emitter.off('search');
@@ -108,7 +116,7 @@ const searchMAL = async () => {
   try {
     const res = await animeClient.getAnimeSearch({
       q: titlebarStore.getSearch(),
-      sfw: true,
+      sfw: !settingsStore.showNSFW,
     })
 
     titlebarStore.setSearch("")

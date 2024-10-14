@@ -4,7 +4,8 @@
     <div class="animes">
       <label class="anime" v-for="anime in animes" :key="anime.mal_id" :for="anime.mal_id.toString()">
         <div class="cover">
-          <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url"
+          <img
+            :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
             onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
         </div>
         <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
@@ -41,7 +42,15 @@ if (setupStore.finished) {
   navigateTo("/setup/finish")
 }
 
-const animeClient = new AnimeClient();
+var animeClient = new AnimeClient();
+
+const settingsStore = useSettingsStore();
+
+if (settingsStore.jikanBaseUrl != "") {
+  animeClient = new AnimeClient({
+    baseURL: settingsStore.jikanBaseUrl,
+  });
+}
 
 const animeIds = [52034, 16498, 52991, 9253]
 const animes = ref<Anime[]>([]);

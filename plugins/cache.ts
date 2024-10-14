@@ -12,7 +12,14 @@ import { animeSchema } from "~/types/yup";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   await base();
-  const animeClient = new AnimeClient();
+  const settingsStore = useSettingsStore();
+  var animeClient = new AnimeClient();
+
+  if (settingsStore.jikanBaseUrl != "") {
+    animeClient = new AnimeClient({
+      baseURL: settingsStore.jikanBaseUrl,
+    });
+  }
 
   const cache = {
     async get(id: number, options?: CacheOptions): Promise<Anime | null> {

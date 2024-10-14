@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 const jikanImagesCollectionSchema = Yup.object().shape({
   image_url: Yup.string().url().nullable().optional(),
@@ -24,52 +24,65 @@ export const animeSchema = Yup.object().shape({
   mal_id: Yup.number().required(),
   url: Yup.string().url().required(),
   images: jikanImagesSchema.required(),
-  trailer: Yup.object().shape({
-    youtube_id: Yup.string().nullable().optional(),
-    url: Yup.string().url().nullable().optional(),
-    embed_url: Yup.string().url().nullable().optional(),
-    images: jikanImagesCollectionSchema.nullable().optional(),
-  }).nullable().optional(),
-  approved: Yup.boolean().required(),
-  titles: Yup.array().of(
-    Yup.object().shape({
-      type: Yup.string().required(),
-      title: Yup.string().required(),
+  trailer: Yup.object()
+    .shape({
+      youtube_id: Yup.string().nullable().optional(),
+      url: Yup.string().url().nullable().optional(),
+      embed_url: Yup.string().url().nullable().optional(),
+      images: jikanImagesCollectionSchema.nullable().optional(),
     })
-  ).required(),
+    .nullable()
+    .optional(),
+  approved: Yup.boolean().required(),
+  titles: Yup.array()
+    .of(
+      Yup.object().shape({
+        type: Yup.string().required(),
+        title: Yup.string().required(),
+      })
+    )
+    .required(),
   title: Yup.string().required(),
   title_english: Yup.string().nullable().optional(),
   title_japanese: Yup.string().required(),
   title_synonyms: Yup.array().of(Yup.string()).required(),
   type: Yup.string()
     .lowercase()
-    .oneOf(['tv', 'movie', 'ova', 'special', 'ona', 'music'])
+    .oneOf(["tv", "movie", "ova", "special", "ona", "music"])
     .nullable()
     .required(),
   source: Yup.string().nullable().required(),
   episodes: Yup.number().nullable().required(),
   status: Yup.string()
-    .oneOf(['Finished Airing', 'Currently Airing', 'Complete', 'Not yet aired'])
+    .oneOf(["Finished Airing", "Currently Airing", "Complete", "Not yet aired"])
     .nullable()
     .required(),
   airing: Yup.boolean().required(),
-  aired: Yup.object().shape({
-    from: Yup.string().nullable().optional(),
-    to: Yup.string().nullable().optional(),
-    prop: Yup.object().shape({
-      from: Yup.object().shape({
-        day: Yup.number().nullable().optional(),
-        month: Yup.number().nullable().optional(),
-        year: Yup.number().nullable().optional(),
-      }).required(),
-      to: Yup.object().shape({
-        day: Yup.number().nullable().optional(),
-        month: Yup.number().nullable().optional(),
-        year: Yup.number().nullable().optional(),
-      }).optional(),
-      string: Yup.string().nullable().optional(),
-    }).required(),
-  }).required(),
+  aired: Yup.object()
+    .shape({
+      from: Yup.string().nullable().optional(),
+      to: Yup.string().nullable().optional(),
+      prop: Yup.object()
+        .shape({
+          from: Yup.object()
+            .shape({
+              day: Yup.number().nullable().optional(),
+              month: Yup.number().nullable().optional(),
+              year: Yup.number().nullable().optional(),
+            })
+            .required(),
+          to: Yup.object()
+            .shape({
+              day: Yup.number().nullable().optional(),
+              month: Yup.number().nullable().optional(),
+              year: Yup.number().nullable().optional(),
+            })
+            .optional(),
+          string: Yup.string().nullable().optional(),
+        })
+        .required(),
+    })
+    .required(),
   duration: Yup.string().nullable().required(),
   rating: Yup.string().nullable().optional(),
   score: Yup.number().nullable().optional(),
@@ -81,16 +94,19 @@ export const animeSchema = Yup.object().shape({
   synopsis: Yup.string().nullable().optional(),
   background: Yup.string().nullable().optional(),
   season: Yup.string()
-    .oneOf(['spring', 'summer', 'fall', 'winter'])
+    .oneOf(["spring", "summer", "fall", "winter"])
     .nullable()
     .optional(),
   year: Yup.number().nullable().optional(),
-  broadcast: Yup.object().shape({
-    day: Yup.string().nullable().optional(),
-    time: Yup.string().nullable().optional(),
-    timezone: Yup.string().nullable().optional(),
-    string: Yup.string().nullable().optional(),
-  }).nullable().optional(),
+  broadcast: Yup.object()
+    .shape({
+      day: Yup.string().nullable().optional(),
+      time: Yup.string().nullable().optional(),
+      timezone: Yup.string().nullable().optional(),
+      string: Yup.string().nullable().optional(),
+    })
+    .nullable()
+    .optional(),
   producers: Yup.array().of(jikanResourceSchema).nullable().optional(),
   licensors: Yup.array().of(jikanResourceSchema).nullable().optional(),
   studios: Yup.array().of(jikanResourceSchema).nullable().optional(),
@@ -98,16 +114,22 @@ export const animeSchema = Yup.object().shape({
   explicit_genres: Yup.array().of(jikanResourceSchema).nullable().optional(),
   themes: Yup.array().of(jikanResourceSchema).nullable().optional(),
   demographics: Yup.array().of(jikanResourceSchema).nullable().optional(),
-  relations: Yup.array().of(
-    Yup.object().shape({
-      relation: Yup.string().required(),
-      entry: Yup.array().of(jikanResourceSchema).required(),
+  relations: Yup.array()
+    .of(
+      Yup.object().shape({
+        relation: Yup.string().required(),
+        entry: Yup.array().of(jikanResourceSchema).required(),
+      })
+    )
+    .nullable()
+    .optional(),
+  theme: Yup.object()
+    .shape({
+      openings: Yup.array().of(Yup.string()).nullable().optional(),
+      endings: Yup.array().of(Yup.string()).nullable().optional(),
     })
-  ).nullable().optional(),
-  theme: Yup.object().shape({
-    openings: Yup.array().of(Yup.string()).nullable().optional(),
-    endings: Yup.array().of(Yup.string()).nullable().optional(),
-  }).nullable().optional(),
+    .nullable()
+    .optional(),
   external: Yup.array()
     .of(
       Yup.object().shape({
@@ -127,3 +149,36 @@ export const animeSchema = Yup.object().shape({
     .nullable()
     .optional(),
 });
+
+const FilterTypeSchema = Yup.string().oneOf(["e", "ne", "gt", "st"]).required();
+
+const FilterValueSchema = <T extends Yup.AnySchema>(typeSchema: T) =>
+  typeSchema.nullable().defined();
+
+const FilterSchema = <T extends Yup.AnySchema>(typeSchema: T) =>
+  Yup.object({
+    value: FilterValueSchema(typeSchema),
+    type: FilterTypeSchema,
+  }).defined();
+
+const FiltersSchema = Yup.object({
+  watched: FilterValueSchema(Yup.boolean()),
+  stars: FilterSchema(Yup.number()),
+  showHidden: Yup.boolean().required(),
+}).required();
+
+const SortBySchema = Yup.string()
+  .oneOf(["year", "name", "score", "favorites", "stars", "date_added"])
+  .required();
+
+const OrderSchema = Yup.string().oneOf(["asc", "desc"]).required();
+
+export const SettingsStoreSchema = Yup.object({
+  showNSFW: Yup.boolean().required(),
+  tvAndMovieOnly: Yup.boolean().required(),
+  sortBy: SortBySchema,
+  order: OrderSchema,
+  filters: FiltersSchema,
+  malImageProxy: Yup.string().optional(),
+  jikanBaseUrl: Yup.string().optional(),
+}).required();

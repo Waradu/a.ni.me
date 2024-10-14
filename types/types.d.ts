@@ -35,6 +35,8 @@ export interface SettingsStore {
   sortBy: SortBy;
   order: Order;
   filters: Filters;
+  malImageProxy: string;
+  jikanBaseUrl: string;
 }
 
 export interface CacheOptions {

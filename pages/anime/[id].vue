@@ -98,7 +98,15 @@ import { AnimeClient, type AnimeCharacter } from '@tutkli/jikan-ts';
 const route = useRoute();
 const { $database } = useNuxtApp();
 
-const animeClient = new AnimeClient();
+var animeClient = new AnimeClient();
+
+const settingsStore = useSettingsStore();
+
+if (settingsStore.jikanBaseUrl != "") {
+  animeClient = new AnimeClient({
+    baseURL: settingsStore.jikanBaseUrl,
+  });
+}
 
 const titlebarStore = useTitlebarStore();
 
@@ -111,7 +119,7 @@ const moving = ref(false)
 const image = computed(() => {
   if (!anime.value) return "";
 
-  return anime.value.data.images.jpg.large_image_url || anime.value.data.images.jpg.image_url;
+  return (settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.value.data.images.jpg.large_image_url || anime.value.data.images.jpg.image_url);
 })
 
 const hidden = () => {

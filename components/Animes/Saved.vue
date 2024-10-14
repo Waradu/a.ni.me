@@ -3,7 +3,7 @@
     <NuxtLink class="image" @click.prevent="redirect(anime.mal_id)">
       <OpenIcon class="open" />
       <div class="cover">
-        <img :src="anime.images.jpg.large_image_url || anime.images.jpg.image_url"
+        <img :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
           onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
