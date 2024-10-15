@@ -45,6 +45,8 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 
 - [ ] Polishing v1 (v1.1)
   - [ ] Tagging
+  - [ ] Backup
+  - [ ] Auto updater popup
   - [ ] Faster caching
   - [ ] MacOS support (maybe)
   - [ ] Notification (maybe)
