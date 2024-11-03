@@ -8,8 +8,8 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "~/assets/css/basic.scss";`,
-          silenceDeprecations: ["legacy-js-api"],
+          additionalData: `@use "~/assets/css/basic.scss";`,
+          api: "modern",
         },
       },
     },

@@ -21,7 +21,7 @@ try {
     console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
     let downloaded = 0;
     let contentLength = 0;
-  
+
     await update.downloadAndInstall((event) => {
       switch (event.event) {
         case 'Started':
@@ -37,7 +37,7 @@ try {
           break;
       }
     });
-  
+
     console.log('update installed');
     await relaunch();
   }
