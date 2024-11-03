@@ -84,6 +84,7 @@ main.index {
     width: 100%;
     display: flex;
     justify-content: center;
+    padding-top: 24px;
     padding-bottom: 12px;
     color: #ffffffaa;
   }
