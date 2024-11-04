@@ -526,6 +526,7 @@ main.anime {
     user-select: none;
     cursor: grab;
     padding-inline: 80px;
+    min-height: max-content;
 
     &.dragging {
       cursor: grabbing;
