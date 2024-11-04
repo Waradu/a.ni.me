@@ -42,7 +42,7 @@ try {
     await relaunch();
   }
 } catch (e) {
-  console.log(e);
+  console.error(e);
 }
 
 tippy.setDefaultProps({

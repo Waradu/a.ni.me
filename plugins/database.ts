@@ -37,7 +37,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           })
         ).then((results) => results.filter((anime) => anime !== null));
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return [];
       }
     },
@@ -56,7 +56,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         return animes;
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return [];
       }
     },
@@ -75,7 +75,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           data: anime,
         };
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return null;
       }
     },
@@ -88,7 +88,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         `;
         await db.execute(query);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     },
     async addWithData(anime: {
@@ -115,7 +115,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         `;
         await db.execute(query);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     },
     async stars(id: number, stars: number) {
@@ -133,7 +133,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           `update animes set is_hidden = ${hidden} where id = ${id}`
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     },
   };

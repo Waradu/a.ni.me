@@ -41,13 +41,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         return anime.data;
       } catch (e) {
-        console.log(e);
+        console.error(e);
 
         try {
           const anime = await animeClient.getAnimeById(id);
           return anime.data;
         } catch (e) {
-          console.log(e);
+          console.error(e);
           return null;
         }
       }
@@ -97,7 +97,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         if ((error as any).code === "FileNotFound") {
           return null;
         } else if (error.name === "ValidationError") {
-          console.log(
+          console.error(
             `Validation error for cache ID ${id}:`,
             (error as any).errors
           );

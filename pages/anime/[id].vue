@@ -210,7 +210,7 @@ onMounted(async () => {
 
     characters.value = chars.data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return [];
   }
 })

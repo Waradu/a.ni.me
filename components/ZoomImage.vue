@@ -53,7 +53,6 @@ const handleMouseMove = (event: MouseEvent) => {
 const zoom = (event: WheelEvent) => {
   if (isZooming.value) {
     event.preventDefault();
-    console.log(event);
 
     if (event.deltaY < 0) {
       zoomLevel.value += 0.4 * (Math.abs(event.deltaY) / 100);

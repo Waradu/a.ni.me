@@ -112,7 +112,6 @@ const filteredAnimes = computed(() => {
   }
 
   if (settingsStore.filters.watched != null) {
-    console.log(settingsStore.filters.watched);
     res = res.filter(a => a.watched == settingsStore.filters.watched)
   }
 
