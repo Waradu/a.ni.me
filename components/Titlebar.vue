@@ -117,6 +117,25 @@
           <button @click="exportFile">Export</button>
         </div>
       </Modal>
+      <Modal header="Settings" ref="settingsModal" class="settingsModal">
+        <div class="settings rows">
+          <div class="item">
+            <label for="showNSFW" class="text">Show NSFW <Info :text="nsfwInfoText"></Info></label>
+            <label for="showNSFW" class="container">
+              <input type="checkbox" name="showNSFW" id="showNSFW" v-model="settingsStore.showNSFW">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="item">
+            <label for="tvAndMovieOnly" class="text">Only show anime shows and movies <Info :text="tvAndMovieInfoText">
+              </Info></label>
+            <label for="tvAndMovieOnly" class="container">
+              <input type="checkbox" name="tvAndMovieOnly" id="tvAndMovieOnly" v-model="settingsStore.tvAndMovieOnly">
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </Modal>
     </div>
   </header>
 </template>
@@ -139,10 +158,13 @@ import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 
 const settingsStore = useSettingsStore();
 
-const openSettings = () => {
+const setupScreen = () => {
   setupStore.$reset()
   navigateTo("/setup/start")
 }
+
+const nsfwInfoText = "Turning this on means you're okay with spicy content. If you'd rather keep things wholesome, just leave it off."
+const tvAndMovieInfoText = "Turning this on will show only the main anime series with episodes, skipping music and extras. Keeps your list neat and easy to track."
 
 const sortByOptions: Item[] = [
   { name: "Date Added", value: "date_added" },
@@ -190,6 +212,7 @@ const { selected: filterWatchedSelected } = useDropdown(filterWatchedOptions, se
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 const exportImportModal = ref<InstanceType<typeof Modal> | null>(null);
+const settingsModal = ref<InstanceType<typeof Modal> | null>(null);
 
 const openSortingFilterMenu = () => {
   if (!sortFilterModal.value) return;
@@ -201,6 +224,12 @@ const openExportImportMenu = () => {
   if (!exportImportModal.value) return;
 
   exportImportModal.value.show()
+}
+
+const openSettings = () => {
+  if (!settingsModal.value) return;
+
+  settingsModal.value.show()
 }
 
 const exportImportSettings = ref({
@@ -491,7 +520,9 @@ header.titlebar {
     }
 
     .controls {
-      .disableOnModal, .space {
+
+      .disableOnModal,
+      .space {
         display: none;
       }
     }
@@ -551,7 +582,8 @@ header.titlebar {
   }
 
   .sortFilterModal,
-  .exportImportModal {
+  .exportImportModal,
+  .settingsModal {
     .item {
       display: flex;
       justify-content: space-between;
@@ -651,6 +683,16 @@ header.titlebar {
 
         }
       }
+    }
+  }
+
+  .settingsModal {
+    .rows {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      gap: 10px;
+      min-width: 400px;
     }
   }
 
