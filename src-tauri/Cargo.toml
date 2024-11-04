@@ -22,7 +22,7 @@ serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "2.0.2", features = [] }
 tauri-plugin-sql = { version = "2.0.1", features = ["sqlite"] }
-tauri-plugin-prevent-default = "0.6.1"
+tauri-plugin-prevent-default = "0.7.5"
 tauri-plugin-shell = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = "2"
