@@ -137,6 +137,7 @@
               <span class="checkmark"></span>
             </label>
           </div>
+          <div class="info" v-if="appData != ''">{{ appData }}</div>
         </div>
       </Modal>
     </div>
@@ -158,6 +159,9 @@ import type { Modal } from "#build/components";
 import type { FilterType, FilterValue, Item, Order, SortBy } from "~/types/types";
 import { save, open } from '@tauri-apps/plugin-dialog';
 import { readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
+import { getVersion, getName, getTauriVersion } from "@tauri-apps/api/app";
+
+const appData = ref("")
 
 const settingsStore = useSettingsStore();
 
@@ -299,6 +303,14 @@ onMounted(async () => {
   })
 
   document.documentElement.style.setProperty('--height', height.value + 'px');
+
+  const version = await getVersion()
+  const name = await getName()
+  const tauriVersion = await getTauriVersion()
+
+  const text = `${name}-${version} with tauri-${tauriVersion}`
+
+  appData.value = text
 })
 
 async function importFile() {
@@ -709,6 +721,12 @@ header.titlebar {
         margin-top: 1px;
         height: max-content
       }
+    }
+
+    .info {
+      font-size: 12px;
+      color: #ffffff40;
+      margin-top: 20px
     }
   }
 
