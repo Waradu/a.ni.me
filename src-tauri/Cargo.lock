@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "a_ni_me"
-version = "1.0.0-alpha"
+version = "0.3.0"
 dependencies = [
  "serde",
  "serde_json",
