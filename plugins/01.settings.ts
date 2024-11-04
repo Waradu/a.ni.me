@@ -4,9 +4,9 @@ import {
   mkdir,
   readTextFile,
   writeTextFile,
+  remove,
 } from "@tauri-apps/plugin-fs";
 import type { SettingsStore } from "~/types/types";
-import { SettingsStoreSchema } from "~/types/yup";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const settingsStore = useSettingsStore();
@@ -47,11 +47,17 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
       const parsedContent = JSON.parse(content) as SettingsStore;
 
-      await SettingsStoreSchema.validate(parsedContent);
-
       settingsStore.$patch(parsedContent);
+
+      await writeTextFile(
+        `settings.json`,
+        JSON.stringify(settingsStore.$state, null, 2),
+        {
+          baseDir: BaseDirectory.AppData,
+        }
+      );
     } catch (e) {
-      console.log(`Error while loading settings: ${e}`);
+      console.error(`Error while loading settings: ${e}`);
     }
   }
 
