@@ -30,7 +30,7 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
 - [ ] Finish the app (v1)
   - [x] Make search work
   - [x] More info like characters/genres
-  - [ ] Settings
+  - [X] Settings
   - [X] Local caching 
   - [X] Get-Started & welcome screen
   - [X] Filtering & sorting
