@@ -3,7 +3,8 @@
     <NuxtLink class="image" @click.prevent="add(anime.mal_id)">
       <AddIcon class="open" />
       <div class="cover">
-        <img :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
+        <img
+          :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
           onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
       </div>
     </NuxtLink>
@@ -134,7 +135,7 @@ const searchMAL = async () => {
         data: a
       }
     }).filter(a => {
-      if (!a.data.type) return false;
+      if (!settingsStore.tvAndMovieOnly) return true;
       return a.data.type && a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona"
     })
   } catch (error: any) {
