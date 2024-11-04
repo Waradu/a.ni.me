@@ -127,8 +127,11 @@
             </label>
           </div>
           <div class="item">
-            <label for="tvAndMovieOnly" class="text">Only show anime shows and movies <Info :text="tvAndMovieInfoText">
-              </Info></label>
+            <label for="tvAndMovieOnly" class="text">
+              Only show anime shows and movies
+              <Info :text="tvAndMovieInfoText"></Info>
+              <div class="recommended">recommended</div>
+            </label>
             <label for="tvAndMovieOnly" class="container">
               <input type="checkbox" name="tvAndMovieOnly" id="tvAndMovieOnly" v-model="settingsStore.tvAndMovieOnly">
               <span class="checkmark"></span>
@@ -693,6 +696,19 @@ header.titlebar {
       margin-top: 20px;
       gap: 10px;
       min-width: 400px;
+
+      .recommended {
+        text-transform: uppercase;
+        font-size: 12px;
+        background-color: #ffffff10;
+        border: 1px solid #ffffff20;
+        color: #ffffffaa;
+        padding: 2px;
+        padding-inline: 10px;
+        border-radius: 20px;
+        margin-top: 1px;
+        height: max-content
+      }
     }
   }
 
