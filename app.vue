@@ -12,14 +12,18 @@ import 'tippy.js/animations/perspective.css';
 import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
+import type { Id } from 'vue3-toastify';
 
 const { $cache, $toast } = useNuxtApp();
 
 try {
   const update = await check();
   if (update) {
-    console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
-    $toast(`A new version just released: ${update.version}. downloading now...`)
+    const toastId = ref<Id>('');
+    toastId.value = $toast(`A new version just released: ${update.version}. downloading now...`, {
+      closeOnClick: false,
+      autoClose: false
+    })
     let downloaded = 0;
     let contentLength = 0;
 
@@ -32,6 +36,11 @@ try {
         case 'Progress':
           downloaded += event.data.chunkLength;
           console.log(`downloaded ${downloaded} from ${contentLength}`);
+
+          $toast.update(toastId.value, {
+            content: `downloaded ${downloaded} from ${contentLength}`
+          })
+
           break;
         case 'Finished':
           console.log('download finished');
@@ -40,7 +49,13 @@ try {
     });
 
     console.log('update installed');
-    await relaunch();
+
+    $toast.update(toastId.value, {
+      content: `Update finished downloading. Please click here to restart or do it manually.`,
+      onClick: async () => {
+        await relaunch();
+      }
+    })
   }
 } catch (e) {
   console.error(e);
