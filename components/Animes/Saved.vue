@@ -181,6 +181,7 @@ onMounted(async () => {
     position: relative;
     overflow: hidden;
     color: white;
+    user-select: none;
 
     .open {
       scale: 2.5;
