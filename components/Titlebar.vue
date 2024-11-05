@@ -237,8 +237,6 @@ const openSettings = () => {
   if (!settingsModal.value) return;
 
   settingsModal.value.show()
-
-  useNuxtApp().$toast("TEST")
 }
 
 const exportImportSettings = ref({

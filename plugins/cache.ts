@@ -48,6 +48,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           return anime.data;
         } catch (e) {
           console.error(e);
+          useNuxtApp().$toast.error(e);
           return null;
         }
       }

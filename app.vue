@@ -13,12 +13,13 @@ import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 
-const { $cache } = useNuxtApp();
+const { $cache, $toast } = useNuxtApp();
 
 try {
   const update = await check();
   if (update) {
     console.log(`found update ${update.version} from ${update.date} with notes ${update.body}`);
+    $toast(`A new version just released: ${update.version}. downloading now...`)
     let downloaded = 0;
     let contentLength = 0;
 
