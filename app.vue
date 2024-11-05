@@ -11,7 +11,6 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
-import { relaunch } from '@tauri-apps/plugin-process';
 import type { Id } from 'vue3-toastify';
 
 const { $cache, $toast } = useNuxtApp();
@@ -22,12 +21,13 @@ try {
     const toastId = ref<Id>('');
     toastId.value = $toast(`A new version just released: ${update.version}. downloading now...`, {
       closeOnClick: false,
-      autoClose: false
+      autoClose: false,
+      transition: $toast.TRANSITIONS.NONE
     })
     let downloaded = 0;
     let contentLength = 0;
 
-    await update.downloadAndInstall((event) => {
+    await update.download((event) => {
       switch (event.event) {
         case 'Started':
           contentLength = event.data.contentLength || -1;
@@ -35,11 +35,13 @@ try {
           break;
         case 'Progress':
           downloaded += event.data.chunkLength;
-          console.log(`downloaded ${downloaded} from ${contentLength}`);
+          const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
+          const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
 
-          $toast.update(toastId.value, {
-            content: `downloaded ${downloaded} from ${contentLength}`
-          })
+          const toast = document.querySelector(`#${toastId.value} > .Toastify__toast-body > div`);
+          if (toast) {
+            toast.textContent = `Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`;
+          }
 
           break;
         case 'Finished':
@@ -48,13 +50,14 @@ try {
       }
     });
 
-    console.log('update installed');
-
-    $toast.update(toastId.value, {
-      content: `Update finished downloading. Please click here to restart or do it manually.`,
+    $toast.remove(toastId.value)
+    $toast("Update finished downloading. Please click here to install.", {
       onClick: async () => {
-        await relaunch();
-      }
+        await update.install()
+      },
+      closeOnClick: false,
+      autoClose: false,
+      transition: $toast.TRANSITIONS.NONE
     })
   }
 } catch (e) {
