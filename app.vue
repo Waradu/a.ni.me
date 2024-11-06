@@ -3,6 +3,7 @@
   <div class="page">
     <NuxtPage />
   </div>
+  <Toasts />
 </template>
 
 <script lang="ts" setup>
