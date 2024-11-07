@@ -44,15 +44,13 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Release v1
 
 - [ ] Polishing v1 (v1.1)
-  - [ ] Tagging
+  - [ ] Tagging (maybe)
   - [ ] Backup
-  - [ ] Auto updater popup
   - [ ] Faster caching
-  - [ ] MacOS support (maybe)
-  - [ ] Notification (maybe)
+  - [ ] MacOS support (probably)
   - [ ] Some QOL features if needed (maybe)
   - [ ] More content (website)
-  - [ ] News/blog (website)
+  - [ ] News/blog/changelog (website)
   - [ ] Lightmode
   - [ ] Release v1.1
 
@@ -64,6 +62,15 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Waifu collection (don't ask why and what) (maybe)
   - [ ] Make it secure and private :D
   - [ ] Release v2
+
+- [ ] Other thigs I want to add at any time
+  - [ ] Get anime by season
+  - [ ] Pinned animes
+  - [ ] Pin protection
+  - [ ] Keybinds
+  - [ ] Themes
+  - [ ] Import list from other sources/websites
+  - [ ] Webversion
 
 - [ ] More to come
 
