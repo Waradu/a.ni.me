@@ -12,19 +12,15 @@ import 'tippy.js/dist/tippy.css'
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
-import type { Id } from 'vue3-toastify';
 
-const { $cache, $toast } = useNuxtApp();
+const { $cache } = useNuxtApp();
+
+const toaster = useToaster()
 
 try {
   const update = await check();
   if (update) {
-    const toastId = ref<Id>('');
-    toastId.value = $toast(`A new version just released: ${update.version}. downloading now...`, {
-      closeOnClick: false,
-      autoClose: false,
-      transition: $toast.TRANSITIONS.NONE
-    })
+    toaster.set(`A new version just released: ${update.version}. downloading now...`)
     let downloaded = 0;
     let contentLength = 0;
 
@@ -39,10 +35,7 @@ try {
           const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
           const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
 
-          const toast = document.querySelector(`#${toastId.value} > .Toastify__toast-body > div`);
-          if (toast) {
-            toast.textContent = `Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`;
-          }
+          toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`)
 
           break;
         case 'Finished':
@@ -51,15 +44,12 @@ try {
       }
     });
 
-    $toast.remove(toastId.value)
-    $toast("Update finished downloading. Please click here to install.", {
-      onClick: async () => {
-        await update.install()
-      },
-      closeOnClick: false,
-      autoClose: false,
-      transition: $toast.TRANSITIONS.NONE
-    })
+    toaster.set(`Update finished downloading. Please click here to install.`)
+    toaster.click = async (e) => {
+      await update.install()
+      toaster.click = async (e) => true
+      return false;
+    }
   }
 } catch (e) {
   console.error(e);

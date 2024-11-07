@@ -4,6 +4,7 @@ export const useToaster = defineStore("toaster", {
   state: (): ToastStore => ({
     message: "",
     visible: false,
+    click: async (e) => true,
   }),
   actions: {
     set(message: string) {

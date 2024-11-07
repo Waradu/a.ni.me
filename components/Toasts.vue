@@ -1,5 +1,10 @@
 <template>
-  <div class="toast" :class="{ hidden: !toaster.visible }" @click="toaster.visible = false">
+  <div class="toast" :class="{ hidden: !toaster.visible }" @click="async (e) => {
+    const close = await toaster.click(e)
+    if (close) {
+      toaster.visible = false
+    }
+  }">
     {{ toaster.message }}
   </div>
 </template>
@@ -23,6 +28,7 @@ const toaster = useToaster()
   margin: 10px;
   transition: .2s ease-in-out;
   translate: 0 0;
+  cursor: pointer;
 
   &.hidden {
     opacity: 0;
