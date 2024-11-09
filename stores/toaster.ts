@@ -1,4 +1,4 @@
-import type { ToastStore, Toast as T, ToastTypes } from "~/types/toast";
+import type { ToastStore } from "~/types/toast";
 
 export const useToaster = defineStore("toaster", {
   state: (): ToastStore => ({

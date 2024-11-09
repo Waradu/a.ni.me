@@ -62,10 +62,6 @@ tippy.setDefaultProps({
   maxWidth: 250,
   arrow: roundArrow
 })
-
-onMounted(() => {
-  (window as any)._get = $cache.get
-})
 </script>
 
 <style lang="scss">
