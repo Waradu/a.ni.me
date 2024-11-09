@@ -4,11 +4,10 @@
     <div class="animes">
       <label class="anime" v-for="anime in animes" :key="anime.mal_id" :for="anime.mal_id.toString()">
         <div class="cover">
-          <img
-            :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + (anime.images.jpg.large_image_url || anime.images.jpg.image_url)"
+          <img :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + anime.image"
             onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
         </div>
-        <span class="title" :title="anime.title_english || anime.title">{{ anime.title_english || anime.title }}</span>
+        <span class="title" :title="anime.title ?? anime.title">{{ anime.title ?? anime.title }}</span>
         <input type="checkbox" :id="anime.mal_id.toString()" :name="anime.mal_id.toString()" :value="anime.mal_id"
           v-model="setupStore.selectedAnimes" />
       </label>
@@ -34,35 +33,37 @@
 <script lang="ts" setup>
 import ArrowLeftIcon from "@fluentui/svg-icons/icons/arrow_left_32_filled.svg";
 import ArrowRightIcon from "@fluentui/svg-icons/icons/arrow_right_32_filled.svg";
-import { AnimeClient, type Anime } from "@tutkli/jikan-ts";
 
 const setupStore = useSetupStore();
 
 if (setupStore.finished) {
-  navigateTo("/setup/finish")
+  navigateTo("/setup/finish");
 }
-
-var animeClient = new AnimeClient();
 
 const settingsStore = useSettingsStore();
 
-if (settingsStore.jikanBaseUrl != "") {
-  animeClient = new AnimeClient({
-    baseURL: settingsStore.jikanBaseUrl,
-  });
-}
-
-const animeIds = [52034, 16498, 52991, 9253]
-const animes = ref<Anime[]>([]);
-
-try {
-  animeIds.forEach(async id => {
-    const response = await animeClient.getAnimeById(id);
-    animes.value.push(response.data);
-  })
-} catch (error) {
-  console.error("Failed to fetch anime list", error);
-}
+const animes = ref([
+  {
+    mal_id: 52034,
+    image: "https://cdn.myanimelist.net/images/anime/1812/134736l.jpg",
+    title: "[Oshi No Ko]",
+  },
+  {
+    mal_id: 16498,
+    image: "https://cdn.myanimelist.net/images/anime/10/47347l.jpg",
+    title: "Attack on Titan",
+  },
+  {
+    mal_id: 52991,
+    image: "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg",
+    title: "Frieren: Beyond Journey's End",
+  },
+  {
+    mal_id: 9253,
+    image: "https://cdn.myanimelist.net/images/anime/1935/127974l.jpg",
+    title: "Steins;Gate",
+  }
+]);
 </script>
 
 <style lang="scss">
