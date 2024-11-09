@@ -45,22 +45,22 @@ const settingsStore = useSettingsStore();
 const animes = ref([
   {
     mal_id: 52034,
-    image: "https://cdn.myanimelist.net/images/anime/1812/134736l.jpg",
+    image: "https://cdn.myanimelist.net/images/anime/1812/134736.jpg",
     title: "[Oshi No Ko]",
   },
   {
     mal_id: 16498,
-    image: "https://cdn.myanimelist.net/images/anime/10/47347l.jpg",
+    image: "https://cdn.myanimelist.net/images/anime/10/47347.jpg",
     title: "Attack on Titan",
   },
   {
     mal_id: 52991,
-    image: "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg",
+    image: "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
     title: "Frieren: Beyond Journey's End",
   },
   {
     mal_id: 9253,
-    image: "https://cdn.myanimelist.net/images/anime/1935/127974l.jpg",
+    image: "https://cdn.myanimelist.net/images/anime/1935/127974.jpg",
     title: "Steins;Gate",
   }
 ]);
