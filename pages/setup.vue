@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 const titlebarStore = useTitlebarStore();
-titlebarStore.setTitle("Setup")
+titlebarStore.setTitle("Setup");
 </script>
 
 <style lang="scss">

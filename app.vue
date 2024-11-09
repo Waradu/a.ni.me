@@ -7,20 +7,20 @@
 </template>
 
 <script lang="ts" setup>
-import tippy, { roundArrow } from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
+import tippy, { roundArrow } from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 import 'tippy.js/animations/perspective.css';
 import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
 
-const { $cache } = useNuxtApp();
+const toaster = useToaster();
 
-const toaster = useToaster()
+const settingsStore = useSettingsStore();
 
 try {
   const update = await check();
   if (update) {
-    toaster.set(`A new version just released: ${update.version}. downloading now...`)
+    toaster.set(`A new version just released: ${update.version}. downloading now...`);
     let downloaded = 0;
     let contentLength = 0;
 
@@ -35,7 +35,7 @@ try {
           const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
           const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
 
-          toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`)
+          toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
 
           break;
         case 'Finished':
@@ -44,12 +44,12 @@ try {
       }
     });
 
-    toaster.set(`Update finished downloading. Please click here to install.`)
+    toaster.set(`Update finished downloading. Please click here to install.`);
     toaster.click = async (e) => {
-      await update.install()
-      toaster.click = async (e) => true
+      await update.install();
+      toaster.click = async (e) => true;
       return false;
-    }
+    };
   }
 } catch (e) {
   console.error(e);
@@ -61,7 +61,7 @@ tippy.setDefaultProps({
   interactive: true,
   maxWidth: 250,
   arrow: roundArrow
-})
+});
 </script>
 
 <style lang="scss">

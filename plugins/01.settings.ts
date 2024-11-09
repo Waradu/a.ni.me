@@ -4,7 +4,6 @@ import {
   mkdir,
   readTextFile,
   writeTextFile,
-  remove,
 } from "@tauri-apps/plugin-fs";
 import type { SettingsStore } from "~/types/types";
 
@@ -14,6 +13,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   await load();
 
   settingsStore.$subscribe(async () => await settings.save());
+
+  nuxtApp.hook("app:mounted", () => {
+    if (import.meta.client && !settingsStore.finishedIntroduction) {
+      const route = useRoute();
+      if (!route.fullPath.startsWith("/setup/")) {
+        navigateTo("/setup/start");
+      }
+    }
+  });
 
   const settings = {
     async save() {
