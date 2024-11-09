@@ -132,7 +132,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   async function getAnimeWithRetry(
     id: number,
     retries = 10,
-    delay = 1000
+    delay = 1500
   ): Promise<any> {
     let attempt = 0;
 

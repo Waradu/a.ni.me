@@ -17,12 +17,15 @@ import JSConfetti from "js-confetti";
 
 const setupStore = useSetupStore();
 const settingsStore = useSettingsStore();
+const { $database } = useNuxtApp();
 
 onMounted(() => {
   if (setupStore.finished != true) {
     settingsStore.showNSFW = setupStore.showNSFW;
     settingsStore.tvAndMovieOnly = setupStore.tvAndMovieOnly;
     settingsStore.finishedIntroduction = true;
+
+    setupStore.selectedAnimes.forEach(async anime => await $database.add(anime));
 
     const jsConfetti = new JSConfetti();
     jsConfetti.addConfetti({
