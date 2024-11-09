@@ -30,6 +30,7 @@ export type SortBy =
 export type Order = "asc" | "desc";
 
 export interface SettingsStore {
+  finishedIntroduction: boolean;
   showNSFW: boolean;
   tvAndMovieOnly: boolean;
   sortBy: SortBy;

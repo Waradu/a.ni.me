@@ -2,6 +2,7 @@ import type { SettingsStore } from "~/types/types";
 
 export const useSettingsStore = defineStore("settingsStore", {
   state: (): SettingsStore => ({
+    finishedIntroduction: false,
     showNSFW: false,
     tvAndMovieOnly: true,
     sortBy: "date_added",
@@ -17,6 +18,4 @@ export const useSettingsStore = defineStore("settingsStore", {
     malImageProxy: "",
     jikanBaseUrl: "",
   }),
-
-  actions: {},
 });

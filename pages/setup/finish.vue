@@ -22,7 +22,8 @@ onMounted(() => {
   if (setupStore.finished != true) {
     settingsStore.showNSFW = setupStore.showNSFW;
     settingsStore.tvAndMovieOnly = setupStore.tvAndMovieOnly;
-    
+    settingsStore.finishedIntroduction = true;
+
     const jsConfetti = new JSConfetti();
     jsConfetti.addConfetti({
       confettiRadius: 6,
