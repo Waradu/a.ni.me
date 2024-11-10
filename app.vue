@@ -52,7 +52,7 @@ onMounted(async () => {
         }
       });
 
-      toaster.set(`Update finished downloading. Please click here to install.`);
+      toaster.set(`Update finished downloading. Please click here to install.`, "green");
       toaster.click = async (e) => {
         await update.install();
         toaster.click = async (e) => true;
@@ -60,7 +60,7 @@ onMounted(async () => {
       };
     }
   } catch (e) {
-    toaster.set(`An error occured while downloading the update. Please click here to manually download`);
+    toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
     toaster.click = async (e) => {
       await open("https://github.com/Waradu/a.ni.me/releases");
       return true;

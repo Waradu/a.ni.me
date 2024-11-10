@@ -5,11 +5,13 @@ export const useToaster = defineStore("toaster", {
     message: "",
     visible: false,
     click: async (e) => true,
+    color: "normal",
   }),
   actions: {
-    set(message: string) {
+    set(message: string, color: ToastStore["color"] = "normal") {
       this.visible = true;
       this.message = message;
+      this.color = color;
     },
   },
 });
