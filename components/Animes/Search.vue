@@ -45,7 +45,7 @@ const { $database, $emitter } = useNuxtApp();
 
 const titlebarStore = useTitlebarStore();
 
-const router = useRouter()
+const router = useRouter();
 
 const animes = ref<CombinedAnime[]>([]);
 
@@ -54,7 +54,7 @@ const savedAnimes = ref<CombinedAnime[]>([]);
 const savedAnimeIds = computed(() => {
   return savedAnimes.value.map((a) => {
     return a.data.mal_id;
-  })
+  });
 });
 
 const loading = ref(true);
@@ -66,23 +66,20 @@ const filteredAnimes = computed(() => {
     return a.data;
   }).filter((a) => {
     return (
-      !savedAnimeIds.value.includes(a.mal_id) && (a.title.toLowerCase().includes(term) ||
-        (a.title_english && a.title_english.toLowerCase().includes(term)) ||
-        (a.synopsis && a.synopsis.toLowerCase().includes(term))
-      )
-    )
-  })
-})
+      !savedAnimeIds.value.includes(a.mal_id)
+    );
+  });
+});
 
 const errorModal = ref<InstanceType<typeof Modal> | null>(null);
 
 const add = async (id: number) => {
-  await $database.add(id)
+  await $database.add(id);
   titlebarStore.setSearch("");
-  titlebarStore.setTitle("Animes")
-  await router.replace({ path: '/redirect' })
-  await router.replace({ path: '/' })
-}
+  titlebarStore.setTitle("Animes");
+  await router.replace({ path: '/redirect' });
+  await router.replace({ path: '/' });
+};
 
 var animeClient = new AnimeClient();
 
@@ -98,16 +95,16 @@ onMounted(async () => {
   $emitter.off('search');
 
   $emitter.on('search', async () => {
-    searchMAL()
+    searchMAL();
   });
 
   try {
-    await searchMAL()
+    await searchMAL();
     savedAnimes.value = await $database.animes();
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 
 const searchMAL = async () => {
   if (titlebarStore.getSearch() == "") {
@@ -118,9 +115,7 @@ const searchMAL = async () => {
     const res = await animeClient.getAnimeSearch({
       q: titlebarStore.getSearch(),
       sfw: !settingsStore.showNSFW,
-    })
-
-    titlebarStore.setSearch("")
+    });
 
     animes.value = res.data.map(a => {
       return {
@@ -133,18 +128,18 @@ const searchMAL = async () => {
         is_hidden: false,
         tags: "",
         data: a
-      }
+      };
     }).filter(a => {
       if (!settingsStore.tvAndMovieOnly) return true;
-      return a.data.type && a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona"
-    })
+      return a.data.type && a.data.type.toLowerCase() == "tv" || a.data.type.toLowerCase() == "movie" || a.data.type.toLowerCase() == "ona";
+    });
   } catch (error: any) {
     if (error.response && error.response.status === 429) {
       if (!errorModal.value) return;
-      errorModal.value.show()
+      errorModal.value.show();
     } else {
       console.error('An error occurred:', error.message);
     }
   }
-}
+};
 </script>
