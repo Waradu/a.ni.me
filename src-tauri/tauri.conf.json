@@ -16,15 +16,9 @@
         "height": 600,
         "resizable": true,
         "fullscreen": false,
-        "transparent": true,
         "decorations": false,
         "minHeight": 500,
-        "minWidth": 700,
-        "windowEffects": {
-          "effects": [
-            "micaDark"
-          ]
-        }
+        "minWidth": 700
       }
     ],
     "security": {
