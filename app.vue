@@ -55,6 +55,9 @@ onMounted(async () => {
     };
     console.error(e);
   }
+
+  // @ts-expect-error window does not have nuxtapp as child
+  window.na = useNuxtApp();
 });
 </script>
 

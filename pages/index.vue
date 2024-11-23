@@ -41,9 +41,6 @@ onMounted(async () => {
   $emitter.on('search', search);
 
   count.value = await $database.count();
-
-  // @ts-expect-error window does not have nuxtapp as child
-  window.na = useNuxtApp();
 });
 
 const search = () => {
