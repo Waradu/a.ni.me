@@ -40,6 +40,8 @@ const animeGraph = [
 ];
 
 export default defineNuxtPlugin((nuxtApp) => {
+  const perPage = 50;
+
   const api = {
     async anime(id: number): Promise<AnilistAnime> {
       const builder = new GraphQL("https://graphql.anilist.co", [
@@ -53,8 +55,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       return anime.Media;
     },
     async animes(ids: number[]): Promise<AnilistAnime[]> {
-      const perPage = 50;
-
       const bulk = async (page: number) => {
         const builder = new GraphQL("https://graphql.anilist.co", [
           field("Page")
@@ -91,6 +91,32 @@ export default defineNuxtPlugin((nuxtApp) => {
       await load();
 
       return animes;
+    },
+    async search(term: string): Promise<AnilistAnime[]> {
+      const builder = new GraphQL("https://graphql.anilist.co", [
+        field("Page")
+          .params([param("perPage", 50)])
+          .children([
+            field("pageInfo").children([
+              field("currentPage"),
+              field("hasNextPage"),
+              field("lastPage"),
+              field("perPage"),
+              field("total"),
+            ]),
+            field("media")
+              .params([
+                param("search", term, true),
+                param("type", "ANIME"),
+                param("format_in", ["TV", "TV_SHORT", "ONA"]),
+              ])
+              .children(animeGraph),
+          ]),
+      ]);
+
+      const animes = await builder.get<PagedAnilistResponse>();
+
+      return animes.Page.media;
     },
   };
 
