@@ -1,0 +1,2 @@
+ALTER TABLE animes
+ADD COLUMN migrated BOOL DEFAULT false;

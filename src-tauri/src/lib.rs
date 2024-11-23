@@ -19,13 +19,22 @@ fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let anime_table = include_str!("migrations/animes.sql");
+    let migrated = include_str!("migrations/migrated.sql");
 
-    let migrations = vec![Migration {
-        version: 1,
-        description: "create_animes_table",
-        sql: anime_table,
-        kind: MigrationKind::Up,
-    }];
+    let migrations = vec![
+        Migration {
+            version: 1,
+            description: "create_animes_table",
+            sql: anime_table,
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 2,
+            description: "add_migrated_field",
+            sql: migrated,
+            kind: MigrationKind::Up,
+        },
+    ];
 
     let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
