@@ -11,6 +11,8 @@ import { check } from '@tauri-apps/plugin-updater';
 import { open } from '@tauri-apps/plugin-shell';
 
 const toaster = useToaster();
+const titlebarStore = useTitlebarStore();
+titlebarStore.background = "";
 
 onMounted(async () => {
   try {
@@ -59,6 +61,10 @@ onMounted(async () => {
   // @ts-expect-error window does not have nuxtapp as child
   window.na = useNuxtApp();
 });
+
+watch(() => titlebarStore.background, (newBG) => {
+  document.documentElement.style.setProperty('--bg-image', newBG != "" ? `url(${newBG})` : "");
+});
 </script>
 
 <style lang="scss">
@@ -79,7 +85,24 @@ body,
   font-family: 'Segoe UI', sans-serif;
   color: white;
   overflow: hidden;
+}
+
+html {
   background-color: #222222;
+}
+
+body {
+  background-color: #222222;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.page {
+  backdrop-filter: blur(8px);
+  background-color: #222222ee;
 }
 
 .page {

@@ -116,5 +116,8 @@ onMounted(() => {
   width: 100%;
   user-select: none;
   transition: transform 0.2s ease;
+
+  max-width: 400px;
+  border-radius: 4px;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <main class="anime" :style="{ '--bg-image': anime?.bannerImage ? ('url(' + anime.bannerImage + ')') : '' }">
+  <main class="anime">
     <header v-if="anime">
       <div class="image" @click="showImage">
-        <img :src="image" alt="">
+        <img :src="image" alt="" />
       </div>
       <div class="text">
         <div class="name">
@@ -31,10 +31,15 @@
         </div>
         <div class="rating" v-if="databaseAnime">
           <template v-for="i in 5">
-            <StarFilledIcon class="icon star" v-if="databaseAnime.stars >= i" @mousedown.prevent="start(i)"
-              @mousemove.prevent="move(i)" @mouseup.prevent="stars(i); moving = false" />
-            <StarIcon class="icon" v-else @mousedown.prevent="start(i)" @mousemove.prevent="move(i)"
-              @mouseup.prevent="stars(i); moving = false" />
+            <StarFilledIcon class="icon star" v-if="databaseAnime.stars >= i" @mousedown.prevent="start()"
+              @mousemove.prevent="move(i)" @mouseup.prevent="
+                stars(i);
+              moving = false;
+              " />
+            <StarIcon class="icon" v-else @mousedown.prevent="start()" @mousemove.prevent="move(i)" @mouseup.prevent="
+              stars(i);
+            moving = false;
+            " />
           </template>
         </div>
         <div class="genres">
@@ -43,20 +48,13 @@
           </div>
         </div>
       </div>
-      <Modal header="Description" ref="synopsisModal" v-if="anime.description">
-        <p v-html="anime.description"></p>
-      </Modal>
-      <Modal header="Cover" ref="imageModal">
-        <div class="big-image" ref="coverTilt">
-          <ZoomImage :src="image" />
-        </div>
-        <p class="center">Click and Scroll to zoom</p>
-      </Modal>
     </header>
     <div class="details" v-if="anime">
       <div class="detail">
         <div class="text">Average Score</div>
-        <div class="data">{{ anime.averageScore ? anime.averageScore : "N/A" }}</div>
+        <div class="data">
+          {{ anime.averageScore ? anime.averageScore : "N/A" }}
+        </div>
       </div>
       <div class="detail">
         <div class="text">Mean Score</div>
@@ -64,24 +62,44 @@
       </div>
       <div class="detail">
         <div class="text">Favourites</div>
-        <div class="data">{{ anime.favourites ? anime.favourites : "N/A" }}</div>
+        <div class="data">
+          {{ anime.favourites ? anime.favourites : "N/A" }}
+        </div>
       </div>
       <div class="detail">
         <div class="text">Popularity</div>
-        <div class="data">{{ anime.popularity ? anime.popularity : "N/A" }}</div>
+        <div class="data">
+          {{ anime.popularity ? anime.popularity : "N/A" }}
+        </div>
       </div>
       <div class="detail">
         <div class="text">Season</div>
-        <div class="data">{{ anime.seasonYear ? anime.season ? anime.season + " " + anime.seasonYear : anime.seasonYear
-          : "N/A" }}</div>
+        <div class="data">
+          {{
+            anime.seasonYear
+              ? anime.season
+                ? anime.season + " " + anime.seasonYear
+                : anime.seasonYear
+              : "N/A"
+          }}
+        </div>
       </div>
     </div>
     <div class="characters" ref="charactersContainer">
       <div v-if="anime" class="character" v-for="character in anime.characters.nodes" :key="character.id">
-        <img :src="character.image.url ?? '/transparent.png'" :alt="character.name.full ?? 'N/A'">
+        <img :src="character.image.url ?? '/transparent.png'" :alt="character.name.full ?? 'N/A'" />
         <div class="name">{{ character.name.full }}</div>
       </div>
     </div>
+    <Modal header="Description" ref="synopsisModal" v-if="anime && anime.description">
+      <p v-html="anime.description"></p>
+    </Modal>
+    <Modal header="Cover" ref="imageModal">
+      <div class="big-image" ref="coverTilt">
+        <ZoomImage :src="image" />
+      </div>
+      <p class="center">Click and Scroll to zoom</p>
+    </Modal>
   </main>
 </template>
 
@@ -91,10 +109,10 @@ import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_fil
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import EyeIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_32_regular.svg";
 import EyeOffIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_off_32_regular.svg";
-import type { Modal } from '#build/components';
-import type { AnilistAnime } from '~/types/anilist';
-import type { DbAnime } from '~/types/database';
-import VanillaTilt from 'vanilla-tilt';
+import type { Modal } from "#build/components";
+import type { AnilistAnime } from "~/types/anilist";
+import type { DbAnime } from "~/types/database";
+import VanillaTilt from "vanilla-tilt";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -104,7 +122,7 @@ const { $database, $api } = useNuxtApp();
 const settingsStore = useSettingsStore();
 const titlebarStore = useTitlebarStore();
 
-titlebarStore.setBackLink('/');
+titlebarStore.setBackLink("/");
 
 const anime = ref<AnilistAnime>();
 const databaseAnime = ref<DbAnime | null>(null);
@@ -113,7 +131,10 @@ const moving = ref(false);
 const image = computed(() => {
   if (!anime.value) return "";
 
-  return (settingsStore.imageProxy ? settingsStore.imageProxy : '') + anime.value.coverImage.url;
+  return (
+    (settingsStore.imageProxy ? settingsStore.imageProxy : "") +
+    anime.value.coverImage.url
+  );
 });
 
 const hidden = () => {
@@ -139,7 +160,7 @@ const stars = async (stars: number) => {
   await $database.stars(id, stars);
 };
 
-const start = async (stars: number) => {
+const start = async () => {
   moving.value = true;
 };
 
@@ -180,7 +201,7 @@ const drag = (event: MouseEvent) => {
   if (!isDragging.value || !charactersContainer.value) return;
   event.preventDefault();
   const x = event.pageX - (charactersContainer.value.offsetLeft ?? 0);
-  const walk = (x - startX);
+  const walk = x - startX;
   charactersContainer.value.scrollLeft = scrollLeft - walk;
 };
 
@@ -191,34 +212,32 @@ const stopDrag = () => {
 
 onMounted(async () => {
   if (charactersContainer.value) {
-    charactersContainer.value.addEventListener('mousedown', startDrag);
-    charactersContainer.value.addEventListener('mousemove', drag);
-    window.addEventListener('mouseup', stopDrag);
+    charactersContainer.value.addEventListener("mousedown", startDrag);
+    charactersContainer.value.addEventListener("mousemove", drag);
+    window.addEventListener("mouseup", stopDrag);
   }
 
-  const getAnime = await $api.anime(id);
+  const getAnime = await $api.anime(Number(id));
   anime.value = getAnime;
 
-  if (!anime.value) {
-    return;
-  }
+  if (!anime.value) return;
 
+  const getDBAnime = await $database.anime(Number(id));
+  databaseAnime.value = getDBAnime || null;
 
-  const getDBAnime = await $database.anime(id);
+  titlebarStore.setTitle(
+    anime.value.title.english || anime.value.title.romaji || "N/A"
+  );
 
-  if (getDBAnime) {
-    databaseAnime.value = getDBAnime;
-  }
-
-  titlebarStore.setTitle(anime.value.title.english || anime.value.title.romaji || "N/A");
+  titlebarStore.background = anime.value.bannerImage ?? "";
 });
 
 onBeforeUnmount(() => {
   if (charactersContainer.value) {
-    charactersContainer.value.removeEventListener('mousedown', startDrag);
-    charactersContainer.value.removeEventListener('mousemove', drag);
+    charactersContainer.value.removeEventListener("mousedown", startDrag);
+    charactersContainer.value.removeEventListener("mousemove", drag);
   }
-  window.removeEventListener('mouseup', stopDrag);
+  window.removeEventListener("mouseup", stopDrag);
 });
 
 watch(coverTilt, (newValue) => {
@@ -227,7 +246,7 @@ watch(coverTilt, (newValue) => {
       max: 5,
       speed: 1000,
       glare: true,
-      "max-glare": 0.4
+      "max-glare": 0.4,
     });
   }
 });
@@ -240,27 +259,6 @@ main.anime {
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  background-image: var(--bg-image);
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  position: relative;
-
-  &::after {
-    content: "";
-    position: fixed;
-    display: block;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    backdrop-filter: blur(8px);
-    background-color: #222222dd;
-  }
-
-  >* {
-    z-index: 1;
-  }
 
   header {
     width: 100%;
@@ -273,6 +271,7 @@ main.anime {
     .image {
       aspect-ratio: 2 / 3;
       height: 300px;
+      min-width: 200px;
       display: grid;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
@@ -287,7 +286,7 @@ main.anime {
         box-shadow: 0px 5px 10px #00000010;
         grid-column: 1 / 2;
         grid-row: 1 / 2;
-        transition: .2s ease-in-out;
+        transition: 0.2s ease-in-out;
       }
 
       &:hover {
@@ -319,15 +318,17 @@ main.anime {
           max-width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
+          font-size: 28px;
         }
 
         .airing {
           font-size: 12px;
-          padding: 8px;
-          padding-inline: 14px;
+          padding: 6px;
+          padding-inline: 10px;
           border-radius: 40px;
           line-height: 1;
-          background-color: #4e6e4e;
+          background-color: #4e6e4e80;
+          border: 1px solid #4e6e4e;
           white-space: nowrap;
         }
 
@@ -343,7 +344,7 @@ main.anime {
             align-items: center;
             justify-content: center;
             background-color: transparent;
-            transition: .2s ease-in-out;
+            transition: 0.2s ease-in-out;
             border-radius: 100px;
             cursor: pointer;
             height: 36px;
@@ -351,7 +352,7 @@ main.anime {
 
             .icon {
               margin: 0;
-              opacity: .8;
+              opacity: 0.8;
               color: white;
               text-decoration: none;
               width: 20px;
@@ -373,7 +374,7 @@ main.anime {
             }
 
             &.disabled {
-              opacity: .5;
+              opacity: 0.5;
               pointer-events: none;
             }
 
@@ -381,7 +382,7 @@ main.anime {
               position: relative;
 
               .icon {
-                transition: .3s ease-in-out;
+                transition: 0.3s ease-in-out;
                 position: absolute;
 
                 scale: 1;
@@ -416,7 +417,7 @@ main.anime {
       .description {
         padding: 10px;
         padding-inline: 12px;
-        transition: .2s ease-in-out;
+        transition: 0.2s ease-in-out;
         border-radius: 8px;
         cursor: pointer;
         user-select: none;
@@ -439,7 +440,7 @@ main.anime {
 
           p {
             cursor: text;
-            width: max-content
+            width: max-content;
           }
 
           &:hover {
@@ -456,20 +457,20 @@ main.anime {
         .icon {
           padding: 4px;
           cursor: pointer;
-          transition: .1s ease-in-out;
+          transition: 0.1s ease-in-out;
 
           &.star {
-            color: #E4E073;
+            color: #e4e073;
           }
         }
 
         .icon:hover {
           scale: 1.1;
-          transition: .1s ease-in-out;
+          transition: 0.1s ease-in-out;
 
           &~* {
             .icon {
-              opacity: .2;
+              opacity: 0.2;
             }
           }
         }

@@ -4,6 +4,7 @@ export const useTitlebarStore = defineStore("titlebarStore", {
     backLink: "",
     search: "",
     count: 0,
+    background: "",
   }),
   actions: {
     getTitle() {
