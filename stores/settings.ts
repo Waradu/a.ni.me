@@ -15,7 +15,6 @@ export const useSettingsStore = defineStore("settingsStore", {
       },
       showHidden: false,
     },
-    malImageProxy: "",
-    jikanBaseUrl: "",
+    imageProxy: "",
   }),
 });

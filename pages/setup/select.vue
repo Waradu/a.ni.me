@@ -4,7 +4,7 @@
     <div class="animes">
       <label class="anime" v-for="anime in animes" :key="anime.mal_id" :for="anime.mal_id.toString()">
         <div class="cover">
-          <img :src="(settingsStore.malImageProxy ? settingsStore.malImageProxy : '') + anime.image"
+          <img :src="(settingsStore.imageProxy ?? '') + anime.image"
             onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
         </div>
         <span class="title" :title="anime.title ?? anime.title">{{ anime.title ?? anime.title }}</span>
