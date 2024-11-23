@@ -378,28 +378,32 @@ export type AnilistAnime = {
     romaji: string | null;
     english: string | null;
   };
+  status: MediaStatus | null;
   description: string | null;
   season: MediaSeason | null;
   seasonYear: number | null;
   episodes: number | null;
   coverImage: {
-    extraLarge: string | null;
+    url: string | null;
     color: string | null;
   };
   bannerImage: string | null;
   genres: Array<string>;
   averageScore: number | null;
+  meanScore: number | null;
+  favourites: number | null;
   popularity: number | null;
   characters: {
-    nodes: {
+    nodes: Array<{
+      id: number;
       name: {
         full: string | null;
       };
       age: string | null;
       image: {
-        large?: string | null;
+        url: string | null;
       };
-    };
+    }>;
   };
   isAdult: boolean | null;
   externalLinks: Array<{
