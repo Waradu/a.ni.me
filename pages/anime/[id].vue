@@ -7,6 +7,7 @@
         moving = false;
       }
     "
+    :style="{ '--anime-color': anime?.coverImage.color ?? '#00000000' }"
   >
     <header v-if="anime">
       <div class="image" @click="showImage">
@@ -391,6 +392,7 @@ main.anime {
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
+      border: 3px solid var(--anime-color);
 
       img {
         width: 100%;
