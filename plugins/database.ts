@@ -139,6 +139,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         console.error(e);
       }
     },
+    async watched(id: number, watched: boolean) {
+      try {
+        await db.execute(
+          `update animes set watched = ${watched} where id = ${id}`
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    },
   };
 
   return {

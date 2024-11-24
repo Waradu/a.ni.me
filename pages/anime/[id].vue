@@ -15,6 +15,11 @@
             {{ anime.title.english ?? anime.title.romaji ?? 'N/A' }}
           </h1>
           <div class="icons" v-if="databaseAnime">
+            <div class="wrapper eye" :title="databaseAnime.watched ? 'Watched' : 'Not watched'"
+              :class="{ hidden: databaseAnime.watched }" @click="watched" v-tippy="{ hideOnClick: false }">
+              <CloseIcon class="icon" />
+              <CheckmarkIcon class="icon off" />
+            </div>
             <div class="wrapper eye" title="hide / show anime from list" :class="{ hidden: databaseAnime.is_hidden }"
               @click="hidden" v-tippy>
               <EyeIcon class="icon" />
@@ -120,6 +125,8 @@ import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_fil
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import EyeIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_32_regular.svg";
 import EyeOffIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_off_32_regular.svg";
+import CheckmarkIcon from "~/node_modules/@fluentui/svg-icons/icons/checkmark_32_regular.svg";
+import CloseIcon from "~/assets/svg/close.svg";
 import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_regular.svg";
 import type { Modal } from "#components";
 import type { AnilistAnime } from "~/types/anilist";
@@ -154,6 +161,13 @@ const hidden = () => {
 
   databaseAnime.value.is_hidden = !databaseAnime.value.is_hidden;
   $database.hidden(databaseAnime.value.id, databaseAnime.value.is_hidden);
+};
+
+const watched = () => {
+  if (!databaseAnime.value) return;
+
+  databaseAnime.value.watched = !databaseAnime.value.watched;
+  $database.watched(databaseAnime.value.id, databaseAnime.value.watched);
 };
 
 const coverTilt = ref(null);
