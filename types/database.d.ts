@@ -1,4 +1,4 @@
-import type { AnilistAnime } from "~/types/anilist";
+import type { MinimalAnilistAnime } from "~/types/anilist";
 
 export interface DbAnime {
   id: number;
@@ -13,5 +13,5 @@ export interface DbAnime {
 }
 
 export interface Anime extends DbAnime {
-  data: AnilistAnime;
+  data: MinimalAnilistAnime;
 }

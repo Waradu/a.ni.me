@@ -420,3 +420,21 @@ export type AnilistAnimeID = {
   id: number;
   idMal: number;
 };
+
+export type MinimalAnilistAnime = {
+  id: number;
+  title: {
+    romaji: string | null;
+    english: string | null;
+  };
+  description: string | null;
+  season: MediaSeason | null;
+  seasonYear: number | null;
+  coverImage: {
+    url: string | null;
+    color: string | null;
+  };
+  averageScore: number | null;
+  favourites: number | null;
+  popularity: number | null;
+};

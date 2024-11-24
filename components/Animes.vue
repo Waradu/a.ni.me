@@ -21,13 +21,6 @@ const filteredAnimes = computed(() => {
     const title = a.data.title.english || a.data.title.romaji;
     const description = a.data.description;
 
-    a.data.characters.nodes.forEach(c => {
-      const name = c.name.full;
-      if (!name) return;
-      name.toLowerCase().includes(term);
-      return true;
-    });
-
     return (
       (title && title.toLowerCase().includes(term)) ||
       (description && description.toLowerCase().includes(term))

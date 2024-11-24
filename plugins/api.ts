@@ -4,6 +4,7 @@ import type {
   AnilistAnime,
   AnilistAnimeID,
   AnilistResponse,
+  MinimalAnilistAnime,
   PagedAnilistResponse,
 } from "~/types/anilist";
 
@@ -25,7 +26,6 @@ const animeGraph = [
   field("meanScore"),
   field("favourites"),
   field("popularity"),
-  field("meanScore"),
   field("favourites"),
   field("externalLinks").children([
     field("color"),
@@ -43,6 +43,19 @@ const animeGraph = [
       field("image").children([field("large", "url")]),
     ]),
   ]),
+];
+
+const minimalAnimeGraph = [
+  field("id"),
+  field("title").children([field("romaji"), field("english")]),
+  field("coverImage").children([field("extraLarge", "url"), field("color")]),
+  field("season"),
+  field("seasonYear"),
+  field("description").params([param("asHtml", false)]),
+  field("averageScore"),
+  field("favourites"),
+  field("popularity"),
+  field("favourites"),
 ];
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -73,7 +86,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       return data.Media;
     },
-    async animes(ids: number[]): Promise<AnilistAnime[]> {
+    async animes(ids: number[]): Promise<MinimalAnilistAnime[]> {
       const bulk = async (page: number) => {
         const builder = new GraphQL("https://graphql.anilist.co", [
           field("Page")
@@ -88,18 +101,18 @@ export default defineNuxtPlugin((nuxtApp) => {
               ]),
               field("media")
                 .params([param("id_in", ids), param("type", "ANIME")])
-                .children(animeGraph),
+                .children(minimalAnimeGraph),
             ]),
         ]);
 
-        const data = await this.get<PagedAnilistResponse<AnilistAnime>>(
+        const data = await this.get<PagedAnilistResponse<MinimalAnilistAnime>>(
           builder
         );
 
         return data.Page;
       };
 
-      let animes: AnilistAnime[] = [];
+      let animes: MinimalAnilistAnime[] = [];
 
       let page = 1;
 
@@ -129,7 +142,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       return animes;
     },
-    async search(term: string): Promise<AnilistAnime[]> {
+    async search(term: string): Promise<MinimalAnilistAnime[]> {
       const builder = new GraphQL("https://graphql.anilist.co", [
         field("Page")
           .params([param("perPage", 50)])
@@ -151,7 +164,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           ]),
       ]);
 
-      const animes = await this.get<PagedAnilistResponse<AnilistAnime>>(
+      const animes = await this.get<PagedAnilistResponse<MinimalAnilistAnime>>(
         builder
       );
 
