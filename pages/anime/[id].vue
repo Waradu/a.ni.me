@@ -17,6 +17,19 @@
           <h1 :title="anime.title.english ?? anime.title.romaji ?? 'N/A'">
             {{ anime.title.english ?? anime.title.romaji ?? "N/A" }}
           </h1>
+          <div class="links">
+            <div
+              class="link wrapper"
+              v-for="link in anime.externalLinks.slice(0, 4)"
+              :key="link.id"
+              :title="link.site"
+              v-tippy="{ interactive: false }"
+              @click="link.url ? open(link.url) : ''"
+              :style="{ '--color': link.color ?? '#ffffff20' }"
+            >
+              <img class="icon" :src="link.icon ?? '/globe.png'" alt="" />
+            </div>
+          </div>
           <div class="icons" v-if="databaseAnime">
             <div
               class="wrapper eye"
@@ -181,6 +194,7 @@ import type { Modal } from "#components";
 import type { AnilistAnime } from "~/types/anilist";
 import type { DbAnime } from "~/types/database";
 import VanillaTilt from "vanilla-tilt";
+import { open } from "@tauri-apps/plugin-shell";
 
 const route = useRoute();
 const id = Number(route.params.id);
@@ -437,89 +451,108 @@ main.anime {
           align-items: center;
           gap: 5px;
           margin-left: auto;
+        }
 
-          .wrapper {
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            transition: 0.2s ease-in-out;
-            border-radius: 100px;
-            cursor: pointer;
-            height: 36px;
-            width: 36px;
+        .wrapper {
+          padding: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: transparent;
+          transition: 0.2s ease-in-out;
+          border-radius: 100px;
+          cursor: pointer;
+          height: 36px;
+          width: 36px;
 
+          .icon {
+            margin: 0;
+            opacity: 0.8;
+            color: white;
+            text-decoration: none;
+            width: 20px;
+            height: 20px;
+            transition: color 0.2s ease-in-out;
+          }
+
+          &:hover {
+            background-color: #ffffff20;
+          }
+
+          &.red {
             .icon {
-              margin: 0;
-              opacity: 0.8;
-              color: white;
-              text-decoration: none;
-              width: 20px;
-              height: 20px;
-              transition: color 0.2s ease-in-out;
+              color: #ff9898;
             }
 
             &:hover {
-              background-color: #ffffff20;
+              background-color: #ff888820;
             }
+          }
 
-            &.red {
+          &.green {
+            &:hover {
               .icon {
-                color: #ff9898;
+                color: #98ff98;
               }
 
-              &:hover {
-                background-color: #ff888820;
+              background-color: #88ff8820;
+            }
+          }
+
+          &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+          }
+
+          &.eye {
+            position: relative;
+
+            .icon {
+              transition: 0.3s ease-in-out;
+              position: absolute;
+
+              scale: 1;
+              opacity: 0.8;
+              filter: blur(0);
+
+              &.off {
+                scale: 0;
+                opacity: 0;
+                filter: blur(10px);
               }
             }
 
-            &.green {
-              &:hover {
-                .icon {
-                  color: #98ff98;
-                }
-
-                background-color: #88ff8820;
-              }
-            }
-
-            &.disabled {
-              opacity: 0.5;
-              pointer-events: none;
-            }
-
-            &.eye {
-              position: relative;
-
+            &.hidden {
               .icon {
-                transition: 0.3s ease-in-out;
-                position: absolute;
-
-                scale: 1;
-                opacity: 0.8;
-                filter: blur(0);
+                scale: 0;
+                opacity: 0;
+                filter: blur(10px);
 
                 &.off {
-                  scale: 0;
-                  opacity: 0;
-                  filter: blur(10px);
+                  scale: 1;
+                  opacity: 0.8;
+                  filter: blur(0);
                 }
               }
+            }
+          }
+        }
 
-              &.hidden {
-                .icon {
-                  scale: 0;
-                  opacity: 0;
-                  filter: blur(10px);
+        .links {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          margin-left: 10px;
 
-                  &.off {
-                    scale: 1;
-                    opacity: 0.8;
-                    filter: blur(0);
-                  }
-                }
-              }
+          .wrapper {
+            &:hover {
+              background-color: var(--color);
+            }
+
+            .icon {
+              width: 16px;
+              height: 16px;
+              opacity: 1;
             }
           }
         }
@@ -568,10 +601,11 @@ main.anime {
 
         .close {
           color: #ff8888;
-          margin-left: 10px
+          margin-left: 10px;
         }
 
-        .icon, .close {
+        .icon,
+        .close {
           padding: 4px;
           cursor: pointer;
           transition: 0.1s ease-in-out;
@@ -585,7 +619,8 @@ main.anime {
           }
         }
 
-        .icon:hover, .close:hover {
+        .icon:hover,
+        .close:hover {
           scale: 1.1;
           transition: 0.1s ease-in-out;
 
@@ -596,7 +631,8 @@ main.anime {
           }
         }
 
-        .icon:active, .close:active {
+        .icon:active,
+        .close:active {
           scale: 0.9;
         }
       }
