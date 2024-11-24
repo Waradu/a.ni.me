@@ -28,6 +28,7 @@ await get();
 onMounted(() => {
   $emitter.off("search");
   $emitter.on("search", async () => {
+    if (titlebarStore.getSearch() == "") return navigateTo("/");
     await get();
   });
 });

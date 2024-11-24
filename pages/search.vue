@@ -14,12 +14,17 @@
         </Suspense>
       </div>
     </div>
+    <div class="footer">
+      Start typing in the titlebar and press enter to search
+    </div>
   </main>
 </template>
 
 <script lang="ts" setup>
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Search");
+
+const { $emitter } = useNuxtApp();
 </script>
 
 <style lang="scss">
@@ -43,6 +48,15 @@ main.search {
       width: 100%;
       height: max-content;
     }
+  }
+
+  .footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+    padding-bottom: 12px;
+    color: #ffffffaa;
   }
 }
 </style>
