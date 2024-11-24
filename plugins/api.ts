@@ -134,6 +134,44 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       return anime.Media.id;
     },
+    async convertAnimes(ids: number[]): Promise<number[]> {
+      const bulk = async (page: number) => {
+        const builder = new GraphQL("https://graphql.anilist.co", [
+          field("Page")
+            .params([param("perPage", perPage), param("page", page)])
+            .children([
+              field("pageInfo").children([
+                field("currentPage"),
+                field("hasNextPage"),
+                field("lastPage"),
+                field("perPage"),
+                field("total"),
+              ]),
+              field("media")
+                .params([param("idMal_in", ids), param("type", "ANIME")])
+                .children([field("id")]),
+            ]),
+        ]);
+
+        return (await builder.get<PagedAnilistResponse>()).Page;
+      };
+
+      let animes: AnilistAnime[] = [];
+
+      let page = 1;
+
+      const load = async () => {
+        const a = await bulk(page);
+        animes = [...animes, ...a.media];
+        page += 1;
+        if (page > 20 || page > Math.ceil(ids.length / perPage)) return;
+        if (a.pageInfo.hasNextPage) await load();
+      };
+
+      await load();
+
+      return animes;
+    },
   };
 
   return {
