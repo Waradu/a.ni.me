@@ -1,5 +1,5 @@
 <template>
-  <template v-for="anime in animes">
+  <template v-for="anime in filteredAnimes">
     <Anime :anime="anime" />
   </template>
 </template>
@@ -109,9 +109,7 @@ const filteredAnimes = computed(() => {
 
   titlebarStore.count = res.length;
 
-  return res.map(a => {
-    return a.data;
-  });
+  return res;
 });
 
 const animes = ref<Anime[]>([]);

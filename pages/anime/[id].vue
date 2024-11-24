@@ -1,5 +1,10 @@
 <template>
-  <main class="anime">
+  <main class="anime" @mouseup.prevent="
+  if (moving && databaseAnime) {
+    stars(databaseAnime.stars);
+    moving = false;
+  }
+    ">
     <header v-if="anime">
       <div class="image" @click="showImage">
         <img :src="image" alt="" />
@@ -32,14 +37,8 @@
         <div class="rating" v-if="databaseAnime">
           <template v-for="i in 5">
             <StarFilledIcon class="icon star" v-if="databaseAnime.stars >= i" @mousedown.prevent="start()"
-              @mousemove.prevent="move(i)" @mouseup.prevent="
-                stars(i);
-              moving = false;
-              " />
-            <StarIcon class="icon" v-else @mousedown.prevent="start()" @mousemove.prevent="move(i)" @mouseup.prevent="
-              stars(i);
-            moving = false;
-            " />
+              @mousemove.prevent="move(i)" />
+            <StarIcon class="icon" v-else @mousedown.prevent="start()" @mousemove.prevent="move(i)" />
           </template>
         </div>
         <div class="genres">
@@ -70,6 +69,12 @@
         <div class="text">Popularity</div>
         <div class="data">
           {{ anime.popularity ? anime.popularity : "N/A" }}
+        </div>
+      </div>
+      <div class="detail">
+        <div class="text">Episodes</div>
+        <div class="data">
+          {{ anime.episodes ? anime.episodes : "N/A" }}
         </div>
       </div>
       <div class="detail">
@@ -152,8 +157,6 @@ const move = (i: number) => {
 
 const stars = async (stars: number) => {
   if (!databaseAnime.value || !moving.value) return;
-
-  if (databaseAnime.value.stars == stars) return;
 
   databaseAnime.value.stars = stars;
 
@@ -522,6 +525,7 @@ main.anime {
         font-size: 24px;
         line-height: 32px;
         font-weight: 600;
+        width: max-content;
       }
     }
   }
