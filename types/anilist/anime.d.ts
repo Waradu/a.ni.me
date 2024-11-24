@@ -415,3 +415,7 @@ export type AnilistAnime = {
     icon: string | null;
   }>;
 };
+
+export type AnilistAnimeID = {
+  id: number;
+};

@@ -1,8 +1,8 @@
 import { type AnilistAnime } from "./anime";
 export * from "./anime";
 
-export interface AnilistResponse {
-  Media: AnilistAnime;
+export interface AnilistResponse<T> {
+  Media: T;
 }
 
 export interface PagedAnilistResponse {

@@ -1,6 +1,7 @@
 import { GraphQL, field, param } from "wrdu-graphql";
 import type {
   AnilistAnime,
+  AnilistAnimeID,
   AnilistResponse,
   PagedAnilistResponse,
 } from "~/types/anilist";
@@ -54,7 +55,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           .children(animeGraph),
       ]);
 
-      const anime = await builder.get<AnilistResponse>();
+      const anime = await builder.get<AnilistResponse<AnilistAnime>>();
 
       return anime.Media;
     },
@@ -121,6 +122,17 @@ export default defineNuxtPlugin((nuxtApp) => {
       const animes = await builder.get<PagedAnilistResponse>();
 
       return animes.Page.media;
+    },
+    async convertAnime(id: number): Promise<number> {
+      const builder = new GraphQL("https://graphql.anilist.co", [
+        field("Media")
+          .params([param("idMal", id), param("type", "ANIME")])
+          .children([field("id")]),
+      ]);
+
+      const anime = await builder.get<AnilistResponse<AnilistAnimeID>>();
+
+      return anime.Media.id;
     },
   };
 

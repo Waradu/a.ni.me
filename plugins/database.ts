@@ -36,6 +36,17 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         if (!anime[0]) return null;
 
+        if (anime[0].migrated) return anime[0];
+
+        const { $api } = useNuxtApp();
+
+        const newId = await $api.convertAnime(id);
+
+        await db.execute(
+          `update animes set id = ${newId}, migrated = true where id = ${id}`
+        );
+        anime[0].id = newId;
+
         return anime[0];
       } catch (e) {
         console.error(e);
