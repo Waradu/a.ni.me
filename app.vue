@@ -141,19 +141,15 @@ main {
 
 ::-webkit-scrollbar-thumb {
   background: #bebebe40;
-  border: 4px solid transparent;
-  border-radius: 10px;
+  border-right: 4px solid transparent;
+  border-radius: 3px 6px 6px 3px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  border-right: 4px solid transparent;
   background: #bebebe60;
-  border: 2px solid transparent;
   background-clip: padding-box;
-}
-
-::-webkit-scrollbar:hover {
-  width: 10px;
 }
 
 h1 {

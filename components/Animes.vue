@@ -1,7 +1,9 @@
 <template>
-  <template v-for="anime in filteredAnimes">
-    <Anime :anime="anime" />
-  </template>
+  <TransitionGroup name="fade">
+    <template v-for="anime in filteredAnimes" :key="anime.id">
+      <Anime :anime="anime" />
+    </template>
+  </TransitionGroup>
 </template>
 
 <script lang="ts" setup>
@@ -18,6 +20,13 @@ const filteredAnimes = computed(() => {
   var res = animes.value.filter((a) => {
     const title = a.data.title.english || a.data.title.romaji;
     const description = a.data.description;
+
+    a.data.characters.nodes.forEach(c => {
+      const name = c.name.full;
+      if (!name) return;
+      name.toLowerCase().includes(term);
+      return true;
+    });
 
     return (
       (title && title.toLowerCase().includes(term)) ||
@@ -117,4 +126,25 @@ const animes = ref<Anime[]>([]);
 animes.value = await $animes.animes();
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.2s ease-in-out;
+}
+
+.fade-leave-active {
+  transition: all 0.1s ease-in-out;
+  opacity: 0;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  scale: .8;
+}
+
+.fade-leave-active {
+  position: fixed;
+}
+</style>

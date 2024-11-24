@@ -14,9 +14,6 @@
           <h1 :title="anime.title.english ?? anime.title.romaji ?? 'N/A'">
             {{ anime.title.english ?? anime.title.romaji ?? 'N/A' }}
           </h1>
-          <div class="airing">
-            {{ anime.status }}
-          </div>
           <div class="icons" v-if="databaseAnime">
             <div class="wrapper eye" title="hide / show anime from list" :class="{ hidden: databaseAnime.is_hidden }"
               @click="hidden" v-tippy>
@@ -55,14 +52,18 @@
     </header>
     <div class="details" v-if="anime">
       <div class="detail">
+        <div class="text">Age Rating</div>
+        <div class="data">{{ anime.isAdult ? "Mature" : "General" }}</div>
+      </div>
+      <div class="detail">
+        <div class="text">Status</div>
+        <div class="data">{{ anime.status ? anime.status : "N/A" }}</div>
+      </div>
+      <div class="detail">
         <div class="text">Average Score</div>
         <div class="data">
           {{ anime.averageScore ? anime.averageScore : "N/A" }}
         </div>
-      </div>
-      <div class="detail">
-        <div class="text">Mean Score</div>
-        <div class="data">{{ anime.meanScore ? anime.meanScore : "N/A" }}</div>
       </div>
       <div class="detail">
         <div class="text">Favourites</div>
@@ -540,7 +541,9 @@ main.anime {
     padding-inline: 80px;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
     width: 100%;
+    flex-wrap: wrap;
 
     .detail {
       display: flex;
@@ -556,7 +559,7 @@ main.anime {
       }
 
       .data {
-        font-size: 24px;
+        font-size: 22px;
         line-height: 32px;
         font-weight: 600;
         width: max-content;
@@ -587,14 +590,15 @@ main.anime {
       justify-content: center;
       flex-direction: column;
       gap: 5px;
-      min-width: 150px;
-      max-width: 150px;
       align-items: center;
       text-align: center;
 
       img {
-        width: 100%;
+        width: 180px;
+        height: 250px;
         border-radius: 8px;
+        overflow: hidden;
+        object-fit: cover;
       }
     }
 

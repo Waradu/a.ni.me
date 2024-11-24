@@ -23,7 +23,7 @@ const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes");
 titlebarStore.setBackLink("");
 
-const { $emitter, $database } = useNuxtApp();
+const { $database } = useNuxtApp();
 
 const searching = ref(false);
 const count = ref(0);
@@ -36,23 +36,8 @@ keyboard.up("Escape", async () => {
 });
 
 onMounted(async () => {
-  $emitter.off('search');
-
-  $emitter.on('search', search);
-
   count.value = await $database.count();
 });
-
-const search = () => {
-  if (titlebarStore.getSearch().length < 1) {
-    titlebarStore.setTitle("Animes");
-    searching.value = false;
-    return;
-  };
-
-  searching.value = true;
-  titlebarStore.setTitle("Searching");
-};
 
 onBeforeUnmount(() => {
   keyboard.stop();
@@ -73,6 +58,7 @@ main.index {
     .grid {
       padding: 12px;
       padding-top: 0px;
+      padding-right: 12px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 12px;

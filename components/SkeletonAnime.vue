@@ -1,7 +1,6 @@
 <template>
   <div class="skeleton-card">
     <NuxtLink class="image" @click.prevent="">
-      <OpenIcon class="open" />
       <div class="cover">
       </div>
     </NuxtLink>

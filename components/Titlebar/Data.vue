@@ -1,8 +1,7 @@
 <template>
   <div class="data disableOnModal" data-tauri-drag-region>
     <div class="icons" data-tauri-drag-region>
-      <NuxtLink class="wrapper" :to="titlebarStore.getBackLink()" v-if="mounted && titlebarStore.getBackLink() != ''"
-        @click.prevent="router.back()">
+      <NuxtLink class="wrapper" @click.prevent="router.back()">
         <ArrowBackIcon class="icon" />
       </NuxtLink>
       <NuxtLink :key="route.fullPath" class="wrapper" to="/" @click.prevent="navigateHome">
