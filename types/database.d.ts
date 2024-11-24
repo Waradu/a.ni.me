@@ -1,4 +1,4 @@
-import { Anime as AnilistAnime } from "@tdanks2000/anilist-wrapper";
+import type { AnilistAnime } from "~/types/anilist";
 
 export interface DbAnime {
   id: number;

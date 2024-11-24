@@ -6,8 +6,8 @@
       </div>
       <div class="text">
         <div class="name">
-          <h1 :title="anime.title.english ?? anime.title.romaji ?? ''">
-            {{ anime.title.english || anime.title.romaji }}
+          <h1 :title="anime.title.english ?? anime.title.romaji ?? 'N/A'">
+            {{ anime.title.english ?? anime.title.romaji ?? 'N/A' }}
           </h1>
           <div class="airing">
             {{ anime.status }}
@@ -210,15 +210,15 @@ const stopDrag = () => {
   charactersContainer.value?.classList.remove("dragging");
 };
 
+const getAnime = await $api.anime(Number(id));
+anime.value = getAnime;
+
 onMounted(async () => {
   if (charactersContainer.value) {
     charactersContainer.value.addEventListener("mousedown", startDrag);
     charactersContainer.value.addEventListener("mousemove", drag);
     window.addEventListener("mouseup", stopDrag);
   }
-
-  const getAnime = await $api.anime(Number(id));
-  anime.value = getAnime;
 
   if (!anime.value) return;
 
@@ -229,7 +229,7 @@ onMounted(async () => {
     anime.value.title.english || anime.value.title.romaji || "N/A"
   );
 
-  titlebarStore.background = anime.value.bannerImage ?? "";
+  document.documentElement.style.setProperty('--bg-image', anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : "");
 });
 
 onBeforeUnmount(() => {

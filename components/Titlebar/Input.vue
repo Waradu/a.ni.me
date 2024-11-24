@@ -11,11 +11,17 @@ const titlebarStore = useTitlebarStore();
 const router = useRouter();
 const route = useRoute();
 
+const { $emitter } = useNuxtApp();
+
 const search = (event: Event) => {
   titlebarStore.setSearch((event.target as HTMLInputElement).value);
   if (route.path != '/') {
     router.replace({ path: '/' });
   }
+};
+
+const add = async (event: KeyboardEvent) => {
+  $emitter.emit('search');
 };
 
 onMounted(async () => {
@@ -42,6 +48,7 @@ onMounted(async () => {
     border-radius: 4px;
     background-color: transparent;
     color: #ffffffaa;
+    background-color: #22222240;
   }
 }
 </style>

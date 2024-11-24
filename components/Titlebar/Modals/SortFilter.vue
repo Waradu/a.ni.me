@@ -43,9 +43,9 @@ const sortByOptions: Item[] = [
   { name: "Date Added", value: "date_added" },
   { name: "Stars", value: "stars" },
   { name: "Name", value: "name" },
-  { name: "Score", value: "score" },
-  { name: "Favorites", value: "favorites" },
-  { name: "Year", value: "year" },
+  { name: "Score", value: "averageScore" },
+  { name: "Favourites", value: "favourites" },
+  { name: "Year", value: "seasonYear" },
 ];
 
 const orderOptions: Item[] = [

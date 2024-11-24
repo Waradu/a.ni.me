@@ -33,21 +33,30 @@ export default defineNuxtPlugin((nuxtApp) => {
     async animes() {
       const { $database, $api } = useNuxtApp();
 
-      const db_animes = await $database.animes();
+      const dbAnimes = await $database.animes();
 
-      if (db_animes.length == 0) return [];
+      if (dbAnimes.length == 0) return [];
 
       const ids: number[] = [];
 
-      db_animes.forEach((a) => ids.push(a.id));
+      dbAnimes.forEach((a) => ids.push(a.id));
 
-      let animes = await $api.animes(ids);
+      let anilistAnimes = await $api.animes(ids);
 
-      const notfound = ids.filter(
-        (id) => !animes.map((a) => a.id).includes(id)
-      );
+      const animes: Anime[] = [];
 
-      console.log(notfound);
+      dbAnimes.forEach((dba) => {
+        const anime = anilistAnimes.find((a) => dba.id == a.id);
+
+        if (!anime) return;
+
+        animes.push({
+          ...dba,
+          data: anime,
+        });
+      });
+
+      return animes;
     },
   };
 

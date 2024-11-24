@@ -4,9 +4,7 @@
       <div class="grid">
         <Suspense>
           <template #default>
-            <!-- <AnimesSearch v-if="searching" />
-            <AnimesSaved v-else /> -->
-            <div></div>
+            <Animes />
           </template>
           <template #fallback>
             <h3>Loading...</h3>
