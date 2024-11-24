@@ -117,7 +117,7 @@ body:has(main.anime)::before {
 
 .page {
   backdrop-filter: blur(6px);
-  background-color: #222222dd;
+  background-color: #222222ee;
 }
 
 .page {

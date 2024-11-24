@@ -19,12 +19,17 @@
           </div>
           <div class="icons" v-if="databaseAnime">
             <div class="wrapper eye" title="hide / show anime from list" :class="{ hidden: databaseAnime.is_hidden }"
-              @click="hidden">
+              @click="hidden" v-tippy>
               <EyeIcon class="icon" />
               <EyeOffIcon class="icon off" />
             </div>
-            <div class="wrapper red" @click="del">
+            <div class="wrapper red" @click="del" title="Delete anime from library" v-tippy>
               <DeleteIcon class="icon" />
+            </div>
+          </div>
+          <div class="icons" v-else>
+            <div class="wrapper green" @click="add" title="Add to library" v-tippy>
+              <AddIcon class="icon" />
             </div>
           </div>
         </div>
@@ -114,6 +119,7 @@ import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_fil
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import EyeIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_32_regular.svg";
 import EyeOffIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_off_32_regular.svg";
+import AddIcon from "~/node_modules/@fluentui/svg-icons/icons/add_32_regular.svg";
 import type { Modal } from "#components";
 import type { AnilistAnime } from "~/types/anilist";
 import type { DbAnime } from "~/types/database";
@@ -169,7 +175,13 @@ const start = async () => {
 
 const del = async () => {
   await $database.delete(id);
-  navigateTo("/");
+  databaseAnime.value = null;
+};
+
+const add = async () => {
+  await $database.add(id);
+  const getDBAnime = await $database.anime(Number(id));
+  databaseAnime.value = getDBAnime;
 };
 
 const synopsisModal = ref<InstanceType<typeof Modal> | null>(null);
@@ -311,6 +323,7 @@ main.anime {
     .text {
       width: 100%;
       padding: 20px;
+      padding-bottom: 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -369,6 +382,7 @@ main.anime {
               text-decoration: none;
               width: 20px;
               height: 20px;
+              transition: color .2s ease-in-out;
             }
 
             &:hover {
@@ -382,6 +396,16 @@ main.anime {
 
               &:hover {
                 background-color: #ff888820;
+              }
+            }
+
+            &.green {
+              &:hover {
+                .icon {
+                  color: #98ff98;
+                }
+
+                background-color: #88ff8820;
               }
             }
 
@@ -465,6 +489,7 @@ main.anime {
         margin-left: 8px;
         display: flex;
         font-size: 32px;
+        margin-top: auto;
 
         .icon {
           padding: 4px;
