@@ -38,7 +38,7 @@ defineProps<{
 
 <style lang="scss">
 .card {
-  max-width: 220px;
+  max-width: 260px;
   width: 1fr;
   display: flex;
   flex-direction: column;

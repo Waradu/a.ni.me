@@ -7,7 +7,9 @@
             <Animes />
           </template>
           <template #fallback>
-            <h3>Loading...</h3>
+            <template v-for="i in 40" :key="i">
+              <SkeletonAnime />
+            </template>
           </template>
         </Suspense>
       </div>
@@ -72,7 +74,7 @@ main.index {
       padding: 12px;
       padding-top: 0px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 12px;
       width: 100%;
       height: max-content;
