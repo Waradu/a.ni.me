@@ -1,10 +1,13 @@
 <template>
-  <main class="anime" @mouseup.prevent="
-  if (moving && databaseAnime) {
-    stars(databaseAnime.stars);
-    moving = false;
-  }
-    ">
+  <main
+    class="anime"
+    @mouseup.prevent="
+      if (moving && databaseAnime) {
+        stars(databaseAnime.stars);
+        moving = false;
+      }
+    "
+  >
     <header v-if="anime">
       <div class="image" @click="showImage">
         <img :src="image" alt="" />
@@ -12,30 +15,54 @@
       <div class="text">
         <div class="name">
           <h1 :title="anime.title.english ?? anime.title.romaji ?? 'N/A'">
-            {{ anime.title.english ?? anime.title.romaji ?? 'N/A' }}
+            {{ anime.title.english ?? anime.title.romaji ?? "N/A" }}
           </h1>
           <div class="icons" v-if="databaseAnime">
-            <div class="wrapper eye" :title="databaseAnime.watched ? 'Watched' : 'Not watched'"
-              :class="{ hidden: databaseAnime.watched }" @click="watched" v-tippy="{ hideOnClick: false }">
+            <div
+              class="wrapper eye"
+              :title="databaseAnime.watched ? 'Watched' : 'Not watched'"
+              :class="{ hidden: databaseAnime.watched }"
+              @click="watched"
+              v-tippy="{ hideOnClick: false }"
+            >
               <CloseIcon class="icon" />
               <CheckmarkIcon class="icon off" />
             </div>
-            <div class="wrapper eye" title="hide / show anime from list" :class="{ hidden: databaseAnime.is_hidden }"
-              @click="hidden" v-tippy>
+            <div
+              class="wrapper eye"
+              title="hide / show anime from list"
+              :class="{ hidden: databaseAnime.is_hidden }"
+              @click="hidden"
+              v-tippy
+            >
               <EyeIcon class="icon" />
               <EyeOffIcon class="icon off" />
             </div>
-            <div class="wrapper red" @click="del" title="Delete anime from library" v-tippy>
+            <div
+              class="wrapper red"
+              @click="del"
+              title="Delete anime from library"
+              v-tippy
+            >
               <DeleteIcon class="icon" />
             </div>
           </div>
           <div class="icons" v-else>
-            <div class="wrapper green" @click="add" title="Add to library" v-tippy>
+            <div
+              class="wrapper green"
+              @click="add"
+              title="Add to library"
+              v-tippy
+            >
               <AddIcon class="icon" />
             </div>
           </div>
         </div>
-        <div class="description" @click="showDescription" v-if="anime.description">
+        <div
+          class="description"
+          @click="showDescription"
+          v-if="anime.description"
+        >
           <p v-html="anime.description"></p>
         </div>
         <div class="description disabled" v-else>
@@ -43,10 +70,20 @@
         </div>
         <div class="rating" v-if="databaseAnime">
           <template v-for="i in 5">
-            <StarFilledIcon class="icon star" v-if="databaseAnime.stars >= i" @mousedown.prevent="start()"
-              @mousemove.prevent="move(i)" />
-            <StarIcon class="icon" v-else @mousedown.prevent="start()" @mousemove.prevent="move(i)" />
+            <StarFilledIcon
+              class="icon star"
+              v-if="databaseAnime.stars >= i"
+              @mousedown.prevent="start(i)"
+              @mousemove.prevent="move(i)"
+            />
+            <StarIcon
+              class="icon"
+              v-else
+              @mousedown.prevent="start(i)"
+              @mousemove.prevent="move(i)"
+            />
           </template>
+          <CloseIcon class="close" @click="set(0)" />
         </div>
         <div class="genres">
           <div class="genre" v-for="genre in anime.genres">
@@ -102,12 +139,24 @@
       </div>
     </div>
     <div class="characters" ref="charactersContainer">
-      <div v-if="anime" class="character" v-for="character in anime.characters.nodes" :key="character.id">
-        <img :src="character.image.url ?? '/transparent.png'" :alt="character.name.full ?? 'N/A'" />
+      <div
+        v-if="anime"
+        class="character"
+        v-for="character in anime.characters.nodes"
+        :key="character.id"
+      >
+        <img
+          :src="character.image.url ?? '/transparent.png'"
+          :alt="character.name.full ?? 'N/A'"
+        />
         <div class="name">{{ character.name.full }}</div>
       </div>
     </div>
-    <Modal header="Description" ref="synopsisModal" v-if="anime && anime.description">
+    <Modal
+      header="Description"
+      ref="synopsisModal"
+      v-if="anime && anime.description"
+    >
       <p v-html="anime.description"></p>
     </Modal>
     <Modal header="Cover" ref="imageModal">
@@ -175,15 +224,25 @@ const move = (i: number) => {
 };
 
 const stars = async (stars: number) => {
-  if (!databaseAnime.value || !moving.value) return;
+  if (!moving.value) return;
+
+  await set(stars);
+};
+
+const set = async (stars: number) => {
+  if (!databaseAnime.value) return;
 
   databaseAnime.value.stars = stars;
 
   await $database.stars(id, stars);
 };
 
-const start = async () => {
+const start = async (stars: number) => {
   moving.value = true;
+
+  if (!databaseAnime.value) return;
+
+  databaseAnime.value.stars = stars;
 };
 
 const del = async () => {
@@ -249,7 +308,10 @@ if (getAnime) {
 }
 
 if (anime.value) {
-  document.documentElement.style.setProperty('--bg-image', anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : "");
+  document.documentElement.style.setProperty(
+    "--bg-image",
+    anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : ""
+  );
 }
 
 onMounted(async () => {
@@ -395,7 +457,7 @@ main.anime {
               text-decoration: none;
               width: 20px;
               height: 20px;
-              transition: color .2s ease-in-out;
+              transition: color 0.2s ease-in-out;
             }
 
             &:hover {
@@ -504,7 +566,12 @@ main.anime {
         font-size: 32px;
         margin-top: auto;
 
-        .icon {
+        .close {
+          color: #ff8888;
+          margin-left: 10px
+        }
+
+        .icon, .close {
           padding: 4px;
           cursor: pointer;
           transition: 0.1s ease-in-out;
@@ -512,20 +579,24 @@ main.anime {
           &.star {
             color: #e4e073;
           }
+
+          &:has(~ .close:hover) {
+            opacity: 0.6;
+          }
         }
 
-        .icon:hover {
+        .icon:hover, .close:hover {
           scale: 1.1;
           transition: 0.1s ease-in-out;
 
-          &~* {
-            .icon {
-              opacity: 0.2;
+          &.close ~ * {
+            &.icon {
+              opacity: 0.6;
             }
           }
         }
 
-        .icon:active {
+        .icon:active, .close:active {
           scale: 0.9;
         }
       }
