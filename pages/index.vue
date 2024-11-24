@@ -7,7 +7,7 @@
             <Animes />
           </template>
           <template #fallback>
-            <template v-for="i in 40" :key="i">
+            <template v-for="i in 100" :key="i">
               <SkeletonAnime />
             </template>
           </template>
@@ -35,10 +35,6 @@ keyboard.up("Escape", async () => {
   titlebarStore.setTitle("Animes");
 });
 
-onMounted(async () => {
-  count.value = await $database.count();
-});
-
 onBeforeUnmount(() => {
   keyboard.stop();
 });
@@ -60,7 +56,7 @@ main.index {
       padding-top: 0px;
       padding-right: 12px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 12px;
       width: 100%;
       height: max-content;

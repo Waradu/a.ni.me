@@ -1,3 +1,4 @@
+import gql from "graphql-tag";
 import { GraphQL, field, param } from "wrdu-graphql";
 import type {
   AnilistAnime,
@@ -48,6 +49,19 @@ export default defineNuxtPlugin((nuxtApp) => {
   const perPage = 50;
 
   const api = {
+    async get<T>(builder: GraphQL) {
+      const query = gql`
+        ${builder.string("query")}
+      `;
+
+      const { data, errors } = await (window as any).$apolloClient.query({
+        query,
+      });
+
+      if (errors) throw new Error(errors[0].message);
+
+      return data as T;
+    },
     async anime(id: number): Promise<AnilistAnime> {
       const builder = new GraphQL("https://graphql.anilist.co", [
         field("Media")
@@ -55,8 +69,9 @@ export default defineNuxtPlugin((nuxtApp) => {
           .children(animeGraph),
       ]);
 
-      const anime = await builder.get<AnilistResponse<AnilistAnime>>();
-      return anime.Media;
+      const data = await this.get<AnilistResponse<AnilistAnime>>(builder);
+
+      return data.Media;
     },
     async animes(ids: number[]): Promise<AnilistAnime[]> {
       const bulk = async (page: number) => {
@@ -77,9 +92,11 @@ export default defineNuxtPlugin((nuxtApp) => {
             ]),
         ]);
 
-        const result = await builder.get<PagedAnilistResponse<AnilistAnime>>();
+        const data = await this.get<PagedAnilistResponse<AnilistAnime>>(
+          builder
+        );
 
-        return result.Page;
+        return data.Page;
       };
 
       let animes: AnilistAnime[] = [];
@@ -134,7 +151,9 @@ export default defineNuxtPlugin((nuxtApp) => {
           ]),
       ]);
 
-      const animes = await builder.get<PagedAnilistResponse<AnilistAnime>>();
+      const animes = await this.get<PagedAnilistResponse<AnilistAnime>>(
+        builder
+      );
 
       return animes.Page.media;
     },
@@ -145,7 +164,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           .children([field("id"), field("idMal")]),
       ]);
 
-      const anime = await builder.get<AnilistResponse<AnilistAnimeID>>();
+      const anime = await this.get<AnilistResponse<AnilistAnimeID>>(builder);
 
       return anime.Media.id;
     },
@@ -168,7 +187,8 @@ export default defineNuxtPlugin((nuxtApp) => {
             ]),
         ]);
 
-        return (await builder.get<PagedAnilistResponse<AnilistAnimeID>>()).Page;
+        return (await this.get<PagedAnilistResponse<AnilistAnimeID>>(builder))
+          .Page;
       };
 
       let animes: AnilistAnimeID[] = [];
