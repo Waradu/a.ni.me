@@ -1,10 +1,10 @@
 <template>
-  <main class="index">
+  <main class="search">
     <div class="grid-container">
       <div class="grid">
         <Suspense>
           <template #default>
-            <Animes />
+            <AnimeSearch />
           </template>
           <template #fallback>
             <template v-for="i in 100" :key="i">
@@ -14,25 +14,21 @@
         </Suspense>
       </div>
     </div>
-    <div class="footer">{{ titlebarStore.count }}/{{ count }} animes shown</div>
+    <div class="footer">
+      Start typing in the titlebar and press enter to search
+    </div>
   </main>
 </template>
 
 <script lang="ts" setup>
 const titlebarStore = useTitlebarStore();
-titlebarStore.setTitle("Animes");
+titlebarStore.setTitle("Search");
 
-const { $database } = useNuxtApp();
-
-const count = ref(0);
-
-onMounted(async () => {
-  count.value = await $database.count();
-});
+const { $emitter } = useNuxtApp();
 </script>
 
 <style lang="scss">
-main.index {
+main.search {
   display: flex;
   flex-direction: column;
   justify-content: space-between;

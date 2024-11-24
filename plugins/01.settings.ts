@@ -5,7 +5,7 @@ import {
   readTextFile,
   writeTextFile,
 } from "@tauri-apps/plugin-fs";
-import type { SettingsStore } from "~/types/types";
+import type { SettingsStore } from "~/types/settings";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const settingsStore = useSettingsStore();

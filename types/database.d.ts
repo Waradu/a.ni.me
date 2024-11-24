@@ -1,4 +1,4 @@
-import type { Anime } from "@tutkli/jikan-ts";
+import type { MinimalAnilistAnime } from "~/types/anilist";
 
 export interface DbAnime {
   id: number;
@@ -9,8 +9,9 @@ export interface DbAnime {
   watched: boolean;
   is_hidden: boolean;
   tags: string;
+  migrated: boolean;
 }
 
-export interface CombinedAnime extends DbAnime {
-  data: Anime
+export interface Anime extends DbAnime {
+  data: MinimalAnilistAnime;
 }

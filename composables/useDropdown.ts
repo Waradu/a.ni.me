@@ -1,4 +1,4 @@
-import type { ItemType } from "~/types/types";
+import type { ItemType } from "~/types/dropdown";
 
 export function useDropdown<T extends ItemType>(
   options: { name: string; value: T }[],

@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import ArrowIcon from "~/assets/svg/arrow.svg";
-import type { Item } from "~/types/types";
+import type { Item } from "~/types/dropdown";
 
 const open = ref(false);
 const dropdown = ref<HTMLElement | null>(null);

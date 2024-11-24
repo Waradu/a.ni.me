@@ -1,46 +1,14 @@
 import Database from "@tauri-apps/plugin-sql";
-import type { CombinedAnime, DbAnime } from "~/types/db";
+import type { DbAnime } from "~/types/database";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  //@ts-ignore
-  if (nuxtApp.$router.currentRoute.value.path === "/confetti") {
-    return {};
-  }
-
   let db: Database;
 
   if (import.meta.client) {
     db = await Database.load("sqlite:a.ni.me.db");
   }
 
-  const { $cache } = useNuxtApp();
-
   const database = {
-    async animes(cachedOnly: boolean = false): Promise<CombinedAnime[]> {
-      try {
-        const animes = await db.select<DbAnime[]>("select * from animes");
-
-        if (!animes) return [];
-
-        return await Promise.all(
-          animes.map(async (anime) => {
-            const data = await $cache.get(anime.id, { cachedOnly: cachedOnly });
-
-            if (data === null) {
-              return null;
-            }
-
-            return {
-              ...anime,
-              data: data,
-            };
-          })
-        ).then((results) => results.filter((anime) => anime !== null));
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
-    },
     async count() {
       const animes = await db.select<DbAnime[]>("select * from animes");
 
@@ -48,11 +16,40 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
       return animes.length;
     },
-    async animesPlain() {
+    async animes() {
       try {
         const animes = await db.select<DbAnime[]>("select * from animes");
 
         if (!animes) return [];
+
+        const notMigratedIds = animes
+          .filter((a) => !a.migrated)
+          .map((a) => a.id);
+
+        if (notMigratedIds.length == 0) return animes;
+
+        const { $api } = useNuxtApp();
+
+        const converted = await $api.convertAnimes([...notMigratedIds]);
+
+        notMigratedIds.forEach(async (id, i) => {
+          if (converted[i] != 0) {
+            animes[i].id = converted[i];
+
+            await db.execute(
+              `update animes set id = ${converted[i]}, migrated = true where id = ${id}`
+            );
+          } else {
+            try {
+              await $api.anime(id);
+              await db.execute(
+                `update animes set migrated = true where id = ${id}`
+              );
+            } catch (e) {
+              this.delete(id);
+            }
+          }
+        });
 
         return animes;
       } catch (e) {
@@ -60,20 +57,26 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         return [];
       }
     },
-    async anime(id: number): Promise<CombinedAnime | null> {
+    async anime(id: number): Promise<DbAnime | null> {
       try {
-        const animes = await db.select<DbAnime[]>(
+        const anime = await db.select<DbAnime[]>(
           `select * from animes where id = ${id}`
         );
 
-        const anime = await $cache.get(id);
+        if (!anime[0]) return null;
 
-        if (!anime) return null;
+        if (anime[0].migrated) return anime[0];
 
-        return {
-          ...animes[0],
-          data: anime,
-        };
+        const { $api } = useNuxtApp();
+
+        const newId = await $api.convertAnime(id);
+
+        await db.execute(
+          `update animes set id = ${newId}, migrated = true where id = ${id}`
+        );
+        anime[0].id = newId;
+
+        return anime[0];
       } catch (e) {
         console.error(e);
         return null;
@@ -131,6 +134,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       try {
         await db.execute(
           `update animes set is_hidden = ${hidden} where id = ${id}`
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async watched(id: number, watched: boolean) {
+      try {
+        await db.execute(
+          `update animes set watched = ${watched} where id = ${id}`
         );
       } catch (e) {
         console.error(e);

@@ -3,70 +3,64 @@
   <div class="page">
     <NuxtPage />
   </div>
-  <Toasts />
+  <Toaster />
 </template>
 
 <script lang="ts" setup>
-import tippy, { roundArrow } from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/animations/perspective.css';
-import 'tippy.js/dist/svg-arrow.css';
 import { check } from '@tauri-apps/plugin-updater';
-import { Command, open } from '@tauri-apps/plugin-shell';
+import { open } from '@tauri-apps/plugin-shell';
 
 const toaster = useToaster();
-
-tippy.setDefaultProps({
-  animation: "perspective",
-  content: (reference) => reference.getAttribute('title') ?? "",
-  interactive: true,
-  maxWidth: 250,
-  arrow: roundArrow
-});
+const titlebarStore = useTitlebarStore();
 
 onMounted(async () => {
-  try {
-    const update = await check();
-    if (update) {
-      toaster.set(`A new version just released: ${update.version}. downloading now...`);
-      let downloaded = 0;
-      let contentLength = 0;
+  if (!import.meta.dev) {
+    try {
+      const update = await check();
+      if (update) {
+        toaster.set(`A new version just released: ${update.version}. downloading now...`);
+        let downloaded = 0;
+        let contentLength = 0;
 
-      await update.download((event) => {
-        switch (event.event) {
-          case 'Started':
-            contentLength = event.data.contentLength || -1;
-            console.log(`started downloading ${event.data.contentLength} bytes`);
-            break;
-          case 'Progress':
-            downloaded += event.data.chunkLength;
-            const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
-            const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
+        await update.download((event) => {
+          switch (event.event) {
+            case 'Started':
+              contentLength = event.data.contentLength || -1;
+              console.log(`started downloading ${event.data.contentLength} bytes`);
+              break;
+            case 'Progress':
+              downloaded += event.data.chunkLength;
+              const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
+              const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
 
-            toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
+              toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
 
-            break;
-          case 'Finished':
-            console.log('download finished');
-            break;
-        }
-      });
+              break;
+            case 'Finished':
+              console.log('download finished');
+              break;
+          }
+        });
 
-      toaster.set(`Update finished downloading. Please click here to install.`, "green");
+        toaster.set(`Update finished downloading. Please click here to install.`, "green");
+        toaster.click = async (e) => {
+          await update.install();
+          toaster.click = async (e) => true;
+          return false;
+        };
+      }
+    } catch (e) {
+      toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
       toaster.click = async (e) => {
-        await update.install();
-        toaster.click = async (e) => true;
-        return false;
+        await open("https://github.com/Waradu/a.ni.me/releases");
+        return true;
       };
+      console.error(e);
     }
-  } catch (e) {
-    toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
-    toaster.click = async (e) => {
-      await open("https://github.com/Waradu/a.ni.me/releases");
-      return true;
-    };
-    console.error(e);
   }
+
+  // @ts-expect-error window does not have nuxtapp as child
+  window.na = useNuxtApp();
 });
 </script>
 
@@ -90,6 +84,42 @@ body,
   overflow: hidden;
 }
 
+html {
+  background-color: #222222;
+}
+
+body {
+  background-color: #222222;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: background-color 0.2s;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  background-image: var(--bg-image);
+}
+
+body:has(main.anime)::before {
+  opacity: 1;
+}
+
+.page {
+  backdrop-filter: blur(6px);
+  background-color: #222222ee;
+}
+
 .page {
   display: flex;
   justify-content: center;
@@ -111,31 +141,33 @@ main {
 
 ::-webkit-scrollbar-thumb {
   background: #bebebe40;
-  border: 4px solid transparent;
-  border-radius: 10px;
+  border-right: 4px solid transparent;
+  border-radius: 3px 6px 6px 3px;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
+  border-right: 4px solid transparent;
   background: #bebebe60;
-  border: 2px solid transparent;
   background-clip: padding-box;
 }
 
-::-webkit-scrollbar:hover {
-  width: 10px;
-}
-
 h1 {
-  @extend %title1;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 600;
 }
 
 h2 {
-  @extend %title2;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
 }
 
 h3 {
-  @extend %title3;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
 }
 
 a {

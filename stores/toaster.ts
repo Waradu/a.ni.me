@@ -1,4 +1,11 @@
-import type { ToastStore } from "~/types/toast";
+type toasterColor = "normal" | "red" | "green";
+
+export interface ToastStore {
+  message: string;
+  visible: boolean;
+  click: (e: MouseEvent) => Promise<boolean>;
+  color: toasterColor;
+}
 
 export const useToaster = defineStore("toaster", {
   state: (): ToastStore => ({
@@ -8,7 +15,7 @@ export const useToaster = defineStore("toaster", {
     color: "normal",
   }),
   actions: {
-    set(message: string, color: ToastStore["color"] = "normal") {
+    set(message: string, color: toasterColor = "normal") {
       this.visible = true;
       this.message = message;
       this.color = color;

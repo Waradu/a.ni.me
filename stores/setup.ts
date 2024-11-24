@@ -4,9 +4,8 @@ export const useSetupStore = defineStore("setupStore", {
     showNSFW: false,
     tvAndMovieOnly: true,
     selectedAnimes: [],
-    finished: false
+    finished: false,
   }),
-
   actions: {},
-  persist: true
+  persist: true,
 });

@@ -1,4 +1,4 @@
-import type { SettingsStore } from "~/types/types";
+import type { SettingsStore } from "~/types/settings";
 
 export const useSettingsStore = defineStore("settingsStore", {
   state: (): SettingsStore => ({
@@ -15,7 +15,6 @@ export const useSettingsStore = defineStore("settingsStore", {
       },
       showHidden: false,
     },
-    malImageProxy: "",
-    jikanBaseUrl: "",
+    imageProxy: "",
   }),
 });

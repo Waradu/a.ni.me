@@ -25,7 +25,7 @@ onMounted(() => {
     settingsStore.tvAndMovieOnly = setupStore.tvAndMovieOnly;
     settingsStore.finishedIntroduction = true;
 
-    setupStore.selectedAnimes.forEach(async anime => await $database.add(anime));
+    /* setupStore.selectedAnimes.forEach(async anime => await $database.add(anime)); */
 
     const jsConfetti = new JSConfetti();
     jsConfetti.addConfetti({

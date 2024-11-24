@@ -28,33 +28,33 @@ const props = defineProps({
   onHide: {
     type: Function,
     default() {
-      return () => { }
+      return () => { };
     },
   },
-})
+});
 
-const shown = ref(false)
-const actuallyShown = ref(false)
-const modal = ref<HTMLElement | null>(null)
+const shown = ref(false);
+const actuallyShown = ref(false);
+const modal = ref<HTMLElement | null>(null);
 
 function show() {
-  shown.value = true
+  shown.value = true;
   setTimeout(() => {
-    actuallyShown.value = true
-  }, 0)
+    actuallyShown.value = true;
+  }, 0);
 }
 
 function hide() {
-  props.onHide()
-  actuallyShown.value = false
+  props.onHide();
+  actuallyShown.value = false;
   setTimeout(() => {
-    shown.value = false
-  }, 200)
+    shown.value = false;
+  }, 200);
 }
 
 function hideLocally(event: MouseEvent) {
   if (modal.value && !modal.value.contains(event.target as Node)) {
-    hide()
+    hide();
   }
 }
 
@@ -66,7 +66,7 @@ defineExpose({
   show,
   hide,
   status
-})
+});
 </script>
 
 <style lang="scss">
@@ -121,7 +121,9 @@ defineExpose({
     }
 
     .content {
-      @extend %text1;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 400;
       color: #ffffffaa;
 
       .big-image {

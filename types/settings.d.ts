@@ -1,10 +1,3 @@
-export type ItemType = string | number | boolean | null;
-
-export interface Item {
-  name: string;
-  value: ItemType;
-}
-
 export type FilterType = "e" | "ne" | "gt" | "st";
 export type FilterValue<T> = T | null;
 
@@ -36,11 +29,5 @@ export interface SettingsStore {
   sortBy: SortBy;
   order: Order;
   filters: Filters;
-  malImageProxy: string;
-  jikanBaseUrl: string;
-}
-
-export interface CacheOptions {
-  cachedOnly?: boolean;
-  invalidate?: boolean;
+  imageProxy: string;
 }

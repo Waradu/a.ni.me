@@ -20,7 +20,7 @@ A•NI•ME helps you keep track of all the anime you’ve watched. It’s simpl
 
 You can also hide shows you don’t want others to see 😏. Soon, you’ll be able to sync your list across devices and get cool recommendations! It’s perfect for any anime fan who watches a lot!
 
-<sup>why A•NI•ME? because "anime" in japanese means アニメ</sup><br>
+<sup>why name it A•NI•ME? because "anime" in japanese means アニメ</sup><br>
 <sup><b>ア = A, ニ = NI, メ = ME</b></sup>
 
 ## 📝 TODO
