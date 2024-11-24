@@ -143,6 +143,21 @@ export default defineNuxtPlugin((nuxtApp) => {
       return animes;
     },
     async search(term: string): Promise<MinimalAnilistAnime[]> {
+      const params = [
+        param("search", term, true),
+        param("type", "ANIME"),
+      ];
+
+      const settingsStore = useSettingsStore();
+
+      if (settingsStore.tvAndMovieOnly) {
+        params.push(param("format_in", ["TV", "TV_SHORT", "ONA", "MOVIE"]));
+      }
+
+      if (!settingsStore.showNSFW) {
+        params.push(param("isAdult", false));
+      }
+
       const builder = new GraphQL("https://graphql.anilist.co", [
         field("Page")
           .params([param("perPage", 50)])
@@ -154,13 +169,7 @@ export default defineNuxtPlugin((nuxtApp) => {
               field("perPage"),
               field("total"),
             ]),
-            field("media")
-              .params([
-                param("search", term, true),
-                param("type", "ANIME"),
-                param("format_in", ["TV", "TV_SHORT", "ONA"]),
-              ])
-              .children(animeGraph),
+            field("media").params(params).children(animeGraph),
           ]),
       ]);
 
