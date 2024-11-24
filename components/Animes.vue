@@ -1,7 +1,7 @@
 <template>
   <TransitionGroup name="fade">
     <template v-for="anime in filteredAnimes" :key="anime.id">
-      <Anime :anime="anime" />
+      <Anime :anime="anime.data" />
     </template>
   </TransitionGroup>
 </template>
@@ -17,16 +17,17 @@ const settingsStore = useSettingsStore();
 const filteredAnimes = computed(() => {
   const term = titlebarStore.search.toLowerCase();
 
-  var res = animes.value.filter((a) => {
-    const title = a.data.title.english || a.data.title.romaji;
-    const description = a.data.description;
+  var res = animes.value
+    .filter((a) => {
+      const title = a.data.title.english || a.data.title.romaji;
+      const description = a.data.description;
 
-    return (
-      (title && title.toLowerCase().includes(term)) ||
-      (description && description.toLowerCase().includes(term))
-    );
-  }).sort(
-    (a, b) => {
+      return (
+        (title && title.toLowerCase().includes(term)) ||
+        (description && description.toLowerCase().includes(term))
+      );
+    })
+    .sort((a, b) => {
       const sortBy = settingsStore.sortBy;
 
       if (sortBy == "stars") {
@@ -39,11 +40,13 @@ const filteredAnimes = computed(() => {
         }
 
         return 0;
-      };
+      }
 
       if (sortBy == "date_added") {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      };
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      }
 
       var aItem;
       var bItem;
@@ -69,26 +72,25 @@ const filteredAnimes = computed(() => {
       }
 
       return 0;
-    }
-  );
+    });
 
   if (settingsStore.order == "desc") {
     res = res.reverse();
   }
 
   if (!settingsStore.filters.showHidden) {
-    res = res.filter(a => !a.is_hidden);
+    res = res.filter((a) => !a.is_hidden);
   }
 
   if (settingsStore.filters.watched != null) {
-    res = res.filter(a => a.watched == settingsStore.filters.watched);
+    res = res.filter((a) => a.watched == settingsStore.filters.watched);
   }
 
   if (settingsStore.filters.stars.value != null) {
     const val = settingsStore.filters.stars.value;
     const type = settingsStore.filters.stars.type;
 
-    res = res.filter(a => {
+    res = res.filter((a) => {
       if (type == "e") {
         return a.stars == val;
       }
@@ -134,7 +136,7 @@ animes.value = await $animes.animes();
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  scale: .8;
+  scale: 0.8;
 }
 
 .fade-leave-active {

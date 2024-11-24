@@ -1,7 +1,14 @@
 <template>
   <div class="input disableOnModal" data-tauri-drag-region>
-    <input type="text" placeholder="Search" ref="input" :value="mounted ? titlebarStore.search : ''"
-      v-if="mounted" @keydown.enter="search" @input="update">
+    <input
+      type="text"
+      placeholder="Search"
+      ref="input"
+      :value="mounted ? titlebarStore.search : ''"
+      v-if="mounted"
+      @keydown.enter="search"
+      @input="update"
+    />
   </div>
 </template>
 
@@ -11,11 +18,14 @@ const titlebarStore = useTitlebarStore();
 const router = useRouter();
 const route = useRoute();
 
+const { $emitter } = useNuxtApp();
+
 const search = (event: Event) => {
   titlebarStore.setSearch((event.target as HTMLInputElement).value);
-  if (route.path != '/' && route.path != '/search') {
-    router.replace({ path: '/' });
+  if (route.path != "/" && route.path != "/search") {
+    router.replace({ path: "/" });
   }
+  $emitter.emit("search");
 };
 
 const update = (event: Event) => {

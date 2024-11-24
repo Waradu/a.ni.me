@@ -1,20 +1,38 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ added: inLib }">
     <NuxtLink class="image" @click.prevent="redirect(anime.id)">
       <OpenIcon class="open" />
       <div class="cover">
-        <img :src="(settingsStore.imageProxy ? settingsStore.imageProxy : '') + anime.data.coverImage.url"
-          onerror="this.onerror=null; this.src='/transparent.png'" alt="Cover">
+        <img
+          :src="
+            (settingsStore.imageProxy ? settingsStore.imageProxy : '') +
+            anime.coverImage.url
+          "
+          onerror="this.onerror=null; this.src='/transparent.png'"
+          alt="Cover"
+        />
       </div>
     </NuxtLink>
     <div class="text">
-      <span class="title" :title="anime.data.title.english ?? anime.data.title.romaji ?? 'N/A'" v-tippy>{{
-        anime.data.title.english ?? anime.data.title.romaji ?? 'N/A'
-      }}</span>
-      <p class="info capitalize" v-if="anime.data.seasonYear">
-        {{ anime.data.season
-          ? anime.data.season + " " + anime.data.seasonYear
-          : anime.data.seasonYear }}
+      <span
+        class="title"
+        :title="anime.title.english ?? anime.title.romaji ?? 'N/A'"
+        v-tippy
+        >{{ anime.title.english ?? anime.title.romaji ?? "N/A" }}</span
+      >
+      <p class="info capitalize" v-if="anime.seasonYear">
+        {{
+          anime.season
+            ? anime.season + " " + anime.seasonYear
+            : anime.seasonYear
+        }}
+        <div class="in-lib-icon">
+          <CheckmarkIcon
+            v-if="inLib"
+            title="Already in library"
+            v-tippy="{ interactive: false }"
+          />
+        </div>
       </p>
       <p class="info" v-else>N/A</p>
     </div>
@@ -23,7 +41,12 @@
 
 <script lang="ts" setup>
 import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.svg";
-import type { Anime } from "~/types/database";
+import CheckmarkIcon from "~/node_modules/@fluentui/svg-icons/icons/checkmark_32_filled.svg";
+import type { AnilistAnime, MinimalAnilistAnime } from "~/types/anilist";
+
+const inLib = ref(false);
+
+const { $database } = useNuxtApp();
 
 const settingsStore = useSettingsStore();
 
@@ -31,9 +54,15 @@ const redirect = (id: number) => {
   navigateTo(`/anime/${id}`);
 };
 
-defineProps<{
-  anime: Anime;
+const props = defineProps<{
+  anime: AnilistAnime | MinimalAnilistAnime;
 }>();
+
+onMounted(async () => {
+  const anime = await $database.anime(props.anime.id);
+
+  if (anime) inLib.value = true;
+});
 </script>
 
 <style lang="scss">
@@ -46,12 +75,16 @@ defineProps<{
   text-align: center;
   gap: 8px;
 
+  .in-lib-icon {
+    display: none;
+  }
+
   .image {
     width: 100%;
     border-radius: 8px;
     aspect-ratio: 2 / 3;
     box-shadow: 0px 5px 10px #00000010;
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -64,13 +97,13 @@ defineProps<{
     .open {
       scale: 2.5;
       opacity: 0;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
       z-index: 1;
     }
 
     .add {
       scale: 2.5;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
       z-index: 1;
     }
 
@@ -84,12 +117,12 @@ defineProps<{
       bottom: 0;
       left: 0;
       z-index: 0;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
 
       img {
         width: 100%;
         height: 100%;
-        transition: .2s ease-in-out;
+        transition: 0.2s ease-in-out;
       }
 
       .img {
@@ -98,7 +131,7 @@ defineProps<{
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: .2s ease-in-out;
+        transition: 0.2s ease-in-out;
         color: #ff8686;
       }
 
@@ -162,6 +195,17 @@ defineProps<{
       &.capitalize {
         text-transform: capitalize;
       }
+    }
+  }
+}
+
+main.search {
+  .card.added {
+    .in-lib-icon {
+      display: inline;
+      color: #65a365;
+      height: 20px;
+      margin-left: 5px;
     }
   }
 }

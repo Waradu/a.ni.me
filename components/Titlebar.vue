@@ -1,5 +1,9 @@
 <template>
-  <header class="titlebar" :class="{ inSetup: setupStore.inSetup }" data-tauri-drag-region>
+  <header
+    class="titlebar"
+    :class="{ inSetup: setupStore.inSetup }"
+    data-tauri-drag-region
+  >
     <TitlebarData />
     <TitlebarInput />
     <TitlebarControls />
@@ -50,7 +54,7 @@ header.titlebar {
       align-items: center;
       justify-content: center;
       background-color: transparent;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
       border-radius: 100px;
       cursor: pointer;
       height: 36px;
@@ -58,7 +62,7 @@ header.titlebar {
 
       .icon {
         margin: 0;
-        opacity: .8;
+        opacity: 0.8;
         color: white;
         text-decoration: none;
       }
@@ -90,7 +94,6 @@ header.titlebar {
     }
 
     .controls {
-
       .disableOnModal,
       .space {
         display: none;
@@ -99,7 +102,7 @@ header.titlebar {
   }
 
   .disableOnModal {
-    transition: opacity .2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
   }
 }
 
@@ -107,7 +110,7 @@ html:has(.modal.shown) {
   header.titlebar {
     .disableOnModal {
       pointer-events: none;
-      opacity: .5;
+      opacity: 0.5;
     }
   }
 

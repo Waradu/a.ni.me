@@ -1,16 +1,16 @@
 <template>
   <div class="controls" data-tauri-drag-region>
     <div class="icons" data-tauri-drag-region>
-      <div class="wrapper disableOnModal" @click="search" title="Search for new animes" v-tippy>
+      <div class="wrapper disableOnModal" @click="search" title="Search for new animes" v-tippy="{ interactive: false }" v-if="route.path != '/search'">
         <SearchIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openExportImportMenu" title="Open export/import menu" v-tippy>
+      <div class="wrapper disableOnModal" @click="openExportImportMenu" title="Open export/import menu" v-tippy="{ interactive: false }">
         <ArrowSwapIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openSortingFilterMenu" title="Open sorting/filter menu" v-tippy>
+      <div class="wrapper disableOnModal" @click="openSortingFilterMenu" title="Open sorting/filter menu" v-tippy="{ interactive: false }">
         <FilterIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openSettings" title="Open settings" v-tippy>
+      <div class="wrapper disableOnModal" @click="openSettings" title="Open settings" v-tippy="{ interactive: false }">
         <SettingsIcon class="icon" />
       </div>
       <div class="space" data-tauri-drag-region></div>
@@ -51,6 +51,8 @@ import CloseIcon from "~/assets/svg/close.svg";
 
 import type { Modal } from "#components";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+
+const route = useRoute();
 
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 const exportImportModal = ref<InstanceType<typeof Modal> | null>(null);

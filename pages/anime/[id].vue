@@ -141,8 +141,6 @@ const { $database, $api } = useNuxtApp();
 const settingsStore = useSettingsStore();
 const titlebarStore = useTitlebarStore();
 
-titlebarStore.setBackLink("/");
-
 const anime = ref<AnilistAnime>();
 const databaseAnime = ref<DbAnime | null>(null);
 const moving = ref(false);

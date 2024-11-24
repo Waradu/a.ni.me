@@ -14,29 +14,20 @@
         </Suspense>
       </div>
     </div>
-    <div class="footer" v-if="!searching">{{ titlebarStore.count }}/{{ count }} animes shown</div>
+    <div class="footer">{{ titlebarStore.count }}/{{ count }} animes shown</div>
   </main>
 </template>
 
 <script lang="ts" setup>
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Animes");
-titlebarStore.setBackLink("");
 
 const { $database } = useNuxtApp();
 
-const searching = ref(false);
 const count = ref(0);
 
-const keyboard = useKeyboard();
-
-keyboard.up("Escape", async () => {
-  searching.value = false;
-  titlebarStore.setTitle("Animes");
-});
-
-onBeforeUnmount(() => {
-  keyboard.stop();
+onMounted(async () => {
+  count.value = await $database.count();
 });
 </script>
 
