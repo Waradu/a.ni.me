@@ -17,6 +17,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             (anime.errors as { message: string }[])[0].message == "Not Found."
           ) {
             console.log("anime does not exist");
+            await $database.delete(id);
             return null;
           }
         }

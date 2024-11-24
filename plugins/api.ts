@@ -78,7 +78,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             ]),
         ]);
 
-        return (await builder.get<PagedAnilistResponse>()).Page;
+        return (await builder.get<PagedAnilistResponse<AnilistAnime>>()).Page;
       };
 
       let animes: AnilistAnime[] = [];
@@ -119,7 +119,7 @@ export default defineNuxtPlugin((nuxtApp) => {
           ]),
       ]);
 
-      const animes = await builder.get<PagedAnilistResponse>();
+      const animes = await builder.get<PagedAnilistResponse<AnilistAnime>>();
 
       return animes.Page.media;
     },
@@ -127,7 +127,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       const builder = new GraphQL("https://graphql.anilist.co", [
         field("Media")
           .params([param("idMal", id), param("type", "ANIME")])
-          .children([field("id")]),
+          .children([field("id"), field("idMal")]),
       ]);
 
       const anime = await builder.get<AnilistResponse<AnilistAnimeID>>();
@@ -149,14 +149,14 @@ export default defineNuxtPlugin((nuxtApp) => {
               ]),
               field("media")
                 .params([param("idMal_in", ids), param("type", "ANIME")])
-                .children([field("id")]),
+                .children([field("id"), field("idMal")]),
             ]),
         ]);
 
-        return (await builder.get<PagedAnilistResponse>()).Page;
+        return (await builder.get<PagedAnilistResponse<AnilistAnimeID>>()).Page;
       };
 
-      let animes: AnilistAnime[] = [];
+      let animes: AnilistAnimeID[] = [];
 
       let page = 1;
 
@@ -170,7 +170,13 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       await load();
 
-      return animes;
+      ids.forEach((id, i) => {
+        const anime = animes.find((a) => a.idMal == id);
+        if (!anime) return;
+        ids[i] = anime.id;
+      });
+
+      return ids;
     },
   };
 

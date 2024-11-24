@@ -5,7 +5,7 @@ export interface AnilistResponse<T> {
   Media: T;
 }
 
-export interface PagedAnilistResponse {
+export interface PagedAnilistResponse<T> {
   Page: {
     pageInfo: {
       currentPage: number;
@@ -14,6 +14,6 @@ export interface PagedAnilistResponse {
       perPage: number;
       total: number;
     };
-    media: AnilistAnime[];
+    media: T[];
   };
 }

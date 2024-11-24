@@ -418,4 +418,5 @@ export type AnilistAnime = {
 
 export type AnilistAnimeID = {
   id: number;
+  idMal: number;
 };

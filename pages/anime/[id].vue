@@ -114,7 +114,7 @@ import StarFilledIcon from "~/node_modules/@fluentui/svg-icons/icons/star_32_fil
 import DeleteIcon from "~/node_modules/@fluentui/svg-icons/icons/delete_32_regular.svg";
 import EyeIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_32_regular.svg";
 import EyeOffIcon from "~/node_modules/@fluentui/svg-icons/icons/eye_off_32_regular.svg";
-import type { Modal } from "#build/components";
+import type { Modal } from "#components";
 import type { AnilistAnime } from "~/types/anilist";
 import type { DbAnime } from "~/types/database";
 import VanillaTilt from "vanilla-tilt";
@@ -216,6 +216,10 @@ const stopDrag = () => {
 const getAnime = await $api.anime(Number(id));
 anime.value = getAnime;
 
+if (anime.value) {
+  document.documentElement.style.setProperty('--bg-image', anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : "");
+}
+
 onMounted(async () => {
   if (charactersContainer.value) {
     charactersContainer.value.addEventListener("mousedown", startDrag);
@@ -231,8 +235,6 @@ onMounted(async () => {
   titlebarStore.setTitle(
     anime.value.title.english || anime.value.title.romaji || "N/A"
   );
-
-  document.documentElement.style.setProperty('--bg-image', anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : "");
 });
 
 onBeforeUnmount(() => {

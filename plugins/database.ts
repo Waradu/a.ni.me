@@ -22,6 +22,39 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
         if (!animes) return [];
 
+        const notMigratedIds = animes
+          .filter((a) => !a.migrated)
+          .map((a) => a.id);
+
+        if (notMigratedIds.length == 0) return animes;
+
+        console.log(notMigratedIds);
+
+        const { $api } = useNuxtApp();
+
+        const converted = await $api.convertAnimes([...notMigratedIds]);
+
+        console.log(converted);
+
+        notMigratedIds.forEach(async (id, i) => {
+          if (id != converted[i]) {
+            animes[i].id = converted[i];
+
+            await db.execute(
+              `update animes set id = ${converted[i]}, migrated = true where id = ${id}`
+            );
+          } else {
+            try {
+              await $api.anime(id);
+              await db.execute(
+                `update animes set migrated = true where id = ${id}`
+              );
+            } catch {
+              this.delete(id);
+            }
+          }
+        });
+
         return animes;
       } catch (e) {
         console.error(e);
