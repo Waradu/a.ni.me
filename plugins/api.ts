@@ -56,7 +56,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       ]);
 
       const anime = await builder.get<AnilistResponse<AnilistAnime>>();
-
       return anime.Media;
     },
     async animes(ids: number[]): Promise<AnilistAnime[]> {
@@ -78,7 +77,9 @@ export default defineNuxtPlugin((nuxtApp) => {
             ]),
         ]);
 
-        return (await builder.get<PagedAnilistResponse<AnilistAnime>>()).Page;
+        const result = await builder.get<PagedAnilistResponse<AnilistAnime>>();
+
+        return result.Page;
       };
 
       let animes: AnilistAnime[] = [];
@@ -94,6 +95,20 @@ export default defineNuxtPlugin((nuxtApp) => {
       };
 
       await load();
+
+      const notFound = ids.filter((id) => !animes.find((a) => a.id == id));
+
+      notFound.forEach(async (id) => {
+        try {
+          await this.anime(id);
+        } catch (e: any) {
+          if ("message" in e && e.message == "Not Found.") {
+            const { $database } = useNuxtApp();
+
+            await $database.delete(id);
+          }
+        }
+      });
 
       return animes;
     },
@@ -172,9 +187,11 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       ids.forEach((id, i) => {
         const anime = animes.find((a) => a.idMal == id);
-        if (!anime) return;
-        ids[i] = anime.id;
+        if (!anime) ids[i] = 0;
+        else ids[i] = anime.id;
       });
+
+      console.log(ids);
 
       return ids;
     },

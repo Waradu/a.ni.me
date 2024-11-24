@@ -12,16 +12,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       try {
         const anime = await $api.anime(id);
 
-        if ("errors" in anime) {
-          if (
-            (anime.errors as { message: string }[])[0].message == "Not Found."
-          ) {
-            console.log("anime does not exist");
-            await $database.delete(id);
-            return null;
-          }
-        }
-
         return {
           ...db_anime,
           data: anime,
@@ -46,7 +36,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       const animes: Anime[] = [];
 
-      dbAnimes.forEach((dba) => {
+      dbAnimes.forEach(async (dba) => {
         const anime = anilistAnimes.find((a) => dba.id == a.id);
 
         if (!anime) return;

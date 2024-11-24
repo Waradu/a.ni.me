@@ -14,47 +14,49 @@ const toaster = useToaster();
 const titlebarStore = useTitlebarStore();
 
 onMounted(async () => {
-  try {
-    const update = await check();
-    if (update) {
-      toaster.set(`A new version just released: ${update.version}. downloading now...`);
-      let downloaded = 0;
-      let contentLength = 0;
+  if (!import.meta.dev) {
+    try {
+      const update = await check();
+      if (update) {
+        toaster.set(`A new version just released: ${update.version}. downloading now...`);
+        let downloaded = 0;
+        let contentLength = 0;
 
-      await update.download((event) => {
-        switch (event.event) {
-          case 'Started':
-            contentLength = event.data.contentLength || -1;
-            console.log(`started downloading ${event.data.contentLength} bytes`);
-            break;
-          case 'Progress':
-            downloaded += event.data.chunkLength;
-            const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
-            const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
+        await update.download((event) => {
+          switch (event.event) {
+            case 'Started':
+              contentLength = event.data.contentLength || -1;
+              console.log(`started downloading ${event.data.contentLength} bytes`);
+              break;
+            case 'Progress':
+              downloaded += event.data.chunkLength;
+              const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
+              const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
 
-            toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
+              toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
 
-            break;
-          case 'Finished':
-            console.log('download finished');
-            break;
-        }
-      });
+              break;
+            case 'Finished':
+              console.log('download finished');
+              break;
+          }
+        });
 
-      toaster.set(`Update finished downloading. Please click here to install.`, "green");
+        toaster.set(`Update finished downloading. Please click here to install.`, "green");
+        toaster.click = async (e) => {
+          await update.install();
+          toaster.click = async (e) => true;
+          return false;
+        };
+      }
+    } catch (e) {
+      toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
       toaster.click = async (e) => {
-        await update.install();
-        toaster.click = async (e) => true;
-        return false;
+        await open("https://github.com/Waradu/a.ni.me/releases");
+        return true;
       };
+      console.error(e);
     }
-  } catch (e) {
-    toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
-    toaster.click = async (e) => {
-      await open("https://github.com/Waradu/a.ni.me/releases");
-      return true;
-    };
-    console.error(e);
   }
 
   // @ts-expect-error window does not have nuxtapp as child

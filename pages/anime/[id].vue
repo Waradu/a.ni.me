@@ -213,8 +213,15 @@ const stopDrag = () => {
   charactersContainer.value?.classList.remove("dragging");
 };
 
-const getAnime = await $api.anime(Number(id));
-anime.value = getAnime;
+const getAnime = await $api.anime(Number(id)).catch(async (e: any) => {
+  if (e.message == "Not Found.") {
+    await $database.delete(id);
+  }
+  await navigateTo("/");
+});
+if (getAnime) {
+  anime.value = getAnime;
+}
 
 if (anime.value) {
   document.documentElement.style.setProperty('--bg-image', anime.value.bannerImage != "" ? `url(${anime.value.bannerImage})` : "");
