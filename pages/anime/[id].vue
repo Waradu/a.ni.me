@@ -21,7 +21,7 @@
           <div class="links">
             <div
               class="link wrapper"
-              v-for="link in anime.externalLinks.slice(0, 4)"
+              v-for="link in links.slice(0, 4)"
               :key="link.id"
               :title="link.site"
               v-tippy="{ interactive: false }"
@@ -318,9 +318,6 @@ const getAnime = await $api.anime(Number(id)).catch(async (e: any) => {
   }
   await navigateTo("/");
 });
-if (getAnime) {
-  anime.value = getAnime;
-}
 
 if (anime.value) {
   document.documentElement.style.setProperty(
@@ -329,6 +326,8 @@ if (anime.value) {
   );
 }
 
+const links = ref<AnilistAnime["externalLinks"]>([]);
+
 onMounted(async () => {
   if (charactersContainer.value) {
     charactersContainer.value.addEventListener("mousedown", startDrag);
@@ -336,7 +335,10 @@ onMounted(async () => {
     window.addEventListener("mouseup", stopDrag);
   }
 
-  if (!anime.value) return;
+  if (!getAnime) return;
+
+  anime.value = getAnime;
+  links.value = anime.value.externalLinks;
 
   const getDBAnime = await $database.anime(Number(id));
   databaseAnime.value = getDBAnime || null;
