@@ -1,36 +1,75 @@
 <template>
   <div class="controls" data-tauri-drag-region>
     <div class="icons" data-tauri-drag-region>
-      <div class="wrapper disableOnModal" @click="search" title="Search for new animes" v-tippy="{ interactive: false }" v-if="route.path != '/search'">
+      <div
+        class="wrapper disableOnModal"
+        @click="search"
+        title="Search for new animes"
+        v-tippy="{ interactive: false }"
+        v-if="route.path != '/search'"
+      >
         <SearchIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openExportImportMenu" title="Open export/import menu" v-tippy="{ interactive: false }">
+      <div
+        class="wrapper disableOnModal"
+        @click="openExportImportMenu"
+        title="Open export/import menu"
+        v-tippy="{ interactive: false }"
+      >
         <ArrowSwapIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openSortingFilterMenu" title="Open sorting/filter menu" v-tippy="{ interactive: false }">
+      <div
+        class="wrapper disableOnModal"
+        @click="openSortingFilterMenu"
+        title="Open sorting/filter menu"
+        v-tippy="{ interactive: false }"
+      >
         <FilterIcon class="icon" />
       </div>
-      <div class="wrapper disableOnModal" @click="openSettings" title="Open settings" v-tippy="{ interactive: false }">
+      <div
+        class="wrapper disableOnModal"
+        @click="openSettings"
+        title="Open settings"
+        v-tippy="{ interactive: false }"
+      >
         <SettingsIcon class="icon" />
       </div>
       <div class="space" data-tauri-drag-region></div>
-      <div class="wrapper control" @click="async () => getCurrentWindow().minimize()">
+      <div
+        class="wrapper control"
+        @click="async () => getCurrentWindow().minimize()"
+      >
         <MinimizeIcon class="icon" />
       </div>
-      <div class="wrapper control" v-if="isMaximized" @click="async () => getCurrentWindow().toggleMaximize()">
+      <div
+        class="wrapper control"
+        v-if="isMaximized"
+        @click="async () => getCurrentWindow().toggleMaximize()"
+      >
         <RestoreIcon class="icon" />
       </div>
-      <div class="wrapper control" v-else @click="async () => getCurrentWindow().toggleMaximize()">
+      <div
+        class="wrapper control"
+        v-else
+        @click="async () => getCurrentWindow().toggleMaximize()"
+      >
         <MaximizeIcon class="icon" />
       </div>
-      <div class="wrapper control red" @click="() => getCurrentWindow().close()">
+      <div
+        class="wrapper control red"
+        @click="() => getCurrentWindow().close()"
+      >
         <CloseIcon class="icon" />
       </div>
     </div>
     <Modal header="Sort & Filter" ref="sortFilterModal" class="sortFilterModal">
       <TitlebarModalsSortFilter />
     </Modal>
-    <Modal header="Export & Import" ref="exportImportModal" class="exportImportModal">
+    <Modal
+      header="Export & Import"
+      ref="exportImportModal"
+      class="exportImportModal"
+    >
       <TitlebarModalsExportImport :exportImportModal="exportImportModal" />
     </Modal>
     <Modal header="Settings" ref="settingsModal" class="settingsModal">
@@ -57,6 +96,7 @@ const route = useRoute();
 const sortFilterModal = ref<InstanceType<typeof Modal> | null>(null);
 const exportImportModal = ref<InstanceType<typeof Modal> | null>(null);
 const settingsModal = ref<InstanceType<typeof Modal> | null>(null);
+const titlebarStore = useTitlebarStore();
 
 const openSortingFilterMenu = () => {
   if (!sortFilterModal.value) return;
@@ -77,6 +117,7 @@ const openSettings = () => {
 };
 
 const search = () => {
+  titlebarStore.setSearch("");
   navigateTo("/search");
 };
 
@@ -86,7 +127,7 @@ onMounted(async () => {
   const currentWindow = await getCurrentWindow();
   isMaximized.value = await currentWindow.isMaximized();
 
-  currentWindow.listen('tauri://resize', async () => {
+  currentWindow.listen("tauri://resize", async () => {
     isMaximized.value = await currentWindow.isMaximized();
   });
 });

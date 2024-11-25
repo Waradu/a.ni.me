@@ -45,7 +45,7 @@ main.index {
     .grid {
       padding: 12px;
       padding-top: 0px;
-      padding-right: 12px;
+      padding-right: 8px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 12px;

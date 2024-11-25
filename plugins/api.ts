@@ -144,9 +144,12 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
     async search(term: string): Promise<MinimalAnilistAnime[]> {
       const params = [
-        param("search", term, true),
         param("type", "ANIME"),
       ];
+
+      if (term != "") {
+        param("search", term, true)
+      }
 
       const settingsStore = useSettingsStore();
 

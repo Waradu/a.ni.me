@@ -127,11 +127,12 @@ body:has(main.anime)::before {
 
 main {
   overflow: auto;
+  margin-right: 4px;
   width: 100%;
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -141,15 +142,11 @@ main {
 
 ::-webkit-scrollbar-thumb {
   background: #bebebe40;
-  border-right: 4px solid transparent;
-  border-radius: 3px 6px 6px 3px;
-  background-clip: padding-box;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  border-right: 4px solid transparent;
   background: #bebebe60;
-  background-clip: padding-box;
 }
 
 h1 {
