@@ -36,17 +36,16 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [X] Filtering & sorting
   - [X] Export & import
   - [X] Hide animes
-  - [ ] Clean up design
-  - [ ] Clean up spaghetti code
-  - [ ] Fix bugs
+  - [X] Clean up design
+  - [X] Clean up spaghetti code
   - [x] Auto updater
   - [x] Release beta builds (v0.X.Y)
+  - [ ] Fix bugs
   - [ ] Release v1
 
 - [ ] Polishing v1 (v1.1)
-  - [ ] Tagging (maybe)
   - [ ] Backup
-  - [ ] Faster caching
+  - [X] Faster caching
   - [ ] MacOS support (probably)
   - [ ] Some QOL features if needed (maybe)
   - [ ] More content (website)
@@ -59,8 +58,6 @@ You can also hide shows you don’t want others to see 😏. Soon, you’ll be a
   - [ ] Cross-device sync
   - [ ] User profiles (maybe)
   - [ ] Feed (maybe)
-  - [ ] Waifu collection (don't ask why and what) (maybe)
-  - [ ] Make it secure and private :D
   - [ ] Release v2
 
 - [ ] Other thigs I want to add at any time
