@@ -19,6 +19,7 @@ const router = useRouter();
 const route = useRoute();
 
 const { $emitter } = useNuxtApp();
+const input = ref<HTMLImageElement>();
 
 const search = (event: Event) => {
   titlebarStore.setSearch((event.target as HTMLInputElement).value);
@@ -34,6 +35,14 @@ const update = (event: Event) => {
 
 onMounted(async () => {
   mounted.value = true;
+});
+
+const keyboard = useKeyboard();
+
+keyboard.up("l", (e) => {
+  if (e.ctrlKey && input.value) {
+    input.value.focus();
+  }
 });
 </script>
 

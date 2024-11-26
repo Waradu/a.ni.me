@@ -1,9 +1,12 @@
 <template>
-  <TransitionGroup name="fade">
+  <TransitionGroup name="fade" v-if="!settingsStore.reducedAnimations">
     <template v-for="anime in filteredAnimes" :key="anime.id">
       <Anime :anime="anime.data" />
     </template>
   </TransitionGroup>
+  <template v-for="anime in filteredAnimes" :key="anime.id" v-else>
+    <Anime :anime="anime.data" />
+  </template>
 </template>
 
 <script lang="ts" setup>

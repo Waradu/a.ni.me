@@ -1,5 +1,10 @@
 <template>
-  <div class="modal" v-if="shown" :class="{ shown: actuallyShown }" @click="hideLocally">
+  <div
+    class="modal"
+    v-if="shown"
+    :class="{ shown: actuallyShown }"
+    @click="hideLocally"
+  >
     <header class="min-titlebar" data-tauri-drag-region @click.stop></header>
     <div class="modal-wrapper" ref="modal">
       <div v-if="props.header" class="header">
@@ -28,7 +33,7 @@ const props = defineProps({
   onHide: {
     type: Function,
     default() {
-      return () => { };
+      return () => {};
     },
   },
 });
@@ -65,7 +70,15 @@ function status() {
 defineExpose({
   show,
   hide,
-  status
+  status,
+});
+
+const keyboard = useKeyboard();
+
+keyboard.up("Escape", () => {
+  if (shown.value) {
+    hide();
+  }
 });
 </script>
 
@@ -84,10 +97,8 @@ defineExpose({
   justify-content: center;
   background-color: #00000080;
   opacity: 0;
-  transition: .2s ease-in-out;
 
-  &>* {
-    transition: .2s ease-in-out;
+  .modal-wrapper {
     scale: 0.8;
     opacity: 0;
   }
@@ -161,7 +172,7 @@ defineExpose({
       align-items: center;
       justify-content: center;
       background-color: transparent;
-      transition: .2s ease-in-out;
+      transition: 0.2s ease-in-out;
       border-radius: 100px;
       cursor: pointer;
       height: 36px;
@@ -169,7 +180,7 @@ defineExpose({
 
       .icon {
         margin: 0;
-        opacity: .8;
+        opacity: 0.8;
         color: white;
         text-decoration: none;
       }
@@ -183,9 +194,19 @@ defineExpose({
   &.shown {
     opacity: 1;
 
-    &>* {
+    .modal-wrapper {
       scale: 1;
       opacity: 1;
+    }
+  }
+}
+
+html:not(:has(.reduced)) {
+  .modal {
+    transition: 0.2s ease-in-out;
+    
+    .modal-wrapper {
+      transition: 0.2s ease-in-out;
     }
   }
 }

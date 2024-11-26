@@ -38,6 +38,14 @@ const navigateHome = async () => {
 onMounted(async () => {
   mounted.value = true;
 });
+
+const keyboard = useKeyboard();
+
+keyboard.up("h", (e) => {
+  if (e.ctrlKey) {
+    navigateHome();
+  }
+});
 </script>
 
 <style lang="scss">

@@ -73,7 +73,7 @@
       <TitlebarModalsExportImport :exportImportModal="exportImportModal" />
     </Modal>
     <Modal header="Settings" ref="settingsModal" class="settingsModal">
-      <TitlebarModalsSettings />
+      <TitlebarModalsSettings :appData="appData" />
     </Modal>
   </div>
 </template>
@@ -90,6 +90,7 @@ import CloseIcon from "~/assets/svg/close.svg";
 
 import type { Modal } from "#components";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { getVersion, getName, getTauriVersion } from "@tauri-apps/api/app";
 
 const route = useRoute();
 
@@ -130,6 +131,32 @@ onMounted(async () => {
   currentWindow.listen("tauri://resize", async () => {
     isMaximized.value = await currentWindow.isMaximized();
   });
+});
+
+const keyboard = useKeyboard();
+
+keyboard.up(",", (e) => {
+  if (e.ctrlKey) {
+    openSettings();
+  }
+});
+
+keyboard.up("s", (e) => {
+  if (e.ctrlKey) {
+    search();
+  }
+});
+
+const appData = ref("");
+
+onMounted(async () => {
+  const version = await getVersion();
+  const name = await getName();
+  const tauriVersion = await getTauriVersion();
+
+  const text = `${name}-${version} with tauri-${tauriVersion}`;
+
+  appData.value = text;
 });
 </script>
 

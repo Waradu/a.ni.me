@@ -7,42 +7,53 @@
 </template>
 
 <script lang="ts" setup>
-import { check } from '@tauri-apps/plugin-updater';
-import { open } from '@tauri-apps/plugin-shell';
+import { check } from "@tauri-apps/plugin-updater";
+import { open } from "@tauri-apps/plugin-shell";
 
 const toaster = useToaster();
-const titlebarStore = useTitlebarStore();
+const settingsStore = useSettingsStore();
 
 onMounted(async () => {
   if (!import.meta.dev) {
     try {
       const update = await check();
       if (update) {
-        toaster.set(`A new version just released: ${update.version}. downloading now...`);
+        toaster.set(
+          `A new version just released: ${update.version}. downloading now...`
+        );
         let downloaded = 0;
         let contentLength = 0;
 
         await update.download((event) => {
           switch (event.event) {
-            case 'Started':
+            case "Started":
               contentLength = event.data.contentLength || -1;
-              console.log(`started downloading ${event.data.contentLength} bytes`);
+              console.log(
+                `started downloading ${event.data.contentLength} bytes`
+              );
               break;
-            case 'Progress':
+            case "Progress":
               downloaded += event.data.chunkLength;
               const downloadedMB = (downloaded / (1024 * 1024)).toFixed(2);
-              const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(2);
+              const contentLengthMB = (contentLength / (1024 * 1024)).toFixed(
+                2
+              );
 
-              toaster.set(`Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`);
+              toaster.set(
+                `Downloaded ${downloadedMB} MB from ${contentLengthMB} MB`
+              );
 
               break;
-            case 'Finished':
-              console.log('download finished');
+            case "Finished":
+              console.log("download finished");
               break;
           }
         });
 
-        toaster.set(`Update finished downloading. Please click here to install.`, "green");
+        toaster.set(
+          `Update finished downloading. Please click here to install.`,
+          "green"
+        );
         toaster.click = async (e) => {
           await update.install();
           toaster.click = async (e) => true;
@@ -50,7 +61,10 @@ onMounted(async () => {
         };
       }
     } catch (e) {
-      toaster.set(`An error occured while downloading the update. Please click here to manually download`, "red");
+      toaster.set(
+        `An error occured while downloading the update. Please click here to manually download`,
+        "red"
+      );
       toaster.click = async (e) => {
         await open("https://github.com/Waradu/a.ni.me/releases");
         return true;
@@ -59,9 +73,24 @@ onMounted(async () => {
     }
   }
 
+  if (settingsStore.reducedAnimations) {
+    window.document.body.classList.add("reduced");
+  }
+
   // @ts-expect-error window does not have nuxtapp as child
   window.na = useNuxtApp();
 });
+
+watch(
+  () => settingsStore.reducedAnimations,
+  (newVal) => {
+    if (newVal) {
+      window.document.body.classList.add("reduced");
+    } else {
+      window.document.body.classList.remove("reduced");
+    }
+  }
+);
 </script>
 
 <style lang="scss">
@@ -79,7 +108,7 @@ body,
   width: 100%;
   height: 100%;
   background-color: transparent;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   color: white;
   overflow: hidden;
 }
@@ -176,20 +205,22 @@ a {
   }
 }
 
-.page-enter-active {
-  transition: all .3s ease-in-out;
-}
+html:not(:has(.reduced)) {
+  .page-enter-active {
+    transition: all 0.3s ease-in-out;
+  }
 
-.page-leave-active {
-  transition: all 0.2s ease-in-out;
-}
+  .page-leave-active {
+    transition: all 0.2s ease-in-out;
+  }
 
-.page-enter-from {
-  opacity: 0;
-  translate: 0 50px;
-}
+  .page-enter-from {
+    opacity: 0;
+    translate: 0 50px;
+  }
 
-.page-leave-to {
-  opacity: 0;
+  .page-leave-to {
+    opacity: 0;
+  }
 }
 </style>

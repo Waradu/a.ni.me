@@ -2,11 +2,9 @@
   <main class="search">
     <div class="grid-container">
       <div class="grid">
-        <TransitionGroup name="fade" v-if="!loading">
-          <template v-for="anime in animes" :key="anime.id">
-            <Anime :anime="anime" />
-          </template>
-        </TransitionGroup>
+        <template v-for="anime in animes" :key="anime.id" v-if="!loading">
+          <Anime :anime="anime" />
+        </template>
         <template v-for="i in 100" :key="i" v-else>
           <SkeletonAnime />
         </template>
@@ -36,6 +34,10 @@ const { $api, $emitter } = useNuxtApp();
 const keyboard = useKeyboard();
 
 keyboard.up("Escape", () => {
+  const ele = document.querySelector(".modal.shown");
+
+  if (ele) return;
+
   titlebarStore.setSearch("");
   animes.value = [];
 });
@@ -138,26 +140,5 @@ main.search {
     padding-bottom: 12px;
     color: #ffffffaa;
   }
-}
-
-.fade-move,
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease-in-out;
-}
-
-.fade-leave-active {
-  transition: all 0.1s ease-in-out;
-  opacity: 0;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  scale: 0.8;
-}
-
-.fade-leave-active {
-  position: fixed;
 }
 </style>

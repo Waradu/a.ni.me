@@ -25,6 +25,7 @@ export type Order = "asc" | "desc";
 export interface SettingsStore {
   finishedIntroduction: boolean;
   showNSFW: boolean;
+  reducedAnimations: boolean;
   tvAndMovieOnly: boolean;
   sortBy: SortBy;
   order: Order;

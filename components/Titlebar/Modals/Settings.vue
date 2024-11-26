@@ -1,10 +1,17 @@
 <template>
   <div class="settings rows">
     <div class="item">
-      <label for="showNSFW" class="text">Show NSFW <Info :text="nsfwInfoText"></Info></label>
+      <label for="showNSFW" class="text"
+        >Show NSFW <Info :text="nsfwInfoText"></Info
+      ></label>
       <label for="showNSFW" class="container">
-        <input type="checkbox" name="showNSFW" id="showNSFW" v-model="settingsStore.showNSFW">
-        <span class="checkmark"></span>
+        <input
+          type="checkbox"
+          name="showNSFW"
+          id="showNSFW"
+          v-model="settingsStore.showNSFW"
+        />
+        <span class="checkmark red"></span>
       </label>
     </div>
     <div class="item">
@@ -14,7 +21,24 @@
         <div class="recommended">recommended</div>
       </label>
       <label for="tvAndMovieOnly" class="container">
-        <input type="checkbox" name="tvAndMovieOnly" id="tvAndMovieOnly" v-model="settingsStore.tvAndMovieOnly">
+        <input
+          type="checkbox"
+          name="tvAndMovieOnly"
+          id="tvAndMovieOnly"
+          v-model="settingsStore.tvAndMovieOnly"
+        />
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="item">
+      <label for="reducedAnimations" class="text">Reduced Animations</label>
+      <label for="reducedAnimations" class="container">
+        <input
+          type="checkbox"
+          name="reducedAnimations"
+          id="reducedAnimations"
+          v-model="settingsStore.reducedAnimations"
+        />
         <span class="checkmark"></span>
       </label>
     </div>
@@ -23,23 +47,16 @@
 </template>
 
 <script lang="ts" setup>
-import { getVersion, getName, getTauriVersion } from "@tauri-apps/api/app";
-
 const settingsStore = useSettingsStore();
-const appData = ref("");
 
-const nsfwInfoText = "Turning this on means you're okay with spicy content. If you'd rather keep things wholesome, just leave it off.";
-const tvAndMovieInfoText = "Turning this on will show only the main anime series with episodes, skipping music and extras. Keeps your list neat and easy to track.";
-
-onMounted(async () => {
-  const version = await getVersion();
-  const name = await getName();
-  const tauriVersion = await getTauriVersion();
-
-  const text = `${name}-${version} with tauri-${tauriVersion}`;
-
-  appData.value = text;
+defineProps({
+  appData: String,
 });
+
+const nsfwInfoText =
+  "Turning this on means you're okay with spicy content. If you'd rather keep things wholesome, just leave it off.";
+const tvAndMovieInfoText =
+  "Turning this on will show only the main anime series with episodes, skipping music and extras. Keeps your list neat and easy to track.";
 </script>
 
 <style lang="scss">
@@ -61,7 +78,7 @@ onMounted(async () => {
       padding-inline: 10px;
       border-radius: 20px;
       margin-top: 1px;
-      height: max-content
+      height: max-content;
     }
 
     .item {
@@ -113,13 +130,13 @@ onMounted(async () => {
           width: 25px;
           background-color: #ffffff20;
           border-radius: 4px;
-          transition: .2s ease-in-out;
+          transition: 0.2s ease-in-out;
 
           &:after {
             content: "";
             position: absolute;
             opacity: 0;
-            transition: .2s ease-in-out;
+            transition: 0.2s ease-in-out;
             left: 9px;
             top: 5px;
             width: 4px;
@@ -160,7 +177,6 @@ onMounted(async () => {
               background-color: #a04848dd;
             }
           }
-
         }
       }
     }
@@ -169,7 +185,7 @@ onMounted(async () => {
   .info {
     font-size: 12px;
     color: #ffffff40;
-    margin-top: 20px
+    margin-top: 20px;
   }
 }
 </style>
