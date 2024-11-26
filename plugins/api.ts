@@ -142,13 +142,23 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       return animes;
     },
-    async search(term: string): Promise<MinimalAnilistAnime[]> {
-      const params = [
-        param("type", "ANIME"),
-      ];
+    async search(
+      term: string,
+      seasonSelected?: string,
+      seasonYearSelected?: string
+    ): Promise<MinimalAnilistAnime[]> {
+      const params = [param("type", "ANIME")];
 
       if (term != "") {
-        param("search", term, true)
+        params.push(param("search", term, true));
+      }
+
+      if (seasonSelected && seasonSelected != "") {
+        params.push(param("season", seasonSelected));
+      }
+
+      if (seasonYearSelected && seasonYearSelected != "") {
+        params.push(param("seasonYear", seasonYearSelected));
       }
 
       const settingsStore = useSettingsStore();
