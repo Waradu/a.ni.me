@@ -20,7 +20,7 @@
         v-tippy
         >{{ anime.title.english ?? anime.title.romaji ?? "N/A" }}</span
       >
-      <p class="info capitalize" v-if="anime.seasonYear">
+      <span class="info capitalize" v-if="anime.seasonYear">
         {{
           anime.season
             ? anime.season + " " + anime.seasonYear
@@ -33,7 +33,7 @@
             v-tippy="{ interactive: false }"
           />
         </div>
-      </p>
+      </span>
       <p class="info" v-else>N/A</p>
     </div>
   </div>
@@ -44,25 +44,16 @@ import OpenIcon from "~/node_modules/@fluentui/svg-icons/icons/open_32_filled.sv
 import CheckmarkIcon from "~/node_modules/@fluentui/svg-icons/icons/checkmark_32_filled.svg";
 import type { AnilistAnime, MinimalAnilistAnime } from "~/types/anilist";
 
-const inLib = ref(false);
-
-const { $database } = useNuxtApp();
-
 const settingsStore = useSettingsStore();
 
 const redirect = (id: number) => {
   navigateTo(`/anime/${id}`);
 };
 
-const props = defineProps<{
+defineProps<{
   anime: AnilistAnime | MinimalAnilistAnime;
+  inLib?: boolean;
 }>();
-
-onMounted(async () => {
-  const anime = await $database.anime(props.anime.id);
-
-  if (anime) inLib.value = true;
-});
 </script>
 
 <style lang="scss">
@@ -176,7 +167,7 @@ onMounted(async () => {
     flex-direction: column;
     width: 100%;
 
-    span {
+    .title {
       font-size: 20px;
       line-height: 26px;
       font-weight: 600;
@@ -186,7 +177,7 @@ onMounted(async () => {
       text-overflow: ellipsis;
     }
 
-    p {
+    .info {
       font-size: 14px;
       line-height: 20px;
       font-weight: 400;

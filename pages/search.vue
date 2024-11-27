@@ -3,7 +3,7 @@
     <div class="grid-container">
       <div class="grid">
         <template v-for="anime in animes" :key="anime.id" v-if="!loading">
-          <Anime :anime="anime" />
+          <Anime :anime="anime" :inLib="dbAnimes.includes(anime.id)" />
         </template>
         <template v-for="i in 100" :key="i" v-else>
           <SkeletonAnime />
@@ -31,7 +31,7 @@ import type { Item } from "~/types/dropdown";
 const titlebarStore = useTitlebarStore();
 titlebarStore.setTitle("Search");
 
-const { $api, $emitter } = useNuxtApp();
+const { $api, $emitter, $database } = useNuxtApp();
 
 const keyboard = useKeyboard();
 
@@ -58,6 +58,7 @@ const searchBySeason = async () => {
 };
 
 const animes = ref<MinimalAnilistAnime[]>([]);
+const dbAnimes = ref<number[]>([]);
 
 const loading = ref(false);
 
@@ -97,7 +98,7 @@ const { selected: seasonYearSelected } = useDropdown(
   }
 );
 
-onMounted(() => {
+onMounted(async () => {
   $emitter.off("search");
   $emitter.on("search", async () => {
     loading.value = true;
@@ -114,6 +115,8 @@ onMounted(() => {
 
     loading.value = false;
   });
+
+  dbAnimes.value = (await $database.animes()).map((a) => a.id);
 });
 </script>
 
