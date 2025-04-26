@@ -3,7 +3,8 @@
   <h1 align="center">A • NI • ME</h1>
 
    Can't keep up with all the anime you've watched? Neither can we! <br>
-   Organize your list, hide the for research purpose ones and keep things under control. We won't tell. 
+   Organize your list, hide the for research purpose ones and keep things under control. We won't tell. <br>
+   **DEVELOPMENT IS CURRENTLY PAUSED BUT WILL CONTINUE IN THE FUTURE**
 </div>
 
 <br>
