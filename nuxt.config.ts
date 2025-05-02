@@ -24,4 +24,8 @@ export default defineNuxtConfig({
   lucide: {
     namePrefix: "Icon",
   },
+
+  app: {
+    pageTransition: { name: "page", mode: "out-in" },
+  },
 });
