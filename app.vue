@@ -1,5 +1,7 @@
 <template>
-  <span class="text-red-500">Hello, World!</span>
+  <div class="page">
+    <NuxtPage />
+  </div>
 </template>
 
 <style lang="scss">
