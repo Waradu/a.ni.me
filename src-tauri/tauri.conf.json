@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "a.ni.me",
-  "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "version": "0.8.0",
+  "identifier": "dev.waradu.a.ni.me",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
@@ -12,11 +12,14 @@
   "app": {
     "windows": [
       {
-        "title": "a.ni.me",
+        "title": "A•NI•ME",
         "width": 800,
         "height": 600,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "decorations": false,
+        "minHeight": 600,
+        "minWidth": 900
       }
     ],
     "security": {
@@ -32,6 +35,15 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
+      "endpoints": [
+        "https://a.ni.me-backend.waradu.dev/api/latest"
+      ]
+    }
   }
 }
