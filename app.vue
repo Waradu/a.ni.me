@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" data-tauri-drag-region>
     <NuxtPage />
   </div>
 </template>
