@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxtjs/tailwindcss", "nuxt-lucide-icons"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-lucide-icons", "@pinia/nuxt"],
 
   tailwindcss: {
     exposeConfig: true,
@@ -27,5 +27,10 @@ export default defineNuxtConfig({
 
   app: {
     pageTransition: { name: "page", mode: "out-in" },
+    head: {
+      htmlAttrs: {
+        class: "bg-neutral-800",
+      },
+    },
   },
 });
