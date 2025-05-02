@@ -1,6 +1,5 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "a.ni.me",
   "type": "module",
   "scripts": {
     "build": "nuxt build",
