@@ -18,7 +18,7 @@
     </UiToggleIcon>
     <input
       type="text"
-      class="absolute left-3 w-[calc(100%-44px)] bg-transparent outline-none h-full transition duration-300 ease-in-out mb-[1px]"
+      class="absolute left-3 w-[calc(100%-44px)] bg-transparent outline-none h-full transition duration-300 ease-in-out mb-[1px] placeholder:text-neutral-400"
       :class="isSearching ? '' : 'blur-sm opacity-0 pointer-events-none'"
       placeholder="Search"
     />
