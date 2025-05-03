@@ -7,7 +7,7 @@
         "@nuxtjs/tailwindcss": "6.14.0",
         "@pinia/nuxt": "0.11.0",
         "@tauri-apps/plugin-updater": "^2.7.1",
-        "@waradu/keyboard": "^4.0.1",
+        "@waradu/keyboard": "^4.1.0",
         "nuxt": "^3.17.1",
         "nuxt-lucide-icons": "1.0.5",
         "pinia": "^3.0.2",
@@ -435,7 +435,7 @@
 
     "@vue/shared": ["@vue/shared@3.5.13", "", {}, "sha512-/hnE/qP5ZoGpol0a5mDi45bOd7t3tjYJBjsgCsivow7D48cJeV5l05RD82lPqi7gRiphZM37rnhW1l6ZoCNNnQ=="],
 
-    "@waradu/keyboard": ["@waradu/keyboard@4.1.0", "", { "dependencies": { "@types/node": "^22.15.3" }, "peerDependencies": { "typescript": "^5" } }, "sha512-8vnZi8xZYbaaV7iGnqglFjXwFIOLxoSA+Ggp541K3lhmIfZ6kiIR+pWVo5iSo1nsO1pwOHmnE+KIf9KFRm/WyQ=="],
+    "@waradu/keyboard": ["@waradu/keyboard@4.2.0", "", { "dependencies": { "@types/node": "^22.15.3" }, "peerDependencies": { "typescript": "^5" } }, "sha512-xKb/LTVYOm9bUZUpucH772VEvkOEAKPxnx0DhtIHfiYHqpzJefZqNVzSnlj4tdjcXH+oWWLvQ2K7WB10ufzmBA=="],
 
     "@whatwg-node/disposablestack": ["@whatwg-node/disposablestack@0.0.6", "", { "dependencies": { "@whatwg-node/promise-helpers": "^1.0.0", "tslib": "^2.6.3" } }, "sha512-LOtTn+JgJvX8WfBVJtF08TGrdjuFzGJc4mkP8EdDI8ADbvO7kiexYep1o8dwnt0okb0jYclCDXF13xU7Ge4zSw=="],
 

@@ -12,7 +12,7 @@
     >
       {{ page.name }}
     </TitlebarLink>
-    <UiToggleIcon v-slot="props" @click="isSearching = !isSearching">
+    <UiToggleIcon v-slot="props" @click="toggleSearch()">
       <IconSearch :class="props.class" />
       <IconX :class="props.classSecond" />
     </UiToggleIcon>
@@ -21,6 +21,8 @@
       class="absolute left-3 w-[calc(100%-44px)] bg-transparent outline-none h-full transition duration-300 ease-in-out mb-[1px] placeholder:text-neutral-400"
       :class="isSearching ? '' : 'blur-sm opacity-0 pointer-events-none'"
       placeholder="Search"
+      ref="searchbar"
+      :disabled="!isSearching"
     />
     <div
       :class="[
@@ -38,7 +40,25 @@
 </template>
 
 <script lang="ts" setup>
+import { Key, useKeyboard } from "@waradu/keyboard";
+
 const isSearching = ref(false);
+const searchbar = ref<HTMLElement>();
+
+const keyboard = useKeyboard();
+
+keyboard.listen([Key.Control, Key.L], () => toggleSearch(true));
+
+const toggleSearch = (force?: boolean) => {
+  const newState = force ?? !isSearching.value;
+  isSearching.value = newState;
+
+  if (newState) {
+    setTimeout(() => {
+      searchbar.value?.focus();
+    });
+  }
+};
 
 const pages = [
   {
@@ -57,4 +77,20 @@ const pages = [
     width: 76,
   },
 ];
+
+onMounted(() => {
+  keyboard.init();
+
+  if (searchbar.value) {
+    keyboard.listen(
+      [Key.Escape],
+      () => {
+        toggleSearch(false);
+      },
+      { runIfFocused: searchbar.value }
+    );
+
+    keyboard.listen([Key.Enter], () => {}, { runIfFocused: searchbar.value });
+  }
+});
 </script>
