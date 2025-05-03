@@ -22,7 +22,7 @@ body,
 }
 
 html:not(:has(.reduced)) {
-  --speed: 0.2s;
+  --speed: 0.15s;
   --impact: 50px;
 
   .slide-left-enter-active,
