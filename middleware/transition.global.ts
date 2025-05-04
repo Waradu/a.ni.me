@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  const order = ["/", "/search", "/settings"]
+  const order = ["/", "/explore", "/settings"]
   const toTransition = to.meta.pageTransition
   const fromTransition = from.meta.pageTransition
 

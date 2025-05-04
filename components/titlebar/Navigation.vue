@@ -67,8 +67,8 @@ const pages = [
     width: 68,
   },
   {
-    name: "Search",
-    href: "/search",
+    name: "Explore",
+    href: "/explore",
     width: 66,
   },
   {
