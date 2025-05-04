@@ -4,9 +4,6 @@
     data-tauri-drag-region
   >
     <UiIcon v-slot="props">
-      <IconExternalLink :class="props.class" />
-    </UiIcon>
-    <UiIcon v-slot="props">
       <IconFilter :class="props.class" />
     </UiIcon>
     <div class="h-5 w-[1px] bg-white mx-2 opacity-20"></div>
