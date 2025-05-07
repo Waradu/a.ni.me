@@ -2,9 +2,9 @@
 name = "app"
 version = "0.8.0"
 description = "A Tauri App"
-authors = ["you"]
+authors = ["Waradu"]
 license = ""
-repository = ""
+repository = "waradu/a.ni.me"
 edition = "2021"
 rust-version = "1.77.2"
 
