@@ -9,7 +9,7 @@
     :style="{ '--progress': progress * 100 + '%' }"
   >
     <div class="w-48 flex h-full">
-      <StatusbarButton @click="check">
+      <StatusbarButton @click="check" title="Check for updates" v-tippy>
         {{ appData }}
       </StatusbarButton>
     </div>
@@ -26,7 +26,7 @@
       v-else-if="progress >= 0.99 && !downloading && updateAvailable"
       @click="install"
     >
-      Install update (requires restart of the app)
+      Click to install update (restart the app)
     </StatusbarButton>
     <div class="w-48 flex justify-end h-full">
       <StatusbarButton disabled> Showing 12 / 64 </StatusbarButton>

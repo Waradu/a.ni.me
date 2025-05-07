@@ -9,6 +9,8 @@
 </template>
 
 <style lang="scss">
+@use "~/assets/tippy";
+
 * {
   letter-spacing: 0.1px;
 }
