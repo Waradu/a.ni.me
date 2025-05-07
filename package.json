@@ -2,8 +2,9 @@
   "name": "a.ni.me",
   "type": "module",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "bun tauri build",
+    "build:debug": "bun tauri build --debug",
+    "dev": "bun tauri dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
