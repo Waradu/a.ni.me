@@ -31,8 +31,8 @@
           ? ['left-0 w-[calc(100%-40px)]']
           : [
               'group-has-[a:nth-child(1).router-link-active]:w-[68px] group-has-[a:nth-child(1).router-link-active]:left-[0px]',
-              'group-has-[a:nth-child(2).router-link-active]:w-[66px] group-has-[a:nth-child(2).router-link-active]:left-[76px]',
-              'group-has-[a:nth-child(3).router-link-active]:w-[76px] group-has-[a:nth-child(3).router-link-active]:left-[150px]',
+              'group-has-[a:nth-child(2).router-link-active]:w-[72px] group-has-[a:nth-child(2).router-link-active]:left-[76px]',
+              'group-has-[a:nth-child(3).router-link-active]:w-[76px] group-has-[a:nth-child(3).router-link-active]:left-[156px]',
             ],
       ]"
     ></div>
@@ -69,7 +69,7 @@ const pages = [
   {
     name: "Explore",
     href: "/explore",
-    width: 66,
+    width: 72,
   },
   {
     name: "Settings",
