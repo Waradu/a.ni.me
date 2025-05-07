@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "6.14.0",
     "@pinia/nuxt": "0.11.0",
+    "@tauri-apps/plugin-log": "^2.4.0",
     "@tauri-apps/plugin-updater": "^2.7.1",
     "@waradu/keyboard": "^4.2.0",
     "nuxt": "^3.17.2",

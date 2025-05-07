@@ -1,12 +1,13 @@
 import { check } from "@tauri-apps/plugin-updater";
 import type { Update, DownloadEvent } from "@tauri-apps/plugin-updater";
+import { error } from "@tauri-apps/plugin-log";
 
 export function useUpdater(skipOn = false) {
   const updateInfo = ref<Update | null>(null);
   const updateAvailable = ref(false);
   const latestVersion = ref("");
   const progress = ref(0);
-  const error = ref<unknown>(null);
+  const updateError = ref<unknown>(null);
   const pending = ref(false);
   const downloading = ref(false);
 
@@ -14,7 +15,7 @@ export function useUpdater(skipOn = false) {
   let _downloaded = 0;
 
   async function checkAndDownload() {
-    error.value = null;
+    updateError.value = null;
     try {
       pending.value = true;
       const upd = await check();
@@ -24,7 +25,7 @@ export function useUpdater(skipOn = false) {
         updateInfo.value = upd;
         updateAvailable.value = true;
         latestVersion.value = upd.version;
-        
+
         progress.value = 0;
         _contentLength = 0;
         _downloaded = 0;
@@ -35,7 +36,6 @@ export function useUpdater(skipOn = false) {
           await upd.download((event: DownloadEvent) => {
             if (event.event === "Started") {
               _contentLength = event.data.contentLength ?? 0;
-              console.log(_contentLength);
             } else if (event.event === "Progress") {
               _downloaded += event.data.chunkLength;
               let _progress =
@@ -44,7 +44,7 @@ export function useUpdater(skipOn = false) {
             }
           });
         } catch (err) {
-          error.value = err;
+          updateError.value = err;
         } finally {
           downloading.value = false;
         }
@@ -54,7 +54,7 @@ export function useUpdater(skipOn = false) {
         latestVersion.value = "";
       }
     } catch (err) {
-      error.value = err;
+      updateError.value = err;
       updateAvailable.value = false;
     }
   }
@@ -64,7 +64,7 @@ export function useUpdater(skipOn = false) {
     try {
       await updateInfo.value.install();
     } catch (err) {
-      error.value = err;
+      updateError.value = err;
     }
   }
 
@@ -72,8 +72,17 @@ export function useUpdater(skipOn = false) {
     checkAndDownload();
   }
 
-  watch(error, () => {
-    console.error(error);
+  watch(updateError, () => {
+    if (!updateError?.value) return;
+
+    const message =
+      typeof updateError.value === "string"
+        ? updateError.value
+        : updateError.value instanceof Error
+        ? updateError.value.message
+        : JSON.stringify(updateError.value);
+
+    error(message);
   });
 
   return {
@@ -82,7 +91,7 @@ export function useUpdater(skipOn = false) {
     progress,
     pending,
     downloading,
-    error,
+    error: updateError,
     check: checkAndDownload,
     install: installUpdate,
   };
