@@ -4,7 +4,7 @@
     :href="href"
     :class="hidden ? 'blur-sm opacity-0 pointer-events-none' : ''"
   >
-    <slot></slot>
+    <slot />
   </NuxtLink>
 </template>
 
