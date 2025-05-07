@@ -13,7 +13,7 @@
         {{ appData }}
       </StatusbarButton>
     </div>
-    <StatusbarButton v-if="error" @click="check">
+    <StatusbarButton v-if="error" @click="check" error>
       Update failed. Click here to try again.
     </StatusbarButton>
     <StatusbarButton disabled v-else-if="pending">

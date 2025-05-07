@@ -19,11 +19,12 @@ export function useUpdater(skipOn = false) {
       pending.value = true;
       const upd = await check();
       pending.value = false;
+
       if (upd) {
         updateInfo.value = upd;
         updateAvailable.value = true;
         latestVersion.value = upd.version;
-
+        
         progress.value = 0;
         _contentLength = 0;
         _downloaded = 0;
