@@ -13,34 +13,7 @@ export function useUpdater(skipOn = false) {
   let _contentLength = 0;
   let _downloaded = 0;
 
-  async function downloadUpdate() {
-    if (!updateInfo.value) return;
-    error.value = null;
-    progress.value = 0;
-    _contentLength = 0;
-    _downloaded = 0;
-    pending.value = false;
-    downloading.value = true;
-
-    try {
-      await updateInfo.value.download((event: DownloadEvent) => {
-        if (event.event === "Started") {
-          _contentLength = event.data.contentLength ?? 0;
-          console.log(_contentLength);
-        } else if (event.event === "Progress") {
-          _downloaded += event.data.chunkLength;
-          progress.value =
-            _contentLength > 0 ? _downloaded / _contentLength : 0;
-        }
-      });
-    } catch (err) {
-      error.value = err;
-    } finally {
-      downloading.value = false;
-    }
-  }
-
-  async function checkForUpdate() {
+  async function checkAndDownload() {
     error.value = null;
     try {
       pending.value = true;
@@ -50,9 +23,30 @@ export function useUpdater(skipOn = false) {
         updateInfo.value = upd;
         updateAvailable.value = true;
         latestVersion.value = upd.version;
-        downloadUpdate().catch((e) => {
-          error.value = e;
-        });
+
+        progress.value = 0;
+        _contentLength = 0;
+        _downloaded = 0;
+        pending.value = false;
+        downloading.value = true;
+
+        try {
+          await upd.download((event: DownloadEvent) => {
+            if (event.event === "Started") {
+              _contentLength = event.data.contentLength ?? 0;
+              console.log(_contentLength);
+            } else if (event.event === "Progress") {
+              _downloaded += event.data.chunkLength;
+              let _progress =
+                _contentLength > 0 ? _downloaded / _contentLength : 0;
+              progress.value = _progress;
+            }
+          });
+        } catch (err) {
+          error.value = err;
+        } finally {
+          downloading.value = false;
+        }
       } else {
         updateInfo.value = null;
         updateAvailable.value = false;
@@ -74,12 +68,12 @@ export function useUpdater(skipOn = false) {
   }
 
   if (!skipOn) {
-    checkForUpdate();
+    checkAndDownload();
   }
 
   watch(error, () => {
     console.error(error);
-  })
+  });
 
   return {
     updateAvailable,
@@ -88,7 +82,7 @@ export function useUpdater(skipOn = false) {
     pending,
     downloading,
     error,
-    check: checkForUpdate,
+    check: checkAndDownload,
     install: installUpdate,
   };
 }

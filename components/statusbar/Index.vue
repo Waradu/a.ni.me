@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'h-8 max-h-8 w-full flex items-center p-1 text-xs text-neutral-400 border-t-[1px] border-neutral-700 justify-between relative',
+      'h-8 max-h-8 w-full flex items-center p-1 text-xs text-neutral-400 border-t-[1px] border-neutral-700 justify-between relative select-none',
       downloading
         ? 'after:block after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:transition-[width] after:duration-100 after:ease-in-out after:w-[var(--progress)] after:h-[2px] after:bg-green-500'
         : '',
@@ -20,16 +20,16 @@
       Checking for updates
     </StatusbarButton>
     <StatusbarButton disabled v-else-if="downloading">
-      Version {{ latestVersion }} found! Downloading {{ progress * 100 }}%
+      Downloading v{{ latestVersion }} - {{ Math.round(progress * 100) }}%
     </StatusbarButton>
     <StatusbarButton
-      v-else-if="progress == 1 && !downloading && updateAvailable"
+      v-else-if="progress >= 0.99 && !downloading && updateAvailable"
       @click="install"
     >
       Install update (requires restart of the app)
     </StatusbarButton>
     <div class="w-48 flex justify-end h-full">
-      <StatusbarButton disabled> 12 / 64 </StatusbarButton>
+      <StatusbarButton disabled> Showing 12 / 64 </StatusbarButton>
     </div>
   </div>
 </template>
@@ -48,6 +48,6 @@ const {
 } = useUpdater();
 
 const appData = computed(
-  () => `${name.value}-${version.value} with tauri-${tauriVersion.value}`
+  () => `v${version.value} with tauri v${tauriVersion.value}`
 );
 </script>
