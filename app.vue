@@ -8,6 +8,14 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
+
+await onOpenUrl((urls) => {
+  console.log("deep link:", urls);
+});
+</script>
+
 <style lang="scss">
 @use "~/assets/tippy";
 

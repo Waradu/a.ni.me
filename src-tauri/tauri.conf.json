@@ -44,6 +44,13 @@
       "endpoints": [
         "https://a.ni.me-backend.waradu.dev/api/latest"
       ]
+    },
+    "deep-link": {
+      "desktop": {
+        "schemes": [
+          "a.ni.me"
+        ]
+      }
     }
   }
 }
