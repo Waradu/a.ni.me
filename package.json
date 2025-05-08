@@ -16,6 +16,8 @@
     "@tauri-apps/plugin-log": "^2.4.0",
     "@tauri-apps/plugin-opener": "~2",
     "@tauri-apps/plugin-updater": "^2.7.1",
+    "@vueuse/core": "^13.1.0",
+    "@vueuse/nuxt": "^13.1.0",
     "@waradu/keyboard": "^4.2.0",
     "@waradu/useshared": "^0.3.0",
     "nuxt": "^3.17.2",

@@ -10,6 +10,7 @@ export function useUpdater() {
   const updateError = ref<unknown>(null);
   const pending = ref(false);
   const downloading = ref(false);
+  const { settings } = useSettings();
 
   let _contentLength = 0;
   let _downloaded = 0;
@@ -69,7 +70,9 @@ export function useUpdater() {
   }
 
   if (!import.meta.dev) {
-    checkAndDownload();
+    until(settings)
+      .toBeTruthy()
+      .then(() => checkAndDownload());
   }
 
   watch(updateError, () => {

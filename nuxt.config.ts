@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     "nuxt-lucide-icons",
     "@pinia/nuxt",
     "nuxt-svgo",
+    "@vueuse/nuxt",
   ],
 
   tailwindcss: {

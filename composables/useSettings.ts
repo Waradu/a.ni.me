@@ -1,14 +1,12 @@
 import useShared, { LocalStorage } from "@waradu/useshared";
 
 interface Settings {
-  finishedIntroduction: boolean;
-  showNSFW: boolean;
+  checkForUpdatesAutomatically: boolean;
   reducedAnimations: boolean;
 }
 
 const defaultData: Settings = {
-  finishedIntroduction: false,
-  showNSFW: false,
+  checkForUpdatesAutomatically: true,
   reducedAnimations: false,
 };
 
