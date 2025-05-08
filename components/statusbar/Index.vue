@@ -48,6 +48,9 @@ const {
 } = useUpdater();
 
 const appData = computed(
-  () => `v${version.value} with tauri v${tauriVersion.value} ${import.meta.dev ? "- dev" : ""}`
+  () =>
+    `v${version.value} with tauri v${tauriVersion.value} ${
+      import.meta.dev ? "- dev" : ""
+    }`
 );
 </script>

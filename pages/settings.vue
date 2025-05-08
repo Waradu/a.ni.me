@@ -41,7 +41,12 @@
         >
           <Anilist class="size-5" />
         </UiIcon>
-        <UiButton v-slot="props" text="Login" @click="browser" class="cursor-pointer">
+        <UiButton
+          v-slot="props"
+          text="Login"
+          @click="browser"
+          class="cursor-pointer"
+        >
           <IconLogOut :class="props.class" />
         </UiButton>
       </div>

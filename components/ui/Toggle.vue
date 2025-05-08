@@ -1,6 +1,9 @@
 <template>
   <div
-    :class="['w-10 h-6 rounded-full p-1 transition duration-200 ease-in-out', model ? 'bg-green-800' : 'bg-neutral-700']"
+    :class="[
+      'w-10 h-6 rounded-full p-1 transition duration-200 ease-in-out',
+      model ? 'bg-green-800' : 'bg-neutral-700',
+    ]"
     @click.prevent="model = !model"
   >
     <div
