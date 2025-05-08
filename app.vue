@@ -12,7 +12,7 @@
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
 
-const { auth } = useAuth();
+const { auth, refreshUser } = useAuth();
 
 await onOpenUrl((urls) => {
   const callback = urls.find((url) => url.startsWith("a.ni.me://callback"));
@@ -31,7 +31,9 @@ await onOpenUrl((urls) => {
     return;
   }
 
-  if (auth.value) auth.value.token = token;
+  if (auth.value) {
+    auth.value.token = token;
+  }
 });
 </script>
 

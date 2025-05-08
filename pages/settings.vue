@@ -1,28 +1,49 @@
 <template>
   <div class="flex justify-center p-8">
     <div class="max-w-96 min-w-96 flex flex-col gap-8">
-      <div class="flex gap-4 items-center">
+      <div class="flex gap-4 items-center" v-if="auth?.user">
         <img
-          src="https://s4.anilist.co/file/anilistcdn/user/avatar/large/b7311169-YLe8MdNYaak8.jpg"
+          :src="auth.user.avatar.large"
           alt="pb"
           class="size-20 rounded-full"
         />
         <div class="flex flex-col gap-2">
-          <div class="flex gap-1 items-center">
-            <div class="text-xl">Waradu</div>
+          <div class="flex gap-2 items-center">
+            <div class="text-xl">{{ auth.user.name }}</div>
+            <div
+              class="text-[10px] flex items-center p-0.5 px-2 select-none rounded-full bg-red-400 bg-opacity-50"
+              v-if="auth.user.options.displayAdultContent"
+              title="Change this on the Anilist website"
+              v-tippy
+            >
+              NSFW
+            </div>
           </div>
-          <UiButton v-slot="props" text="Logout">
+          <UiButton v-slot="props" text="Logout" @click="logout">
             <IconLogOut :class="props.class" />
           </UiButton>
         </div>
         <UiIcon
           class="cursor-pointer ml-auto"
-          @click="openUrl('https://anilist.co/user/Waradu')"
+          @click="openUrl(auth.user.siteUrl)"
           title="Open profile on Anilist"
           v-tippy
         >
           <Anilist class="size-5" />
         </UiIcon>
+      </div>
+      <div class="flex gap-4 items-center justify-center" v-else>
+        <UiIcon
+          class="cursor-pointer"
+          @click="openUrl('https://anilist.co')"
+          title="Go to Anilist"
+          v-tippy
+        >
+          <Anilist class="size-5" />
+        </UiIcon>
+        <UiButton v-slot="props" text="Login" @click="browser" class="cursor-pointer">
+          <IconLogOut :class="props.class" />
+        </UiButton>
       </div>
       <div v-if="settings" class="flex flex-col gap-4 select-none">
         <SettingsLabel
@@ -41,7 +62,6 @@
           v-model="settings.betaChannel"
         />
       </div>
-      <div @click="browser" class="cursor-pointer">Login</div>
     </div>
   </div>
 </template>
@@ -51,7 +71,7 @@ import Anilist from "~/assets/svg/anilist.svg";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 const { settings } = useSettings();
-const { auth, browser } = useAuth();
+const { auth, browser, logout } = useAuth();
 
 definePageMeta({
   pageTransition: {

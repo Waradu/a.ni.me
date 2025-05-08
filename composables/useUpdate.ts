@@ -1,6 +1,7 @@
 import { check } from "@tauri-apps/plugin-updater";
 import type { Update, DownloadEvent } from "@tauri-apps/plugin-updater";
 import { error } from "@tauri-apps/plugin-log";
+import { errorMsg } from "~/utils/error";
 
 export function useUpdater() {
   const updateInfo = ref<Update | null>(null);
@@ -78,14 +79,7 @@ export function useUpdater() {
   watch(updateError, () => {
     if (!updateError?.value) return;
 
-    const message =
-      typeof updateError.value === "string"
-        ? updateError.value
-        : updateError.value instanceof Error
-        ? updateError.value.message
-        : JSON.stringify(updateError.value);
-
-    error(message);
+    error(errorMsg(updateError.value));
   });
 
   return {
