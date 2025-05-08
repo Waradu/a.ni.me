@@ -13,7 +13,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxtjs/tailwindcss", "nuxt-lucide-icons", "@pinia/nuxt"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "nuxt-lucide-icons",
+    "@pinia/nuxt",
+    "nuxt-svgo",
+  ],
 
   tailwindcss: {
     exposeConfig: true,
@@ -32,5 +37,11 @@ export default defineNuxtConfig({
         class: "bg-neutral-800",
       },
     },
+  },
+
+  svgo: {
+    autoImportPath: false,
+    defaultImport: "component",
+    dts: true,
   },
 });

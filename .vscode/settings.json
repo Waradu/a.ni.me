@@ -2,13 +2,7 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "tailwindCSS.experimental.classRegex": [
-    "tw`(.*?)`",
-    "tw\\('(.*?)'\\)",
-    "tw\\(\\s*('(.*?)'|\"(.*?)\")\\s*\\)"
-  ],
   "editor.quickSuggestions": {
     "strings": true
-  },
-  "typescript.tsdk": "node_modules\\typescript\\lib",
+  }
 }

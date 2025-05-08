@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-8 p-4">
-    <div class="text-red-400">Explore</div>
+    <div>Explore</div>
   </div>
 </template>
 

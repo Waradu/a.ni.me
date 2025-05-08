@@ -77,8 +77,8 @@ body:has(main.anime)::before {
 }
 
 html:not(:has(.reduced)) {
-  --speed: 0.15s;
-  --impact: 50px;
+  --speed: 0.1s;
+  --impact: 20px;
 
   .slide-left-enter-active,
   .slide-left-leave-active,

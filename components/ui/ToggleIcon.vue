@@ -3,12 +3,12 @@
     <slot
       :class="[
         props.class,
-        defaultClasses,
+        'transition duration-300 ease-in-out absolute',
         !model ? 'scale-100 opacity-100 blur-0' : 'scale-0 opacity-0 blur-md',
       ]"
       :classSecond="[
         props.class,
-        defaultClasses,
+        'transition duration-300 ease-in-out absolute',
         model ? 'scale-100 opacity-100 blur-0' : 'scale-0 opacity-0 blur-md',
       ]"
     />
@@ -17,5 +17,4 @@
 
 <script lang="ts" setup>
 const model = defineModel();
-const defaultClasses = tw`transition duration-300 ease-in-out absolute`;
 </script>
