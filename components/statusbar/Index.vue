@@ -8,7 +8,7 @@
     ]"
     :style="{ '--progress': progress * 100 + '%' }"
   >
-    <div class="w-48 flex h-full">
+    <div class="max-w-0 flex h-full">
       <StatusbarButton @click="check" title="Check for updates" v-tippy>
         {{ appData }}
       </StatusbarButton>
@@ -28,7 +28,7 @@
     >
       Click to install update (restart the app)
     </StatusbarButton>
-    <div class="w-48 flex justify-end h-full">
+    <div class="max-w-0 flex justify-end h-full">
       <StatusbarButton disabled> Showing 12 / 64 </StatusbarButton>
     </div>
   </div>
@@ -48,6 +48,6 @@ const {
 } = useUpdater();
 
 const appData = computed(
-  () => `v${version.value} with tauri v${tauriVersion.value}`
+  () => `v${version.value} with tauri v${tauriVersion.value} ${import.meta.dev ? "- dev" : ""}`
 );
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'flex items-center h-full px-1.5 pb-[1px] rounded-[4px] transition duration-200 ease-in-out',
+      'flex items-center h-full px-1.5 pb-[1px] rounded-[4px] transition duration-200 ease-in-out whitespace-nowrap',
       disabled ? 'pointer-events-none' : '',
       error
         ? 'bg-red-400 bg-opacity-10 text-red-400 hover:bg-red-400 hover:bg-opacity-20'

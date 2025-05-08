@@ -2,7 +2,7 @@ import { check } from "@tauri-apps/plugin-updater";
 import type { Update, DownloadEvent } from "@tauri-apps/plugin-updater";
 import { error } from "@tauri-apps/plugin-log";
 
-export function useUpdater(skipOn = false) {
+export function useUpdater() {
   const updateInfo = ref<Update | null>(null);
   const updateAvailable = ref(false);
   const latestVersion = ref("");
@@ -68,7 +68,7 @@ export function useUpdater(skipOn = false) {
     }
   }
 
-  if (!skipOn) {
+  if (!import.meta.dev) {
     checkAndDownload();
   }
 
