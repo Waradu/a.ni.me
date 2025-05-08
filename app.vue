@@ -10,9 +10,28 @@
 
 <script lang="ts" setup>
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
+import { error } from "@tauri-apps/plugin-log";
+
+const { auth } = useAuth();
 
 await onOpenUrl((urls) => {
-  console.log("deep link:", urls);
+  const callback = urls.find((url) => url.startsWith("a.ni.me://callback"));
+
+  if (!callback) {
+    error(`Callback url not found '${urls.join(", ")}'`);
+    return;
+  }
+
+  const url = new URL(callback);
+
+  const token = url.hash.replace("#", "");
+
+  if (!token || token == "") {
+    error(`Token not found '${callback}'`);
+    return;
+  }
+
+  if (auth.value) auth.value.token = token;
 });
 </script>
 

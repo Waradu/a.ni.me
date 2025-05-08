@@ -40,6 +40,12 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    public: {
+      redirectUri: process.env.REDIRECT_URI,
+    }
+  },
+
   svgo: {
     autoImportPath: false,
     defaultImport: "component",

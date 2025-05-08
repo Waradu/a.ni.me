@@ -24,7 +24,7 @@
           <Anilist class="size-5" />
         </UiIcon>
       </div>
-      <div v-if="settings" class="flex flex-col gap-2 select-none">
+      <div v-if="settings" class="flex flex-col gap-4 select-none">
         <SettingsLabel
           text="Check updates automatically"
           id="checkForUpdatesAutomatically"
@@ -35,7 +35,13 @@
           id="reducedAnimations"
           v-model="settings.reducedAnimations"
         />
+        <SettingsLabel
+          text="Join Beta"
+          id="betaChannel"
+          v-model="settings.betaChannel"
+        />
       </div>
+      <div @click="browser" class="cursor-pointer">Login</div>
     </div>
   </div>
 </template>
@@ -45,15 +51,7 @@ import Anilist from "~/assets/svg/anilist.svg";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 const { settings } = useSettings();
-
-const client_id = 26677;
-const redirect_uri = "a.ni.me://callback";
-
-const auth = () => {
-  openUrl(
-    `https://anilist.co/api/v2/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code`
-  );
-};
+const { auth, browser } = useAuth();
 
 definePageMeta({
   pageTransition: {
