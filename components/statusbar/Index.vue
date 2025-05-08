@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'h-8 max-h-8 w-full flex items-center p-1 text-xs text-neutral-400 border-t-[1px] border-neutral-700 justify-between relative select-none',
+      'h-8 max-h-8 min-h-8 w-full flex items-center p-1 text-xs text-neutral-400 border-t-[1px] border-neutral-700 justify-between relative select-none',
       downloading
         ? 'after:block after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:transition-[width] after:duration-100 after:ease-in-out after:w-[var(--progress)] after:h-[2px] after:bg-green-500'
         : '',
