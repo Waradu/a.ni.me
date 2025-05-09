@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "nuxt-svgo",
     "@vueuse/nuxt",
+    "@nuxt/image",
   ],
 
   tailwindcss: {
@@ -51,4 +52,10 @@ export default defineNuxtConfig({
     defaultImport: "component",
     dts: true,
   },
+
+  image: {
+    domains: [
+      "s4.anilist.co"
+    ]
+  }
 });

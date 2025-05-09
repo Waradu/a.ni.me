@@ -2,7 +2,7 @@
   <div class="flex justify-center p-8">
     <div class="max-w-96 min-w-96 flex flex-col gap-8">
       <div class="flex gap-4 items-center" v-if="auth?.user">
-        <img
+        <NuxtImg
           :src="auth.user.avatar.large"
           alt="pb"
           class="size-20 rounded-full"

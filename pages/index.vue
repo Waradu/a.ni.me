@@ -23,7 +23,7 @@
               class="z-10 absolute size-6 transition-[opacity] duration-300 opacity-0 group-hover:opacity-100 text-neutral-200"
             />
             <div class="w-full h-full absolute inset-0 z-0 transition bg-black">
-              <img
+              <NuxtImg
                 :src="anime.coverImage.large"
                 alt="Cover"
                 class="w-full h-full transition object-cover group-hover:scale-105 group-hover:opacity-40"
@@ -75,15 +75,14 @@
 
 <script lang="ts" setup>
 import { error } from "@tauri-apps/plugin-log";
-import gql from "graphql-tag";
-import type { GetUserAnimeCollection, Media } from "~/types/anime";
+import type { Media } from "~/types/anime";
 
 const { auth } = useAuth();
 
-const animes = useState<Media[]>("animes", () => []);
-const fetching = useState("animesFetching", () => false);
-const fetched = useState("animesFetched", () => false);
-const errorMessage = useState("animesError", () => "");
+const animes = ref<Media[]>([]);
+const fetching = ref(false);
+const fetched = ref(false);
+const errorMessage = ref("");
 
 watch(
   () => auth.value?.user,
