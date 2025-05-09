@@ -43,10 +43,11 @@
         <UiButton
           v-slot="props"
           text="Login"
-          @click="browser"
+          @click="login"
           class="cursor-pointer"
+          :loading="loading"
         >
-          <IconLogOut :class="props.class" />
+          <IconLogIn :class="props.class" />
         </UiButton>
       </div>
       <div v-if="settings" class="flex flex-col gap-4 select-none">
@@ -78,6 +79,19 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 
 const { settings } = useSettings();
 const { auth, browser, logout } = useAuth();
+const loading = ref(false);
+
+const login = () => {
+  loading.value = true;
+  browser();
+};
+
+watch(
+  () => auth.value?.user,
+  () => {
+    if (auth.value?.user) loading.value = false;
+  }
+);
 
 definePageMeta({
   pageTransition: {

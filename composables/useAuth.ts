@@ -1,7 +1,6 @@
 import { error } from "@tauri-apps/plugin-log";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import useShared, { LocalStorage } from "@waradu/useshared";
-import { gql } from "graphql-tag";
 import type { Viewer } from "~/types/viewer";
 
 export interface UserDataResponse {
