@@ -12,7 +12,7 @@
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
 
-const { auth, refreshUser } = useAuth();
+const { auth } = useAuth();
 
 await onOpenUrl((urls) => {
   const callback = urls.find((url) => url.startsWith("a.ni.me://callback"));
@@ -86,6 +86,8 @@ body:has(main.anime)::before {
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

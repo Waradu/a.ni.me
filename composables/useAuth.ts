@@ -1,30 +1,11 @@
 import { error } from "@tauri-apps/plugin-log";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import useShared, { LocalStorage } from "@waradu/useshared";
-import axios from "axios";
 import { gql } from "graphql-request";
-import { errorMsg } from "~/utils/error";
+import type { Viewer } from "~/types/viewer";
 
 export interface UserDataResponse {
   Viewer: Viewer;
-}
-
-export interface Viewer {
-  id: number;
-  name: string;
-  avatar: Avatar;
-  bannerImage: string;
-  options: Options;
-  siteUrl: string;
-}
-
-export interface Avatar {
-  large: string;
-}
-
-export interface Options {
-  displayAdultContent: boolean;
-  titleLanguage: string;
 }
 
 interface Auth {
@@ -39,6 +20,8 @@ const defaultData: Auth = {
 export const useAuth = () => {
   const { redirectUri } = useRuntimeConfig().public;
 
+  const isLoggedIn = ref(false);
+
   const { data: auth, reset } = useShared<Auth>({
     key: "user",
     data: defaultData,
@@ -51,6 +34,7 @@ export const useAuth = () => {
 
   const refreshUser = async () => {
     if (!auth.value?.token) return;
+    isLoggedIn.value = true;
     if (auth.value.user) return;
 
     const userDetailsGql = gql`
@@ -72,19 +56,14 @@ export const useAuth = () => {
     `;
 
     try {
-      const response = await axios.post<{ data: UserDataResponse }>(
-        "https://graphql.anilist.co",
+      const response = await anilistFetch<UserDataResponse>(
         {
           query: userDetailsGql,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.value.token}`,
-          },
-        }
+        auth.value.token
       );
 
-      auth.value.user = response.data.data.Viewer;
+      auth.value.user = response.data.Viewer;
     } catch (e) {
       error(errorMsg(e));
     }
@@ -94,6 +73,7 @@ export const useAuth = () => {
   refreshUser();
 
   const logout = () => {
+    isLoggedIn.value = false;
     reset();
   };
 
