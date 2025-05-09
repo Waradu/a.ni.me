@@ -5,11 +5,11 @@
   >
     <div v-if="errorMessage" class="m-3 pt-1 px-2 pb-1.5 text-sm rounded-md h-max bg-red-400 bg-opacity-10 text-red-400">{{ errorMessage }}</div>
     <div
-      v-else-if="(fetching && !fetched) || (fetched && animes.length > 0)"
+      v-else-if="(fetching && !fetched) || (fetched && animes && animes.length > 0)"
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
       :class="fetching ? 'pr-1' : 'pr-2'"
     >
-      <TransitionGroup name="fade" v-if="fetched && animes.length > 0">
+      <TransitionGroup name="fade" v-if="fetched && animes && animes.length > 0">
         <div
           v-for="anime in animes"
           class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1"
@@ -33,10 +33,10 @@
           <div class="flex flex-col w-full gap-1 select-text">
             <span
               class="text-base text-neutral-200 whitespace-nowrap overflow-hidden overflow-ellipsis"
-              :title="anime.title.english || ''"
+              :title="anime.title.userPreferred || ''"
               v-tippy="{ interactive: true }"
             >
-              {{ anime.title.english }}
+              {{ anime.title.userPreferred }}
             </span>
             <span class="text-xs capitalize text-neutral-400">
               {{ anime.season?.toLowerCase() }} {{ anime.seasonYear }}
@@ -75,37 +75,10 @@
 
 <script lang="ts" setup>
 import { error } from "@tauri-apps/plugin-log";
-import type { Media } from "~/types/anime";
+import type { Media } from "~/types/animes";
 
-const { auth } = useAuth();
-
-const animes = ref<Media[]>([]);
-const fetching = ref(false);
-const fetched = ref(false);
-const errorMessage = ref("");
-
-watch(
-  () => auth.value?.user,
-  async () => {
-    if (!auth.value?.user) return;
-    if (fetched.value || fetching.value) return;
-
-    fetching.value = true;
-
-    const { $api } = useNuxtApp();
-
-    try {
-      animes.value = await $api.anime.all();
-    } catch (e) {
-      errorMessage.value = errorMsg(e);
-
-      error(errorMessage.value);
-    }
-
-    fetched.value = true;
-  },
-  { immediate: true }
-);
+const { $api } = useNuxtApp();
+const { data: animes, fetched, fetching, errorMessage } = useWhenAuthentificated<Media[]>($api.anime.all)
 
 definePageMeta({
   pageTransition: {

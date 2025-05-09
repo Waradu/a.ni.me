@@ -1,49 +1,84 @@
-export interface GetUserAnimeCollection {
-  MediaListCollection: MediaListCollection;
+export interface AnimeQueryResponse {
+  Media: MediaDetails;
 }
 
-export interface MediaListCollection {
-  lists: MediaList[];
-}
-
-export interface MediaList {
-  entries: MediaListEntry[];
-  isCustomList: boolean;
-}
-
-export interface MediaListEntry {
-  media: Media;
-}
-
-export interface Media {
+export interface MediaDetails {
+  bannerImage: string | null;
+  coverImage: CoverImage;
   title: MediaTitle;
-  coverImage: MediaCoverImage;
-  format: MediaFormat;
-  id: number;
+  externalLinks: ExternalLink[];
   isFavourite: boolean;
+  isAdult: boolean;
+  genres: string[];
+  tags: MediaTag[];
+  status: MediaStatus;
   season: MediaSeason | null;
   seasonYear: number | null;
+  recommendations: MediaRecommendationConnection;
+  popularity: number;
+  favourites: number;
+  description: string | null;
+  averageScore: number | null;
+  characters: CharacterConnection;
+}
+
+export interface CoverImage {
+  large: string;
+  color: string | null;
 }
 
 export interface MediaTitle {
-  english: string | null;
+  userPreferred: string;
 }
 
-export interface MediaCoverImage {
-  large: string;
+export interface ExternalLink {
+  color: string | null;
+  icon: string | null;
+  site: string;
+  url: string;
 }
 
-export type MediaFormat =
-  | "TV"
-  | "TV_SHORT"
-  | "MOVIE"
-  | "SPECIAL"
-  | "OVA"
-  | "ONA"
-  | "MUSIC"
-  | "MANGA"
-  | "NOVEL"
-  | "ONE_SHOT"
+export interface MediaTag {
+  name: string;
+}
+
+export interface MediaRecommendationConnection {
+  nodes: MediaRecommendation[];
+}
+
+export interface MediaRecommendation {
+  media: RecommendationMedia;
+}
+
+export interface RecommendationMedia {
+  id: number;
+  title: {
+    userPreferred: string;
+  };
+  coverImage: {
+    large: string;
+  };
+}
+
+export interface CharacterConnection {
+  nodes: Character[];
+}
+
+export interface Character {
+  image: {
+    large: string;
+  };
+  name: {
+    userPreferred: string;
+  };
+}
+
+export type MediaStatus =
+  | "FINISHED"
+  | "RELEASING"
+  | "NOT_YET_RELEASED"
+  | "CANCELLED"
+  | "HIATUS"
   | string;
 
 export type MediaSeason = "WINTER" | "SPRING" | "SUMMER" | "FALL";

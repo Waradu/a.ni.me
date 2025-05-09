@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
-import type { GetUserAnimeCollection } from "~/types/anime";
+import type { AnimeQueryResponse } from "~/types/anime";
+import type { GetUserAnimeCollection } from "~/types/animes";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const { auth } = useAuth();
@@ -10,14 +11,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       all: async () => {
         if (!auth.value?.token || !auth.value.user) return [];
 
-        const getUserAnimeCollection = gql`
+        const query = gql`
           query GetUserAnimeCollection($userId: Int) {
             MediaListCollection(userId: $userId, type: ANIME) {
               lists {
                 entries {
                   media {
                     title {
-                      english
+                      userPreferred
                     }
                     coverImage {
                       large
@@ -37,7 +38,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         const response = await $apollo.get<GetUserAnimeCollection>(
           {
-            query: getUserAnimeCollection,
+            query: query,
             variables: {
               userId: auth.value.user.id,
             },
@@ -51,12 +52,84 @@ export default defineNuxtPlugin((nuxtApp) => {
             ?.entries.map((entry) => entry.media) || []
         );
       },
+      single: async (id: number) => {
+        if (!auth.value?.token || !auth.value.user) return;
+
+        const query = gql`
+          query Media($mediaId: Int) {
+            Media(id: $mediaId) {
+              bannerImage
+              coverImage {
+                large
+                color
+              }
+              title {
+                userPreferred
+              }
+              externalLinks {
+                color
+                icon
+                site
+                url
+              }
+              isFavourite
+              isAdult
+              genres
+              tags {
+                name
+              }
+              status
+              season
+              seasonYear
+              recommendations(perPage: 5) {
+                nodes {
+                  media {
+                    id
+                    title {
+                      userPreferred
+                    }
+                    coverImage {
+                      large
+                    }
+                  }
+                }
+              }
+              popularity
+              favourites
+              description
+              averageScore
+              characters(sort: RELEVANCE) {
+                nodes {
+                  image {
+                    large
+                  }
+                  name {
+                    userPreferred
+                  }
+                }
+              }
+            }
+          }
+        `;
+
+        const response = await $apollo.get<AnimeQueryResponse>(
+          {
+            query: query,
+            variables: {
+              mediaId: id,
+            },
+          },
+          auth.value.token
+        );
+
+        return response.Media;
+      },
     },
     user: {
       profile: async () => {
         if (!auth.value?.token) return;
 
-        const userDetailsGql = gql`
+        const query = gql`
           query Viewer {
             Viewer {
               id
@@ -76,7 +149,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
         const response = await $apollo.get<UserDataResponse>(
           {
-            query: userDetailsGql,
+            query: query,
           },
           auth.value.token
         );
