@@ -1,13 +1,18 @@
 <template>
-  <div class="w-full flex justify-center">
+  <div
+    class="w-full flex justify-center"
+    :class="fetching ? 'h-full overflow-hidden' : ''"
+  >
     <div
-      v-if="fetched && animes.length > 0"
-      class="w-full p-3 pr-2 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max"
+      v-if="(fetching && !fetched) || (fetched && animes.length > 0)"
+      class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
+      :class="fetching ? 'pr-1' : 'pr-2'"
     >
-      <TransitionGroup name="fade">
+      <TransitionGroup name="fade" v-if="fetched && animes.length > 0">
         <div
           v-for="anime in animes"
           class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1"
+          :key="anime.id"
         >
           <NuxtLink
             :to="`/anime/${anime.id}`"
@@ -24,8 +29,12 @@
               />
             </div>
           </NuxtLink>
-          <div class="flex flex-col w-full">
-            <span class="text-base text-neutral-200 whitespace-nowrap overflow-hidden overflow-ellipsis">
+          <div class="flex flex-col w-full gap-1 select-text">
+            <span
+              class="text-base text-neutral-200 whitespace-nowrap overflow-hidden overflow-ellipsis"
+              :title="anime.title.english || ''"
+              v-tippy="{ interactive: true }"
+            >
               {{ anime.title.english }}
             </span>
             <span class="text-xs capitalize text-neutral-400">
@@ -34,9 +43,32 @@
           </div>
         </div>
       </TransitionGroup>
+      <div
+        class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1 animate-pulse items-center"
+        v-for="x in 40"
+        v-else
+      >
+        <div
+          class="w-full rounded-md overflow-hidden aspect-[2/3] transition flex items-center justify-center relative select-none group border-[1px] border-solid border-neutral-200 border-opacity-20"
+        >
+          <div
+            class="w-full h-full absolute inset-0 z-0 transition bg-neutral-700 bg-opacity-50"
+          ></div>
+        </div>
+        <div class="flex flex-col w-[80%] items-center gap-1">
+          <span
+            class="text-base rounded-md bg-neutral-700 w-full bg-opacity-40 text-white text-opacity-0 whitespace-nowrap overflow-hidden overflow-ellipsis"
+          >
+            -
+          </span>
+          <span
+            class="text-xs capitalize w-[60%] rounded-md bg-neutral-700 bg-opacity-30 text-white"
+            >-</span
+          >
+        </div>
+      </div>
     </div>
-    <div v-else-if="!fetched">fetching...</div>
-    <div v-else>No Animes Found</div>
+    <div v-else class="p-3">No Animes Found</div>
   </div>
 </template>
 
@@ -47,13 +79,14 @@ import type { GetUserAnimeCollection, Media } from "~/types/anime";
 const { auth } = useAuth();
 
 const animes = useState<Media[]>("animes", () => []);
+const fetching = useState<boolean>("animesFetching", () => false);
 const fetched = useState<boolean>("animesFetched", () => false);
 
 watch(
   () => auth.value?.user,
   async () => {
     if (!auth.value?.user) return;
-    if (fetched.value) return;
+    if (fetched.value || fetching.value) return;
 
     const getUserAnimeCollection = gql`
       query GetUserAnimeCollection($userId: Int) {
@@ -80,7 +113,7 @@ watch(
       }
     `;
 
-    fetched.value = true;
+    fetching.value = true;
 
     const response = await anilistFetch<GetUserAnimeCollection>(
       {
@@ -96,6 +129,8 @@ watch(
       response.data.MediaListCollection.lists
         .find((list) => !list.isCustomList)
         ?.entries.map((entry) => entry.media) || [];
+
+    fetched.value = true;
   },
   { immediate: true }
 );
