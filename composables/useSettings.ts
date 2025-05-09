@@ -19,6 +19,19 @@ export const useSettings = () => {
     store: new LocalStorage(),
   });
 
+  const reduceAnimations = () => {
+    if (!settings.value || !window) return;
+
+    if (settings.value.reducedAnimations) {
+      window.document.body.classList.add("reduced");
+    } else {
+      window.document.body.classList.remove("reduced");
+    }
+  };
+
+  watch(() => settings.value?.reducedAnimations, reduceAnimations);
+  reduceAnimations();
+
   return {
     settings,
     reset,

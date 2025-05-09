@@ -34,7 +34,6 @@
       </div>
       <div class="flex gap-4 items-center justify-center" v-else>
         <UiIcon
-          class="cursor-pointer"
           @click="openUrl('https://anilist.co')"
           title="Go to Anilist"
           v-tippy
@@ -65,6 +64,8 @@
           text="Join Beta"
           id="betaChannel"
           v-model="settings.betaChannel"
+          tag="Soon"
+          disabled
         />
       </div>
     </div>

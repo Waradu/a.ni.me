@@ -144,24 +144,26 @@ definePageMeta({
 </script>
 
 <style lang="scss">
-.fade-move,
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.2s ease-in-out;
-}
+html:not(:has(.reduced)) {
+  .fade-move,
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all 0.2s ease-in-out;
+  }
 
-.fade-leave-active {
-  transition: all 0.1s ease-in-out;
-  opacity: 0;
-}
+  .fade-leave-active {
+    transition: all 0.1s ease-in-out;
+    opacity: 0;
+  }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  scale: 0.8;
-}
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+    scale: 0.8;
+  }
 
-.fade-leave-active {
-  position: fixed;
+  .fade-leave-active {
+    position: fixed;
+  }
 }
 </style>
