@@ -7,8 +7,9 @@
         : '',
     ]"
     :style="{ '--progress': progress * 100 + '%' }"
+    data-tauri-drag-region
   >
-    <div class="max-w-0 flex h-full">
+    <div class="max-w-0 flex h-full" data-tauri-drag-region>
       <StatusbarButton @click="check" title="Check for updates" v-tippy>
         {{ appData }}
       </StatusbarButton>
@@ -28,7 +29,7 @@
     >
       Click to install update (restart the app)
     </StatusbarButton>
-    <div class="max-w-0 flex justify-end h-full">
+    <div class="max-w-0 flex justify-end h-full" data-tauri-drag-region>
       <StatusbarButton disabled> Showing 12 / 64 </StatusbarButton>
     </div>
   </div>
