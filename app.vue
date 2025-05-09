@@ -35,6 +35,13 @@ await onOpenUrl((urls) => {
     auth.value.token = token;
   }
 });
+
+onMounted(() => {
+  if (import.meta.dev) {
+    // @ts-expect-error window does not have nuxtapp as child
+    window.nuxtapp = useNuxtApp();
+  }
+});
 </script>
 
 <style lang="scss">
