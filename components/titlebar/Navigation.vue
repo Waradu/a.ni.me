@@ -78,6 +78,10 @@ const pages = [
   },
 ];
 
+keyboard.listen([Key.Control, Key.One], () => navigateTo(pages[0].href));
+keyboard.listen([Key.Control, Key.Two], () => navigateTo(pages[1].href));
+keyboard.listen([Key.Control, Key.Three], () => navigateTo(pages[2].href));
+
 onMounted(() => {
   keyboard.init();
 
