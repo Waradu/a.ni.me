@@ -1,25 +1,29 @@
 <template>
-  <div class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md">
-    <Titlebar />
-    <main class="w-[calc(100%-4px)] h-full overflow-hidden overflow-y-scroll">
-      <NuxtPage />
-    </main>
-    <Statusbar />
+  <div class="relative w-full h-full">
+    <NuxtImg :src="bgImageSrc" class="absolute w-full h-full object-cover transition-all" :class="bgImage ? 'opacity-100' : 'opacity-0'" />
+    <div
+      class="bg-neutral-800 bg-opacity-95 backdrop-blur-sm w-full h-full flex flex-col transition-all"
+    >
+      <Titlebar />
+      <main class="w-[calc(100%-4px)] h-full overflow-hidden overflow-y-scroll">
+        <NuxtPage />
+      </main>
+      <Statusbar />
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
+import useShared from "@waradu/useshared";
 
 const { auth } = useAuth();
 
-const bgImage = usePageScopedState<string>("bgImage");
-
-watch(bgImage, () => {
-  if (bgImage.value && document.body)
-    document.body.style.setProperty("--background", `url(${bgImage.value})`);
-  else document.body.style.setProperty("--background", "");
+const bgImage = usePageScopedState<boolean>("bgImage");
+const { data: bgImageSrc } = useShared({
+  key: "bgImage",
+  data: "",
 });
 
 await onOpenUrl((urls) => {
@@ -69,32 +73,6 @@ body,
   overflow: hidden;
 }
 
-.page {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  opacity: 1;
-  transition: opacity 0.2s ease-in-out;
-  background-image: var(--background);
-}
-
-body:has(main.anime)::before {
-  opacity: 1;
-}
-
 ::-webkit-scrollbar {
   width: 0.4rem;
 }
@@ -115,13 +93,15 @@ body:has(main.anime)::before {
 }
 
 html:not(:has(.reduced)) {
-  --speed: 0.1s;
+  --speed: 0.15s;
   --impact: 20px;
 
   .slide-left-enter-active,
   .slide-left-leave-active,
   .slide-right-enter-active,
-  .slide-right-leave-active {
+  .slide-right-leave-active,
+  .page-enter-active,
+  .page-leave-active {
     transition: all var(--speed) ease-in-out;
   }
   .slide-left-enter-from,
@@ -137,17 +117,7 @@ html:not(:has(.reduced)) {
     transform: translateX(calc(var(--impact) * -1));
   }
 
-  .page-enter-active,
-  .page-leave-active {
-    transition: all var(--speed) ease-in-out;
-  }
-
-  .page-enter-from {
-    opacity: 0;
-    filter: blur(2px);
-    transform: translateY(var(--impact));
-  }
-
+  .page-enter-from,
   .page-leave-to {
     opacity: 0;
     filter: blur(2px);

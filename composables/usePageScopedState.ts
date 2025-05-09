@@ -1,6 +1,6 @@
 export const pageScopedDefaults = {
   title: () => "A • NI • ME",
-  bgImage: () => "",
+  bgImage: () => false,
 };
 
 export const usePageScopedState = <T>(key: string) => {
