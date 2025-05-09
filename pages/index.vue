@@ -74,7 +74,6 @@
 </template>
 
 <script lang="ts" setup>
-import { error } from "@tauri-apps/plugin-log";
 import type { Media } from "~/types/animes";
 
 const { $api } = useNuxtApp();

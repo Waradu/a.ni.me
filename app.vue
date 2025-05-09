@@ -1,5 +1,8 @@
 <template>
-  <div class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md">
+  <div
+    class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md"
+    :style="{ '--background': globalData?.bgImage ? `url(${globalData.bgImage})` : '' }"
+  >
     <Titlebar />
     <main class="w-[calc(100%-4px)] h-full overflow-hidden overflow-y-scroll">
       <NuxtPage />
@@ -13,6 +16,7 @@ import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
 
 const { auth } = useAuth();
+const { globalData } = useGlobalData()
 
 await onOpenUrl((urls) => {
   const callback = urls.find((url) => url.startsWith("a.ni.me://callback"));
@@ -78,9 +82,9 @@ body::before {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease-in-out;
-  background-image: url("https://s4.anilist.co/file/anilistcdn/media/anime/banner/131565-JBlm0IItFlUV.jpg");
+  background-image: var(--background);
 }
 
 body:has(main.anime)::before {
