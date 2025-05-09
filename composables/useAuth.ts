@@ -1,7 +1,7 @@
 import { error } from "@tauri-apps/plugin-log";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import useShared, { LocalStorage } from "@waradu/useshared";
-import { gql } from "graphql-request";
+import { gql } from "graphql-tag";
 import type { Viewer } from "~/types/viewer";
 
 export interface UserDataResponse {
@@ -37,6 +37,9 @@ export const useAuth = () => {
     isLoggedIn.value = true;
     if (auth.value.user) return;
 
+    const { $apollo } = useNuxtApp();
+    await $apollo.client.clearStore();
+
     const userDetailsGql = gql`
       query Viewer {
         Viewer {
@@ -56,14 +59,14 @@ export const useAuth = () => {
     `;
 
     try {
-      const response = await anilistFetch<UserDataResponse>(
+      const response = await $apollo.get<UserDataResponse>(
         {
           query: userDetailsGql,
         },
         auth.value.token
       );
 
-      auth.value.user = response.data.Viewer;
+      auth.value.user = response.Viewer;
     } catch (e) {
       error(errorMsg(e));
     }

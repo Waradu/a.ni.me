@@ -3,8 +3,9 @@
     class="w-full flex justify-center"
     :class="fetching ? 'h-full overflow-hidden' : ''"
   >
+    <div v-if="errorMessage">{{ errorMessage }}</div>
     <div
-      v-if="(fetching && !fetched) || (fetched && animes.length > 0)"
+      v-else-if="(fetching && !fetched) || (fetched && animes.length > 0)"
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
       :class="fetching ? 'pr-1' : 'pr-2'"
     >
@@ -73,14 +74,16 @@
 </template>
 
 <script lang="ts" setup>
-import { gql } from "graphql-request";
+import { error } from "@tauri-apps/plugin-log";
+import { gql } from "graphql-tag";
 import type { GetUserAnimeCollection, Media } from "~/types/anime";
 
 const { auth } = useAuth();
 
 const animes = useState<Media[]>("animes", () => []);
-const fetching = useState<boolean>("animesFetching", () => false);
-const fetched = useState<boolean>("animesFetched", () => false);
+const fetching = useState("animesFetching", () => false);
+const fetched = useState("animesFetched", () => false);
+const errorMessage = useState("animesError", () => "");
 
 watch(
   () => auth.value?.user,
@@ -115,20 +118,27 @@ watch(
 
     fetching.value = true;
 
-    const response = await anilistFetch<GetUserAnimeCollection>(
-      {
-        query: getUserAnimeCollection,
-        variables: {
-          userId: auth.value.user.id,
-        },
-      },
-      auth.value.token
-    );
+    const { $apollo } = useNuxtApp();
 
-    animes.value =
-      response.data.MediaListCollection.lists
-        .find((list) => !list.isCustomList)
-        ?.entries.map((entry) => entry.media) || [];
+    try {
+      const response = await $apollo.get<GetUserAnimeCollection>(
+        {
+          query: getUserAnimeCollection,
+          variables: {
+            userId: auth.value.user.id,
+          },
+        },
+        auth.value.token
+      );
+
+      animes.value =
+        response.MediaListCollection.lists
+          .find((list) => !list.isCustomList)
+          ?.entries.map((entry) => entry.media) || [];
+    } catch (e) {
+      errorMessage.value = errorMsg(e);
+      error(errorMessage.value);
+    }
 
     fetched.value = true;
   },
