@@ -36,7 +36,7 @@ export default defineNuxtConfig({
     pageTransition: { name: "page", mode: "out-in" },
     head: {
       htmlAttrs: {
-        class: "bg-neutral-800",
+        style: "background: #262626;"
       },
     },
   },

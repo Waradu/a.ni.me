@@ -20,7 +20,7 @@ import useShared from "@waradu/useshared";
 
 const { auth } = useAuth();
 
-const bgImage = usePageScopedState<boolean>("bgImage");
+const bgImage = usePageScopedState("bgImage");
 const { data: bgImageSrc } = useShared({
   key: "bgImage",
   data: "",

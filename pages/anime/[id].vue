@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <div class="p-8 flex justify-center">
+    <div class="flex flex-col max-w-[1000px] w-full" v-if="anime">
+      <NuxtImg :src="anime.coverImage.large" class="rounded-md w-64" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
