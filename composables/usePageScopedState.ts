@@ -3,7 +3,12 @@ export const pageScopedDefaults = {
   bgImage: () => false,
 };
 
-export const usePageScopedState = <T>(key: string) => {
+type PageScopedKeys = keyof typeof pageScopedDefaults;
+type PageScopedType<K extends PageScopedKeys> = ReturnType<
+  (typeof pageScopedDefaults)[K]
+>;
+
+export const usePageScopedState = <K extends PageScopedKeys>(key: K) => {
   const route = useRoute();
   const internalKey = ref(`${key}-${route.fullPath}`);
 
@@ -15,14 +20,16 @@ export const usePageScopedState = <T>(key: string) => {
   );
 
   const defaultValue =
-    (pageScopedDefaults[key as keyof typeof pageScopedDefaults] as
-      | (() => T)
-      | undefined) || (() => null);
+    (pageScopedDefaults[key] as () => PageScopedType<K>) || (() => null);
 
   return computed({
-    get: () => useState<T | null>(internalKey.value, defaultValue).value,
+    get: () =>
+      useState<PageScopedType<K> | null>(internalKey.value, defaultValue).value,
     set: (val) => {
-      useState<T | null>(internalKey.value, defaultValue).value = val;
+      useState<PageScopedType<K> | null>(
+        internalKey.value,
+        defaultValue
+      ).value = val;
     },
   });
 };

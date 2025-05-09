@@ -14,5 +14,5 @@
 </template>
 
 <script lang="ts" setup>
-const title = usePageScopedState<string>("title");
+const title = usePageScopedState("title");
 </script>

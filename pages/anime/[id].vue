@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ anime?.title.userPreferred }}
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts" setup>
@@ -16,8 +14,10 @@ const { data: anime } = useWhenAuthentificated<MediaDetails | undefined>(() =>
   $api.anime.single(parseInt(id))
 );
 
-const bgImage = usePageScopedState<boolean>("bgImage");
+const bgImage = usePageScopedState("bgImage");
 bgImage.value = true;
+
+const title = usePageScopedState("title");
 
 const { data: bgImageSrc } = useShared({
   key: "bgImage",
@@ -26,6 +26,14 @@ const { data: bgImageSrc } = useShared({
 
 watch(
   () => anime.value?.bannerImage,
+  () => {
+    if (anime.value?.title.userPreferred)
+      title.value = anime.value.title.userPreferred;
+  }
+);
+
+watch(
+  () => anime.value?.title.userPreferred,
   () => {
     if (anime.value?.bannerImage) bgImageSrc.value = anime.value.bannerImage;
   }
