@@ -3,7 +3,7 @@
     class="w-full flex justify-center"
     :class="fetching ? 'h-full overflow-hidden' : ''"
   >
-    <div v-if="errorMessage">{{ errorMessage }}</div>
+    <div v-if="errorMessage" class="m-3 pt-1 px-2 pb-1.5 text-sm rounded-md h-max bg-red-400 bg-opacity-10 text-red-400">{{ errorMessage }}</div>
     <div
       v-else-if="(fetching && !fetched) || (fetched && animes.length > 0)"
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
@@ -75,7 +75,7 @@
 
 <script lang="ts" setup>
 import { error } from "@tauri-apps/plugin-log";
-import { gql } from "graphql-tag";
+import gql from "graphql-tag";
 import type { GetUserAnimeCollection, Media } from "~/types/anime";
 
 const { auth } = useAuth();
@@ -91,52 +91,15 @@ watch(
     if (!auth.value?.user) return;
     if (fetched.value || fetching.value) return;
 
-    const getUserAnimeCollection = gql`
-      query GetUserAnimeCollection($userId: Int) {
-        MediaListCollection(userId: $userId, type: ANIME) {
-          lists {
-            entries {
-              media {
-                title {
-                  english
-                }
-                coverImage {
-                  large
-                }
-                format
-                id
-                isFavourite
-                season
-                seasonYear
-              }
-            }
-            isCustomList
-          }
-        }
-      }
-    `;
-
     fetching.value = true;
 
-    const { $apollo } = useNuxtApp();
+    const { $api } = useNuxtApp();
 
     try {
-      const response = await $apollo.get<GetUserAnimeCollection>(
-        {
-          query: getUserAnimeCollection,
-          variables: {
-            userId: auth.value.user.id,
-          },
-        },
-        auth.value.token
-      );
-
-      animes.value =
-        response.MediaListCollection.lists
-          .find((list) => !list.isCustomList)
-          ?.entries.map((entry) => entry.media) || [];
+      animes.value = await $api.anime.user.list();
     } catch (e) {
       errorMessage.value = errorMsg(e);
+
       error(errorMessage.value);
     }
 
