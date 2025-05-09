@@ -3,13 +3,23 @@
     class="w-full flex justify-center"
     :class="fetching ? 'h-full overflow-hidden' : ''"
   >
-    <div v-if="errorMessage" class="m-3 pt-1 px-2 pb-1.5 text-sm rounded-md h-max bg-red-400 bg-opacity-10 text-red-400">{{ errorMessage }}</div>
     <div
-      v-else-if="(fetching && !fetched) || (fetched && animes && animes.length > 0)"
+      v-if="errorMessage"
+      class="m-3 pt-1 px-2 pb-1.5 text-sm rounded-md h-max bg-red-400 bg-opacity-10 text-red-400"
+    >
+      {{ errorMessage }}
+    </div>
+    <div
+      v-else-if="
+        (fetching && !fetched) || (fetched && animes && animes.length > 0)
+      "
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
       :class="fetching ? 'pr-1' : 'pr-2'"
     >
-      <TransitionGroup name="fade" v-if="fetched && animes && animes.length > 0">
+      <TransitionGroup
+        name="fade"
+        v-if="fetched && animes && animes.length > 0"
+      >
         <div
           v-for="anime in animes"
           class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1"
@@ -77,7 +87,12 @@
 import type { Media } from "~/types/animes";
 
 const { $api } = useNuxtApp();
-const { data: animes, fetched, fetching, errorMessage } = useWhenAuthentificated<Media[]>($api.anime.all)
+const {
+  data: animes,
+  fetched,
+  fetching,
+  errorMessage,
+} = useWhenAuthentificated<Media[]>($api.anime.all);
 
 definePageMeta({
   pageTransition: {

@@ -4,9 +4,15 @@
     data-tauri-drag-region
   >
     <div class="w-[250px] px-2 flex items-center" data-tauri-drag-region>
-      <h3 class="text-lg font-semibold" data-tauri-drag-region>Library</h3>
+      <h3 class="text-lg font-semibold" data-tauri-drag-region>
+        {{ title }}
+      </h3>
     </div>
     <TitlebarNavigation />
     <TitlebarControls />
   </nav>
 </template>
+
+<script lang="ts" setup>
+const title = usePageScopedState<string>("title");
+</script>

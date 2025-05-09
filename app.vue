@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md"
-    :style="{ '--background': globalData?.bgImage ? `url(${globalData.bgImage})` : '' }"
-  >
+  <div class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md">
     <Titlebar />
     <main class="w-[calc(100%-4px)] h-full overflow-hidden overflow-y-scroll">
       <NuxtPage />
@@ -16,7 +13,14 @@ import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
 
 const { auth } = useAuth();
-const { globalData } = useGlobalData()
+
+const bgImage = usePageScopedState<string>("bgImage");
+
+watch(bgImage, () => {
+  if (bgImage.value && document.body)
+    document.body.style.setProperty("--background", `url(${bgImage.value})`);
+  else document.body.style.setProperty("--background", "");
+});
 
 await onOpenUrl((urls) => {
   const callback = urls.find((url) => url.startsWith("a.ni.me://callback"));

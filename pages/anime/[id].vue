@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    {{ anime?.title.userPreferred }}
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -10,5 +12,12 @@ const { data: anime } = useWhenAuthentificated<MediaDetails | undefined>(() =>
   $api.anime.single(1)
 );
 
-const backgroundImage = computed(() => anime.value?.bannerImage ?? null);
+const bgImage = usePageScopedState<string>("bgImage");
+
+watch(
+  () => anime.value?.bannerImage,
+  () => {
+    if (anime.value?.bannerImage) bgImage.value = anime.value.bannerImage;
+  }
+);
 </script>
