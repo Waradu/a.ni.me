@@ -23,7 +23,7 @@ export const useAuth = () => {
   const isLoggedIn = ref(false);
 
   const { data: auth, reset } = useShared<Auth>({
-    key: "user",
+    key: "auth",
     data: defaultData,
     store: new LocalStorage(),
   });
@@ -37,36 +37,11 @@ export const useAuth = () => {
     isLoggedIn.value = true;
     if (auth.value.user) return;
 
-    const { $apollo } = useNuxtApp();
+    const { $apollo, $api } = useNuxtApp();
     await $apollo.client.clearStore();
 
-    const userDetailsGql = gql`
-      query Viewer {
-        Viewer {
-          id
-          name
-          avatar {
-            large
-          }
-          bannerImage
-          options {
-            displayAdultContent
-            titleLanguage
-          }
-          siteUrl
-        }
-      }
-    `;
-
     try {
-      const response = await $apollo.get<UserDataResponse>(
-        {
-          query: userDetailsGql,
-        },
-        auth.value.token
-      );
-
-      auth.value.user = response.Viewer;
+      auth.value.user = await $api.user.profile();
     } catch (e) {
       error(errorMsg(e));
     }

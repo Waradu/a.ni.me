@@ -46,7 +46,7 @@
       </TransitionGroup>
       <div
         class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1 animate-pulse items-center"
-        v-for="x in 40"
+        v-for="x in 100"
         v-else
       >
         <div
@@ -96,7 +96,7 @@ watch(
     const { $api } = useNuxtApp();
 
     try {
-      animes.value = await $api.anime.user.list();
+      animes.value = await $api.anime.all();
     } catch (e) {
       errorMessage.value = errorMsg(e);
 

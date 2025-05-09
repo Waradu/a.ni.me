@@ -7,51 +7,81 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const api = {
     anime: {
-      user: {
-        list: async () => {
-          if (!auth.value?.token || !auth.value.user) return [];
+      all: async () => {
+        if (!auth.value?.token || !auth.value.user) return [];
 
-          const getUserAnimeCollection = gql`
-            query GetUserAnimeCollection($userId: Int) {
-              MediaListCollection(userId: $userId, type: ANIME) {
-                lists {
-                  entries {
-                    media {
-                      title {
-                        english
-                      }
-                      coverImage {
-                        large
-                      }
-                      format
-                      id
-                      isFavourite
-                      season
-                      seasonYear
+        const getUserAnimeCollection = gql`
+          query GetUserAnimeCollection($userId: Int) {
+            MediaListCollection(userId: $userId, type: ANIME) {
+              lists {
+                entries {
+                  media {
+                    title {
+                      english
                     }
+                    coverImage {
+                      large
+                    }
+                    format
+                    id
+                    isFavourite
+                    season
+                    seasonYear
                   }
-                  isCustomList
                 }
+                isCustomList
               }
             }
-          `;
+          }
+        `;
 
-          const response = await $apollo.get<GetUserAnimeCollection>(
-            {
-              query: getUserAnimeCollection,
-              variables: {
-                userId: auth.value.user.id,
-              },
+        const response = await $apollo.get<GetUserAnimeCollection>(
+          {
+            query: getUserAnimeCollection,
+            variables: {
+              userId: auth.value.user.id,
             },
-            auth.value.token
-          );
+          },
+          auth.value.token
+        );
 
-          return (
-            response.MediaListCollection.lists
-              .find((list) => !list.isCustomList)
-              ?.entries.map((entry) => entry.media) || []
-          );
-        },
+        return (
+          response.MediaListCollection.lists
+            .find((list) => !list.isCustomList)
+            ?.entries.map((entry) => entry.media) || []
+        );
+      },
+    },
+    user: {
+      profile: async () => {
+        if (!auth.value?.token) return;
+
+        const userDetailsGql = gql`
+          query Viewer {
+            Viewer {
+              id
+              name
+              avatar {
+                large
+              }
+              bannerImage
+              options {
+                displayAdultContent
+                titleLanguage
+              }
+              siteUrl
+            }
+          }
+        `;
+
+        const response = await $apollo.get<UserDataResponse>(
+          {
+            query: userDetailsGql,
+          },
+          auth.value.token
+        );
+
+        return response.Viewer;
       },
     },
   };
