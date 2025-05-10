@@ -1,5 +1,5 @@
 <template>
-  <div class="page bg-neutral-800 bg-opacity-85 backdrop-blur-md">
+  <div class="relative w-full h-full bg-neutral-800 bg-opacity-85 backdrop-blur-md flex flex-col">
     <Titlebar />
     <main class="w-[calc(100%-4px)] h-full overflow-hidden overflow-y-scroll">
       <div
