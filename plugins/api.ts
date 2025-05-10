@@ -108,6 +108,10 @@ export default defineNuxtPlugin((nuxtApp) => {
                   }
                 }
               }
+              mediaListEntry {
+                private
+                score
+              }
             }
           }
         `;

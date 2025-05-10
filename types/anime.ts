@@ -20,6 +20,12 @@ export interface MediaDetails {
   description: string | null;
   averageScore: number | null;
   characters: CharacterConnection;
+  mediaListEntry: MediaListEntry | null;
+}
+
+export interface MediaListEntry {
+  private: boolean;
+  score: number;
 }
 
 export interface CoverImage {
