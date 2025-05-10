@@ -67,6 +67,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                 userPreferred
               }
               externalLinks {
+                id
                 color
                 icon
                 site

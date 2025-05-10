@@ -11,8 +11,8 @@
       v-model="isMaximized"
       @click="() => getCurrentWindow().toggleMaximize()"
     >
-      <IconMaximize :class="props.class" />
-      <IconMinimize :class="props.classSecond" />
+      <IconMaximize :class="props.true" />
+      <IconMinimize :class="props.false" />
     </UiToggleIcon>
     <UiIcon v-slot="props" @click="() => getCurrentWindow().close()">
       <IconX :class="props.class" />

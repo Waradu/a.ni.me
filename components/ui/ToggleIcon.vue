@@ -1,12 +1,12 @@
 <template>
   <UiIcon v-slot="props" @click="model = !model">
     <slot
-      :class="[
+      :true="[
         props.class,
         'transition duration-300 absolute',
         !model ? 'scale-100 opacity-100 blur-0' : 'scale-0 opacity-0 blur-md',
       ]"
-      :classSecond="[
+      :false="[
         props.class,
         'transition duration-300 absolute',
         model ? 'scale-100 opacity-100 blur-0' : 'scale-0 opacity-0 blur-md',

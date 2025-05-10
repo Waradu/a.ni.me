@@ -1,6 +1,6 @@
 <template>
   <div class="relative w-full h-full">
-    <NuxtImg :src="bgImageSrc" class="absolute w-full h-full object-cover transition-all" :class="bgImage ? 'opacity-100' : 'opacity-0'" />
+    <NuxtImg :src="bgImageSrc" class="absolute w-full h-full object-cover transition-all" :class="bgImage ? 'opacity-100' : 'opacity-0'" v-if="false" />
     <div
       class="bg-neutral-800 bg-opacity-95 backdrop-blur-sm w-full h-full flex flex-col transition-all"
     >

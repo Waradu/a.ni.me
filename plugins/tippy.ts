@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from "#app";
 import VueTippy, { setDefaultProps } from "vue-tippy";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/shift-away.css";
@@ -12,5 +11,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     theme: "custom",
     maxWidth: 250,
     arrow: false,
+    hideOnClick: false,
   });
 });

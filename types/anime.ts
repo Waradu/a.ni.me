@@ -38,6 +38,7 @@ export interface MediaTitle {
 }
 
 export interface ExternalLink {
+  id: number;
   color: string | null;
   icon: string | null;
   site: string;

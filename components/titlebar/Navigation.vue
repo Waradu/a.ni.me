@@ -13,8 +13,8 @@
       {{ page.name }}
     </TitlebarLink>
     <UiToggleIcon v-slot="props" @click="toggleSearch()">
-      <IconSearch :class="props.class" />
-      <IconX :class="props.classSecond" />
+      <IconSearch :class="props.true" />
+      <IconX :class="props.false" />
     </UiToggleIcon>
     <input
       type="text"
