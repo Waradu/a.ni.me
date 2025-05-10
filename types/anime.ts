@@ -23,7 +23,7 @@ export interface MediaDetails {
 }
 
 export interface CoverImage {
-  large: string;
+  extraLarge: string;
   color: string | null;
 }
 
@@ -56,7 +56,7 @@ export interface RecommendationMedia {
     userPreferred: string;
   };
   coverImage: {
-    large: string;
+    extraLarge: string;
   };
 }
 

@@ -30,7 +30,7 @@ export interface MediaTitle {
 }
 
 export interface MediaCoverImage {
-  large: string;
+  extraLarge: string;
 }
 
 export type MediaFormat =

@@ -34,7 +34,7 @@
             />
             <div class="w-full h-full absolute inset-0 z-0 transition bg-black">
               <NuxtImg
-                :src="anime.coverImage.large"
+                :src="anime.coverImage.extraLarge"
                 alt="Cover"
                 class="w-full h-full transition object-cover group-hover:scale-105 group-hover:opacity-40"
               />

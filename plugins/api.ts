@@ -21,7 +21,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                       userPreferred
                     }
                     coverImage {
-                      large
+                      extraLarge
                     }
                     format
                     id
@@ -60,7 +60,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             Media(id: $mediaId) {
               bannerImage
               coverImage {
-                large
+                extraLarge
                 color
               }
               title {
@@ -89,7 +89,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                       userPreferred
                     }
                     coverImage {
-                      large
+                      extraLarge
                     }
                   }
                 }
