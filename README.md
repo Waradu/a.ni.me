@@ -34,6 +34,7 @@
   - [ ] More content (website)
   - [ ] News/blog/changelog (website)
   - [ ] Add screenshots (github)
+  - [ ] Load library in chunks
   - [ ] Some QOL features if needed (maybe)
 
 - [ ] More to come

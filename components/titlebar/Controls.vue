@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-[250px] flex items-center justify-end gap-1"
+    class="w-52 flex items-center justify-end gap-1"
     data-tauri-drag-region
   >
     <UiIcon v-slot="props" @click="() => getCurrentWindow().minimize()">
