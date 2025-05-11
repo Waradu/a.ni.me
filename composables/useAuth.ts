@@ -7,7 +7,7 @@ export interface UserDataResponse {
   Viewer: Viewer;
 }
 
-interface Auth {
+export interface Auth {
   token: string;
   user?: Viewer;
 }
@@ -16,40 +16,43 @@ const defaultData: Auth = {
   token: "",
 };
 
+const { data: auth, reset } = useShared<Auth>({
+  key: "auth",
+  data: defaultData,
+  store: new LocalStorage(),
+});
+
 export const useAuth = () => {
   const { redirectUri } = useRuntimeConfig().public;
+  const errorMessage = ref("");
 
   const isLoggedIn = ref(false);
 
-  const { data: auth, reset } = useShared<Auth>({
-    key: "auth",
-    data: defaultData,
-    store: new LocalStorage(),
-  });
-
   const browser = () => {
+    errorMessage.value = "";
     openUrl(redirectUri);
   };
 
   const refreshUser = async () => {
     if (!auth.value?.token) return;
-    isLoggedIn.value = true;
     if (auth.value.user) return;
 
     const { $apollo, $api } = useNuxtApp();
     await $apollo.client.clearStore();
 
     try {
-      auth.value.user = await $api.user.profile();
+      errorMessage.value = "";
+      const user = await $api.user.profile();
+      auth.value.user = user;
+      isLoggedIn.value = true;
     } catch (e) {
-      error(errorMsg(e));
+      errorMessage.value = getErrorMessage(e);
+      error(errorMessage.value);
     }
   };
 
-  watch(() => auth.value?.token, refreshUser);
-  refreshUser();
-
   const logout = () => {
+    errorMessage.value = "";
     isLoggedIn.value = false;
     reset();
   };
@@ -60,5 +63,6 @@ export const useAuth = () => {
     browser,
     logout,
     refreshUser,
+    errorMessage,
   };
 };

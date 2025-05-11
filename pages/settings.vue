@@ -83,7 +83,7 @@ import Anilist from "~/assets/svg/anilist.svg";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 const { settings } = useSettings();
-const { auth, browser, logout } = useAuth();
+const { auth, browser, logout, errorMessage } = useAuth();
 const loading = ref(false);
 
 const login = () => {
@@ -97,6 +97,10 @@ watch(
     if (auth.value?.user) loading.value = false;
   }
 );
+
+watch(errorMessage, () => {
+  if (errorMessage.value) loading.value = false;
+});
 
 definePageMeta({
   pageTransition: {

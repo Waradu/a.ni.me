@@ -1,6 +1,11 @@
 <template>
   <div class="relative w-full h-full">
-    <NuxtImg :src="bgImageSrc" class="absolute w-full h-full object-cover transition-all" :class="bgImage ? 'opacity-100' : 'opacity-0'" v-if="false" />
+    <NuxtImg
+      :src="bgImageSrc"
+      class="absolute w-full h-full object-cover transition-all"
+      :class="bgImage ? 'opacity-100' : 'opacity-0'"
+      v-if="false"
+    />
     <div
       class="bg-neutral-800 bg-opacity-95 backdrop-blur-sm w-full h-full flex flex-col transition-all"
     >
@@ -18,7 +23,7 @@ import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
 import useShared from "@waradu/useshared";
 
-const { auth } = useAuth();
+const { auth, refreshUser } = useAuth();
 
 const bgImage = usePageScopedState("bgImage");
 const { data: bgImageSrc } = useShared({
@@ -45,8 +50,11 @@ await onOpenUrl((urls) => {
 
   if (auth.value) {
     auth.value.token = token;
+    refreshUser();
   }
 });
+
+refreshUser();
 
 onMounted(() => {
   if (import.meta.dev) {
