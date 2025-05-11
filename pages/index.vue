@@ -3,12 +3,9 @@
     class="w-full flex justify-center"
     :class="fetching ? 'h-full overflow-hidden' : ''"
   >
-    <div
-      v-if="errorMessage"
-      class="m-3 pt-1 px-2 pb-1.5 text-sm rounded-md h-max bg-red-400 bg-opacity-10 text-red-400"
-    >
+    <UiError v-if="errorMessage">
       {{ errorMessage }}
-    </div>
+    </UiError>
     <div
       v-else-if="
         (fetching && !fetched) || (fetched && animes && animes.length > 0)

@@ -32,23 +32,28 @@
           <Anilist class="size-5" />
         </UiIcon>
       </div>
-      <div class="flex gap-4 items-center justify-center" v-else>
-        <UiIcon
-          @click="openUrl('https://anilist.co')"
-          title="Go to Anilist"
-          v-tippy
-        >
-          <Anilist class="size-5" />
-        </UiIcon>
-        <UiButton
-          v-slot="props"
-          text="Login"
-          @click="login"
-          class="cursor-pointer"
-          :loading="loading"
-        >
-          <IconLogIn :class="props.class" />
-        </UiButton>
+      <div class="flex flex-col gap-2 items-center" v-else>
+        <div class="flex gap-4 items-center justify-center">
+          <UiIcon
+            @click="openUrl('https://anilist.co')"
+            title="Go to Anilist"
+            v-tippy
+          >
+            <Anilist class="size-5" />
+          </UiIcon>
+          <UiButton
+            v-slot="props"
+            text="Login"
+            @click="login"
+            class="cursor-pointer"
+            :loading="loading"
+          >
+            <IconLogIn :class="props.class" />
+          </UiButton>
+        </div>
+        <UiError v-if="errorMessage">
+          {{ errorMessage }}
+        </UiError>
       </div>
       <div v-if="settings" class="flex flex-col gap-4 select-none">
         <SettingsLabel
