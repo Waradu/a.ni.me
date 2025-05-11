@@ -1,6 +1,7 @@
 export const pageScopedDefaults = {
   title: () => "A • NI • ME",
   bgImage: () => false,
+  statusbar: () => "",
 };
 
 type PageScopedKeys = keyof typeof pageScopedDefaults;

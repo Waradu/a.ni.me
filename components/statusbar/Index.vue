@@ -29,14 +29,14 @@
     >
       Click to install update (restart the app)
     </StatusbarButton>
-    <div class="max-w-0 flex justify-end h-full" data-tauri-drag-region>
-      <StatusbarButton disabled> Showing 12 / 64 </StatusbarButton>
+    <div class="max-w-0 flex justify-end h-full" data-tauri-drag-region v-if="statusbar">
+      <StatusbarButton disabled> {{ statusbar }} </StatusbarButton>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const { name, version, tauriVersion } = useVersion();
+const { version, tauriVersion } = useVersion();
 const {
   updateAvailable,
   latestVersion,
@@ -47,6 +47,8 @@ const {
   check,
   install,
 } = useUpdater();
+
+const statusbar = usePageScopedState("statusbar");
 
 const appData = computed(
   () =>
