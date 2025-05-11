@@ -4,15 +4,22 @@
     data-tauri-drag-region
   >
     <div class="w-52 pl-2 flex items-center" data-tauri-drag-region>
-      <h3 class="text-lg w-full font-semibold whitespace-nowrap overflow-hidden overflow-ellipsis" data-tauri-drag-region>
+      <h3
+        class="text-lg w-full font-semibold whitespace-nowrap overflow-hidden overflow-ellipsis"
+        data-tauri-drag-region
+      >
         {{ title }}
       </h3>
     </div>
-    <TitlebarNavigation />
+    <TitlebarNavigation v-if="!hideNavigation" />
     <TitlebarControls />
   </nav>
 </template>
 
 <script lang="ts" setup>
 const title = usePageScopedState("title");
+
+defineProps<{
+  hideNavigation?: boolean;
+}>();
 </script>
