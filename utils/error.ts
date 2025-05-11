@@ -1,4 +1,4 @@
-export const errorMsg = (error: unknown) =>
+export const getErrorMessage = (error: unknown) =>
   typeof error === "string"
     ? error
     : error instanceof Error

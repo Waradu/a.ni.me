@@ -1,7 +1,6 @@
 import { check } from "@tauri-apps/plugin-updater";
 import type { Update, DownloadEvent } from "@tauri-apps/plugin-updater";
 import { error } from "@tauri-apps/plugin-log";
-import { errorMsg } from "~/utils/error";
 
 export function useUpdater(checkImmediately = true) {
   const updateInfo = ref<Update | null>(null);
@@ -82,7 +81,7 @@ export function useUpdater(checkImmediately = true) {
   watch(updateError, () => {
     if (!updateError?.value) return;
 
-    error(errorMsg(updateError.value));
+    error(getErrorMessage(updateError.value));
   });
 
   return {

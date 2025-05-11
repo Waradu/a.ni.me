@@ -19,7 +19,7 @@ export const useWhenAuthentificated = <T>(get: () => Promise<T>) => {
       try {
         data.value = await get();
       } catch (e) {
-        errorMessage.value = errorMsg(e);
+        errorMessage.value = getErrorMessage(e);
         error(errorMessage.value);
       }
 
