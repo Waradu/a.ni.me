@@ -19,7 +19,8 @@
         "fullscreen": false,
         "decorations": false,
         "minHeight": 600,
-        "minWidth": 900
+        "minWidth": 900,
+        "visible": false
       }
     ],
     "security": {

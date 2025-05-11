@@ -5,6 +5,11 @@
   "windows": [
     "main"
   ],
+  "platforms": [
+    "macOS",
+    "windows",
+    "linux"
+  ],
   "permissions": [
     "core:default",
     "updater:default",
@@ -15,6 +20,7 @@
     "core:window:allow-close",
     "log:allow-log",
     "deep-link:default",
-    "opener:default"
+    "opener:default",
+    "window-state:default"
   ]
 }
