@@ -14,7 +14,7 @@
       <IconMaximize :class="props.true" />
       <IconMinimize :class="props.false" />
     </UiToggleIcon>
-    <UiIcon v-slot="props" @click="() => getCurrentWindow().close()">
+    <UiIcon v-slot="props" @click="() => getCurrentWindow().close()" red>
       <IconX :class="props.class" />
     </UiIcon>
   </div>
