@@ -3,7 +3,7 @@ import type { Update, DownloadEvent } from "@tauri-apps/plugin-updater";
 import { error } from "@tauri-apps/plugin-log";
 import { errorMsg } from "~/utils/error";
 
-export function useUpdater() {
+export function useUpdater(checkImmediately = true) {
   const updateInfo = ref<Update | null>(null);
   const updateAvailable = ref(false);
   const latestVersion = ref("");
@@ -70,10 +70,13 @@ export function useUpdater() {
     }
   }
 
-  if (!import.meta.dev) {
+  if (!import.meta.dev && checkImmediately) {
     until(settings)
       .toBeTruthy()
-      .then(() => checkAndDownload());
+      .then(() => {
+        if (!settings.value?.checkForUpdatesAutomatically) return;
+        checkAndDownload();
+      });
   }
 
   watch(updateError, () => {

@@ -1,9 +1,9 @@
 <template>
   <div class="p-8 flex justify-center">
     <div class="flex flex-col max-w-[1000px] w-full" v-if="anime">
-      <header class="flex gap-4">
+      <header class="flex gap-8">
         <NuxtImg :src="anime.coverImage.extraLarge" class="rounded-md h-80 w-48 aspect-[2/3] object-cover" />
-        <div class="flex flex-col pt-4 w-full">
+        <div class="flex flex-col w-full">
           <div class="flex items-center gap-3 w-full">
             <h1 class="text-xl font-semibold" >
               {{ anime.title.userPreferred }}
