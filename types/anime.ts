@@ -6,6 +6,7 @@ export interface MediaDetails {
   bannerImage: string | null;
   coverImage: CoverImage;
   title: MediaTitle;
+  trailer: MediaTrailer | null;
   externalLinks: ExternalLink[];
   isFavourite: boolean;
   isAdult: boolean;
@@ -36,6 +37,12 @@ export interface CoverImage {
 export interface MediaTitle {
   userPreferred: string;
 }
+
+export interface MediaTrailer {
+  id: string | null;
+  site: string | null;
+  thumbnail: string | null;
+};
 
 export interface ExternalLink {
   id: number;

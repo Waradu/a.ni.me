@@ -66,6 +66,11 @@ export default defineNuxtPlugin((nuxtApp) => {
               title {
                 userPreferred
               }
+              trailer {
+                id
+                site
+                thumbnail
+              }
               externalLinks {
                 id
                 color
