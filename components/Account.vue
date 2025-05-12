@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4 items-center" v-if="auth?.user">
+  <div class="flex gap-4 items-center w-full" v-if="auth?.user">
     <NuxtImg
       :src="auth.user.avatar.large"
       alt="pb"

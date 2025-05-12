@@ -54,7 +54,8 @@ export const useAuth = () => {
   const logout = () => {
     errorMessage.value = "";
     isLoggedIn.value = false;
-    reset();
+    auth.value = { token: "" };
+    navigateTo("/welcome")
   };
 
   return {
@@ -64,6 +65,6 @@ export const useAuth = () => {
     logout,
     refreshUser,
     errorMessage,
-    redirectUri
+    redirectUri,
   };
 };

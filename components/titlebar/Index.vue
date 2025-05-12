@@ -11,13 +11,14 @@
         {{ title }}
       </h3>
     </div>
-    <TitlebarNavigation v-if="!hideNavigation" />
+    <TitlebarNavigation v-if="!(hideNavigation || hideNavbar)" />
     <TitlebarControls />
   </nav>
 </template>
 
 <script lang="ts" setup>
 const title = usePageScopedState("title");
+const hideNavbar = usePageScopedState("hideNavbar");
 
 defineProps<{
   hideNavigation?: boolean;

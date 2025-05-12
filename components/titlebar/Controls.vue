@@ -29,10 +29,10 @@ onMounted(async () => {
   currentWindow.listen("tauri://resize", async () => {
     isMaximized.value = await currentWindow.isMaximized();
   });
+});
 
-  watch(isMaximized, () => {
-    document.documentElement.classList.remove("maximized");
-    if (isMaximized.value) document.documentElement.classList.add("maximized");
-  });
+watch(isMaximized, () => {
+  document.documentElement.classList.remove("maximized");
+  if (isMaximized.value) document.documentElement.classList.add("maximized");
 });
 </script>

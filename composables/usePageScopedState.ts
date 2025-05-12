@@ -2,6 +2,7 @@ export const pageScopedDefaults = {
   title: () => "A • NI • ME",
   bgImage: () => false,
   statusbar: () => "",
+  hideNavbar: () => false,
 };
 
 type PageScopedKeys = keyof typeof pageScopedDefaults;
