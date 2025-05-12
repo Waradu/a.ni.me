@@ -1,6 +1,6 @@
 <template>
   <div class="p-8 flex justify-center">
-    <div class="flex flex-col max-w-[1000px] w-full gap-8" v-if="anime">
+    <div class="flex flex-col w-full gap-8" v-if="anime">
       <header class="flex gap-6">
         <NuxtImg
           :src="anime.coverImage.extraLarge"
