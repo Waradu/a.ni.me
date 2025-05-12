@@ -24,7 +24,7 @@
     "@vueuse/core": "^13.1.0",
     "@vueuse/nuxt": "^13.1.0",
     "@waradu/keyboard": "^4.2.0",
-    "@waradu/useshared": "^0.4.0",
+    "@waradu/useshared": "^0.5.0",
     "axios": "^1.9.0",
     "graphql-tag": "^2.12.6",
     "js-confetti": "^0.12.0",

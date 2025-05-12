@@ -18,7 +18,7 @@
         "@vueuse/core": "^13.1.0",
         "@vueuse/nuxt": "^13.1.0",
         "@waradu/keyboard": "^4.2.0",
-        "@waradu/useshared": "^0.4.0",
+        "@waradu/useshared": "^0.5.0",
         "axios": "^1.9.0",
         "graphql-tag": "^2.12.6",
         "js-confetti": "^0.12.0",
@@ -486,7 +486,7 @@
 
     "@waradu/keyboard": ["@waradu/keyboard@4.2.0", "", { "dependencies": { "@types/node": "^22.15.3" }, "peerDependencies": { "typescript": "^5" } }, "sha512-xKb/LTVYOm9bUZUpucH772VEvkOEAKPxnx0DhtIHfiYHqpzJefZqNVzSnlj4tdjcXH+oWWLvQ2K7WB10ufzmBA=="],
 
-    "@waradu/useshared": ["@waradu/useshared@0.4.0", "", { "dependencies": { "@tauri-apps/api": "^2.5.0", "vue": "^3.5.13" } }, "sha512-k/QPDkNdrSLF6IYSUe0j+hTl8EfBt316/yGgOfPFFLyGu0Xp7dMU8JdD0FYQbhy24xLGmOx+uvgt3ZUckFln3g=="],
+    "@waradu/useshared": ["@waradu/useshared@0.5.0", "", { "dependencies": { "@tauri-apps/api": "^2.5.0", "vue": "^3.5.13" } }, "sha512-THdGmEfBs0/H2nl3dHj60LHFB/oRBuQKeTIPnKOoUfAP8Sswp+nVxOesqy7HeG81Mt1bu9X20GQ61l3MksuQ4g=="],
 
     "@whatwg-node/disposablestack": ["@whatwg-node/disposablestack@0.0.6", "", { "dependencies": { "@whatwg-node/promise-helpers": "^1.0.0", "tslib": "^2.6.3" } }, "sha512-LOtTn+JgJvX8WfBVJtF08TGrdjuFzGJc4mkP8EdDI8ADbvO7kiexYep1o8dwnt0okb0jYclCDXF13xU7Ge4zSw=="],
 

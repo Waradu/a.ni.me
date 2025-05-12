@@ -42,7 +42,7 @@ export interface MediaTrailer {
   id: string | null;
   site: string | null;
   thumbnail: string | null;
-};
+}
 
 export interface ExternalLink {
   id: number;
@@ -79,6 +79,7 @@ export interface CharacterConnection {
 }
 
 export interface Character {
+  id: string;
   image: {
     large: string;
   };

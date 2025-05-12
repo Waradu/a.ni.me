@@ -106,6 +106,7 @@ export default defineNuxtPlugin((nuxtApp) => {
               averageScore
               characters(sort: RELEVANCE) {
                 nodes {
+                  id
                   image {
                     large
                   }
