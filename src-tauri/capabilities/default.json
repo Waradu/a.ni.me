@@ -22,6 +22,7 @@
     "deep-link:default",
     "opener:default",
     "window-state:default",
-    "os:default"
+    "os:default",
+    "clipboard-manager:allow-write-text"
   ]
 }

@@ -8,6 +8,7 @@
         "@nuxt/image": "1.10.0",
         "@nuxtjs/tailwindcss": "6.14.0",
         "@pinia/nuxt": "0.11.0",
+        "@tauri-apps/plugin-clipboard-manager": "~2",
         "@tauri-apps/plugin-deep-link": "~2.2.1",
         "@tauri-apps/plugin-log": "^2.4.0",
         "@tauri-apps/plugin-opener": "~2.2.6",
@@ -392,6 +393,8 @@
     "@tauri-apps/cli-win32-ia32-msvc": ["@tauri-apps/cli-win32-ia32-msvc@2.5.0", "", { "os": "win32", "cpu": "ia32" }, "sha512-EArv1IaRlogdLAQyGlKmEqZqm5RfHCUMhJoedWu7GtdbOMUfSAz6FMX2boE1PtEmNO4An+g188flLeVErrxEKg=="],
 
     "@tauri-apps/cli-win32-x64-msvc": ["@tauri-apps/cli-win32-x64-msvc@2.5.0", "", { "os": "win32", "cpu": "x64" }, "sha512-lj43EFYbnAta8pd9JnUq87o+xRUR0odz+4rixBtTUwUgdRdwQ2V9CzFtsMu6FQKpFQ6mujRK6P1IEwhL6ADRsQ=="],
+
+    "@tauri-apps/plugin-clipboard-manager": ["@tauri-apps/plugin-clipboard-manager@2.2.2", "", { "dependencies": { "@tauri-apps/api": "^2.0.0" } }, "sha512-bZvDLMqfcNmsw7Ag8I49jlaCjdpDvvlJHnpp6P+Gg/3xtpSERdwlDxm7cKGbs2mj46dsw4AuG3RoAgcpwgioUA=="],
 
     "@tauri-apps/plugin-deep-link": ["@tauri-apps/plugin-deep-link@2.2.1", "", { "dependencies": { "@tauri-apps/api": "^2.0.0" } }, "sha512-8skZ6qIH/kWaV8d6jj3aPvvkIOuqkVk0APRDey9n9N3Ueu3n4MIbuxpAKR2EdoAyQxnXxPTNVyjw2D35/vfGyg=="],
 

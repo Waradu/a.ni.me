@@ -64,5 +64,6 @@ export const useAuth = () => {
     logout,
     refreshUser,
     errorMessage,
+    redirectUri
   };
 };
