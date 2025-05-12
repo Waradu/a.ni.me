@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 import { onOpenUrl } from "@tauri-apps/plugin-deep-link";
 import { error } from "@tauri-apps/plugin-log";
+import { platform } from "@tauri-apps/plugin-os";
 import useShared from "@waradu/useshared";
 
 const { auth, refreshUser } = useAuth();
@@ -61,6 +62,14 @@ onMounted(() => {
     // @ts-expect-error window does not have nuxtapp as child
     window.nuxtapp = useNuxtApp();
   }
+
+  const detectPlatform = async () => {
+    const currentPlatform = await platform();
+
+    document.documentElement.classList.add(currentPlatform);
+  };
+
+  detectPlatform();
 });
 </script>
 
@@ -79,6 +88,16 @@ body,
   font-family: "Segoe UI", sans-serif;
   color: white;
   overflow: hidden;
+}
+
+html:not(.windows) {
+  &, body, #__nuxt {
+    border-radius: 8px;
+  }
+
+  body {
+    border: 1px solid rgb(64, 64, 64);
+  }
 }
 
 ::-webkit-scrollbar {

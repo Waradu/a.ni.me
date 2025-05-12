@@ -21,6 +21,7 @@
     "log:allow-log",
     "deep-link:default",
     "opener:default",
-    "window-state:default"
+    "window-state:default",
+    "os:default"
   ]
 }
