@@ -25,6 +25,7 @@
     "@waradu/useshared": "^0.4.0",
     "axios": "^1.9.0",
     "graphql-tag": "^2.12.6",
+    "js-confetti": "^0.12.0",
     "nuxt": "^3.17.2",
     "nuxt-lucide-icons": "1.0.5",
     "nuxt-svgo": "4.1.1",
