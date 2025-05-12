@@ -90,7 +90,7 @@ body,
   overflow: hidden;
 }
 
-html:not(.windows) {
+html:not(.windows):not(.maximized) {
   &, body, #__nuxt {
     border-radius: 8px;
   }

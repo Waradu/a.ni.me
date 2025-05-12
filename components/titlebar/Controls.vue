@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="w-52 flex items-center justify-end gap-1"
-    data-tauri-drag-region
-  >
+  <div class="w-52 flex items-center justify-end gap-1" data-tauri-drag-region>
     <UiIcon v-slot="props" @click="() => getCurrentWindow().minimize()">
       <IconMinus :class="props.class" />
     </UiIcon>
@@ -31,6 +28,11 @@ onMounted(async () => {
 
   currentWindow.listen("tauri://resize", async () => {
     isMaximized.value = await currentWindow.isMaximized();
+  });
+
+  watch(isMaximized, () => {
+    document.documentElement.classList.remove("maximized");
+    if (isMaximized.value) document.documentElement.classList.add("maximized");
   });
 });
 </script>
