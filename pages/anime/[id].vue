@@ -7,7 +7,10 @@
           class="rounded-md h-80 w-48 aspect-[2/3] object-cover"
         />
         <div class="flex flex-col w-full gap-2">
-          <div class="pl-3 flex items-center gap-3 w-full">
+          <div class="flex items-center gap-3 w-full">
+            <UiIcon @click="navigateTo('/')" v-slot="props" class="cursor-pointer">
+              <IconArrowLeft :class="props.class" />
+            </UiIcon>
             <h1 class="text-xl font-semibold">
               {{ anime.title.userPreferred }}
             </h1>
