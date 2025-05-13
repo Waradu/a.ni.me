@@ -34,6 +34,6 @@ const confetti = () => {
       confettiRadius: 6,
       confettiNumber: 800,
     })
-    .then(jsConfetti.destroyCanvas);
+    .then(() => jsConfetti.destroyCanvas());
 };
 </script>
