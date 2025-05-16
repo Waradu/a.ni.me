@@ -8,22 +8,22 @@
     </UiError>
     <div
       v-else-if="
-        (fetching && !fetched) || (fetched && animes && animes.length > 0)
+        (fetching && !fetched) || (fetched && listEntries && listEntries.length > 0)
       "
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
       :class="fetching ? 'pr-1' : 'pr-2'"
     >
       <TransitionGroup
         name="fade"
-        v-if="fetched && animes && animes.length > 0"
+        v-if="fetched && listEntries && listEntries.length > 0"
       >
         <div
-          v-for="anime in animes"
+          v-for="entry in listEntries"
           class="max-w-[260px] w-[1fr] flex flex-col text-center gap-1"
-          :key="anime.id"
+          :key="entry.id"
         >
           <NuxtLink
-            :to="`/anime/${anime.id}`"
+            :to="`/anime/${entry.media.id}`"
             class="w-full rounded-md overflow-hidden aspect-[2/3] transition cursor-pointer flex items-center justify-center relative select-none group border-[1px] border-solid border-neutral-200 border-opacity-20"
           >
             <IconExternalLink
@@ -31,7 +31,7 @@
             />
             <div class="w-full h-full absolute inset-0 z-0 transition bg-black">
               <NuxtImg
-                :src="anime.coverImage.extraLarge"
+                :src="entry.media.coverImage.extraLarge"
                 alt="Cover"
                 class="w-full h-full transition object-cover group-hover:scale-105 group-hover:opacity-40"
               />
@@ -40,13 +40,13 @@
           <div class="flex flex-col w-full gap-1 select-text">
             <span
               class="text-base text-neutral-200 whitespace-nowrap overflow-hidden overflow-ellipsis"
-              :title="anime.title.userPreferred || ''"
+              :title="entry.media.title.userPreferred || ''"
               v-tippy="{ interactive: true }"
             >
-              {{ anime.title.userPreferred }}
+              {{ entry.media.title.userPreferred }}
             </span>
             <span class="text-xs capitalize text-neutral-400">
-              {{ anime.season?.toLowerCase() }} {{ anime.seasonYear }}
+              {{ entry.media.season?.toLowerCase() }} {{ entry.media.seasonYear }}
             </span>
           </div>
         </div>
@@ -81,15 +81,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { Media } from "~/types/animes";
+import type { MediaListEntry } from "~/types/animes";
 
 const { $api } = useNuxtApp();
 const {
-  data: animes,
+  data: listEntries,
   fetched,
   fetching,
   errorMessage,
-} = useWhenAuthentificated<Media[]>($api.anime.all);
+} = useWhenAuthentificated<MediaListEntry[]>($api.anime.all);
 
 definePageMeta({
   pageTransition: {

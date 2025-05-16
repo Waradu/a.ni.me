@@ -12,8 +12,20 @@ export interface MediaList {
 }
 
 export interface MediaListEntry {
+  id: number;
+  private: boolean;
+  score: number;
+  status: MediaListStatus;
   media: Media;
 }
+
+export type MediaListStatus =
+  | "CURRENT"
+  | "PLANNING"
+  | "COMPLETED"
+  | "DROPPED"
+  | "PAUSED"
+  | "REPEATING";
 
 export interface Media {
   title: MediaTitle;

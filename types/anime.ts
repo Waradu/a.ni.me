@@ -1,3 +1,5 @@
+import type { MediaListStatus } from "~/types/animes";
+
 export interface AnimeQueryResponse {
   Media: MediaDetails;
 }
@@ -25,8 +27,10 @@ export interface MediaDetails {
 }
 
 export interface MediaListEntry {
+  id: number;
   private: boolean;
   score: number;
+  status: MediaListStatus;
 }
 
 export interface CoverImage {

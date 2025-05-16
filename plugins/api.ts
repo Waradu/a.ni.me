@@ -16,6 +16,10 @@ export default defineNuxtPlugin((nuxtApp) => {
             MediaListCollection(userId: $userId, type: ANIME) {
               lists {
                 entries {
+                  id
+                  private
+                  score
+                  status
                   media {
                     title {
                       userPreferred
@@ -47,9 +51,8 @@ export default defineNuxtPlugin((nuxtApp) => {
         );
 
         return (
-          response.MediaListCollection.lists
-            .find((list) => !list.isCustomList)
-            ?.entries.map((entry) => entry.media) || []
+          response.MediaListCollection.lists.find((list) => !list.isCustomList)
+            ?.entries || []
         );
       },
       single: async (id: number) => {
@@ -116,8 +119,10 @@ export default defineNuxtPlugin((nuxtApp) => {
                 }
               }
               mediaListEntry {
+                id
                 private
                 score
+                status
               }
             }
           }
