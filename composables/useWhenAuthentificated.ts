@@ -30,7 +30,6 @@ export const useWhenAuthentificated = <T>(get: () => Promise<T>) => {
 
   return {
     data,
-    fetching,
     fetched,
     errorMessage,
   };

@@ -1,17 +1,15 @@
 <template>
   <div
     class="w-full flex justify-center"
-    :class="fetching ? 'h-full overflow-hidden' : ''"
+    :class="!fetched ? 'h-full overflow-hidden' : ''"
   >
     <UiError v-if="errorMessage">
       {{ errorMessage }}
     </UiError>
     <div
-      v-else-if="
-        (fetching && !fetched) || (fetched && listEntries && listEntries.length > 0)
-      "
+      v-else-if="!fetched || (fetched && listEntries && listEntries.length > 0)"
       class="w-full p-3 grid grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 h-max select-none"
-      :class="fetching ? 'pr-1' : 'pr-2'"
+      :class="!fetched ? 'pr-1' : 'pr-2'"
     >
       <TransitionGroup
         name="fade"
@@ -46,7 +44,8 @@
               {{ entry.media.title.userPreferred }}
             </span>
             <span class="text-xs capitalize text-neutral-400">
-              {{ entry.media.season?.toLowerCase() }} {{ entry.media.seasonYear }}
+              {{ entry.media.season?.toLowerCase() }}
+              {{ entry.media.seasonYear }}
             </span>
           </div>
         </div>
@@ -87,7 +86,6 @@ const { $api } = useNuxtApp();
 const {
   data: listEntries,
   fetched,
-  fetching,
   errorMessage,
 } = useWhenAuthentificated<MediaListEntry[]>($api.anime.all);
 
