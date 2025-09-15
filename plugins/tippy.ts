@@ -1,14 +1,16 @@
-import { defineNuxtPlugin } from "#app";
-import VueTippy, { roundArrow, setDefaultProps } from "vue-tippy";
+import VueTippy, { setDefaultProps } from "vue-tippy";
 import "tippy.js/dist/tippy.css";
-import "tippy.js/dist/svg-arrow.css";
+import "tippy.js/animations/shift-away.css";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueTippy);
   setDefaultProps({
     content: (reference) => reference.getAttribute("title") ?? "",
-    interactive: true,
+    interactive: false,
+    animation: "shift-away",
+    theme: "custom",
     maxWidth: 250,
-    arrow: roundArrow,
+    arrow: false,
+    hideOnClick: false,
   });
 });

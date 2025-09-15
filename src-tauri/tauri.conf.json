@@ -1,12 +1,13 @@
 {
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "a.ni.me",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "identifier": "dev.waradu.a.ni.me",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "bun run nuxt dev",
-    "beforeBuildCommand": "bun run generate"
+    "beforeDevCommand": "bun nuxt dev",
+    "beforeBuildCommand": "bun nuxt generate"
   },
   "app": {
     "windows": [
@@ -17,8 +18,10 @@
         "resizable": true,
         "fullscreen": false,
         "decorations": false,
+        "transparent": true,
         "minHeight": 600,
-        "minWidth": 900
+        "minWidth": 900,
+        "visible": false
       }
     ],
     "security": {
@@ -37,18 +40,19 @@
     ],
     "createUpdaterArtifacts": true
   },
-  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "plugins": {
-    "sql": {
-      "preload": [
-        "sqlite:a.ni.me.db"
-      ]
-    },
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZEMDE5NTZCNjc4NUMyQTIKUldTaXdvVm5hNVVCL1hxaGkzMEEyWW9QSkgwOWd3MEZUOHFkaWNINUptOUNOdmhYcVdVaXFEblcK",
       "endpoints": [
         "https://a.ni.me-backend.waradu.dev/api/latest"
       ]
+    },
+    "deep-link": {
+      "desktop": {
+        "schemes": [
+          "a.ni.me"
+        ]
+      }
     }
   }
 }

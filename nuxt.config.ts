@@ -1,27 +1,61 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2024-04-03",
-  devtools: { enabled: true },
+  compatibilityDate: "2024-11-01",
+  devtools: { enabled: false },
   ssr: false,
-  modules: [
-    "nuxt-svgo",
-    "@pinia/nuxt",
-    "wrdu-keyboard",
-    "pinia-plugin-persistedstate/nuxt",
-  ],
+  devServer: { host: process.env.TAURI_DEV_HOST || "localhost" },
+
   vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: "modern",
-        },
+    clearScreen: false,
+    envPrefix: ["VITE_", "TAURI_"],
+    server: {
+      strictPort: true,
+    },
+  },
+
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "nuxt-lucide-icons",
+    "@pinia/nuxt",
+    "nuxt-svgo",
+    "@vueuse/nuxt",
+    "@nuxt/image",
+  ],
+
+  tailwindcss: {
+    exposeConfig: true,
+    viewer: true,
+    editorSupport: true,
+  },
+
+  lucide: {
+    namePrefix: "Icon",
+  },
+
+  app: {
+    pageTransition: { name: "page", mode: "out-in" },
+    head: {
+      bodyAttrs: {
+        style: "background: #262626;"
       },
     },
   },
-  app: {
-    pageTransition: { name: "page", mode: "out-in" },
+
+  runtimeConfig: {
+    public: {
+      redirectUri: process.env.REDIRECT_URI,
+    }
   },
+
   svgo: {
     autoImportPath: false,
+    defaultImport: "component",
+    dts: true,
   },
+
+  image: {
+    domains: [
+      "s4.anilist.co"
+    ]
+  }
 });
