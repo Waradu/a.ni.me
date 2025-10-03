@@ -1,0 +1,31 @@
+.tippy-box {
+  background-color: #131313;
+  font-size: 12px;
+  color: #ffffffdd;
+}
+.tippy-box > .tippy-arrow {
+  width: 14px;
+  height: 14px;
+}
+.tippy-box[data-placement^="top"] > .tippy-arrow:before {
+  border-width: 7px 7px 0;
+  border-top-color: #131313;
+}
+.tippy-box[data-placement^="bottom"] > .tippy-arrow:before {
+  border-width: 0 7px 7px;
+  border-bottom-color: #131313;
+}
+.tippy-box[data-placement^="left"] > .tippy-arrow:before {
+  border-width: 7px 0 7px 7px;
+  border-left-color: #131313;
+}
+.tippy-box[data-placement^="right"] > .tippy-arrow:before {
+  border-width: 7px 7px 7px 0;
+  border-right-color: #131313;
+}
+.tippy-box > .tippy-backdrop {
+  background-color: #131313;
+}
+.tippy-box > .tippy-svg-arrow {
+  fill: #131313;
+}
