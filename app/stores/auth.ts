@@ -43,5 +43,8 @@ export const useAuthStore = defineStore("authStore", () => {
 
   return { token, user, openInBrowser, refreshUser, reset, logout, redirectUri, errorMessage };
 }, {
-  persist: true
+  persist: {
+    storage: localStorage,
+    pick: ["token", "user"]
+  }
 });
