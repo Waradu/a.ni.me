@@ -19,6 +19,7 @@
     </UiToggleIcon>
     <input
       ref="searchbar"
+      v-model="searchStore.query"
       type="text"
       class="absolute left-3 mb-[1px] h-full w-[calc(100%-44px)] bg-transparent transition duration-300 outline-none placeholder:text-neutral-400"
       :class="isSearching ? '' : 'pointer-events-none opacity-0 blur-sm'"
@@ -45,6 +46,8 @@ import { LucideSearch, LucideX } from "lucide-vue-next";
 
 const isSearching = ref(false);
 const searchbar = useTemplateRef("searchbar");
+
+const searchStore = useSearchStore();
 
 useKeybind({
   keys: ["control_l"],
