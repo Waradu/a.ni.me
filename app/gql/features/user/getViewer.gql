@@ -1,0 +1,15 @@
+query GetViewer {
+  Viewer {
+    id
+    name
+    avatar {
+      large
+    }
+    bannerImage
+    options {
+      displayAdultContent
+      titleLanguage
+    }
+    siteUrl
+  }
+}

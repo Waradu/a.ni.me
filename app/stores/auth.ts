@@ -1,9 +1,12 @@
-import type { Viewer } from "~/types/viewer";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { error } from "@tauri-apps/plugin-log";
+import type { ResultOf } from "@graphql-typed-document-node/core";
+import { GetViewerDocument } from "~/gql/gen/types.generated";
 
 export const useAuthStore = defineStore("authStore", () => {
   const { redirectUri } = useRuntimeConfig().public;
+
+  type Viewer = ResultOf<typeof GetViewerDocument>["Viewer"];
 
   const token = ref<string>();
   const user = ref<Viewer>();
@@ -17,12 +20,13 @@ export const useAuthStore = defineStore("authStore", () => {
   const refreshUser = async () => {
     if (!token.value) return;
 
-    const { $apollo, $api } = useNuxtApp();
+    const { $apollo } = useNuxtApp();
     await $apollo.client.clearStore();
 
     try {
       errorMessage.value = "";
-      const anilistUser = await $api.user.profile();
+      const viewer = await $apollo.query(GetViewerDocument);
+      const anilistUser = viewer?.Viewer;
       user.value = anilistUser;
     } catch (e) {
       errorMessage.value = getErrorMessage(e);

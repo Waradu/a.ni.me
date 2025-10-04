@@ -1,0 +1,26 @@
+query GetUserAnimeCollection($userId: Int) {
+  MediaListCollection(userId: $userId, type: ANIME) {
+    lists {
+      entries {
+        id
+        private
+        score
+        status
+        media {
+          title {
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+          }
+          format
+          id
+          isFavourite
+          season
+          seasonYear
+        }
+      }
+      isCustomList
+    }
+  }
+}

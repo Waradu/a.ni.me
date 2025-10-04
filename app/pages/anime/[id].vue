@@ -3,7 +3,7 @@
     <div v-if="anime" class="flex w-full flex-col gap-8">
       <header class="flex gap-6">
         <NuxtImg
-          :src="anime.coverImage.extraLarge"
+          :src="anime.coverImage?.extraLarge ?? undefined"
           class="aspect-[2/3] h-80 w-48 rounded-md object-cover"
         />
         <div class="flex w-full flex-col gap-2">
@@ -16,20 +16,26 @@
               <LucideArrowLeft :class="props.class" />
             </UiIcon>
             <h1 class="text-xl font-semibold">
-              {{ anime.title.userPreferred }}
+              {{ anime.title?.userPreferred }}
             </h1>
             <div class="flex gap-1 select-none">
-              <div
-                v-for="link in anime.externalLinks.slice(0, 4)"
-                :key="link.id"
-                v-tippy
-                :style="{ '--color': link.color ?? '#ffffff20' }"
-                :title="link.site"
-                class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full p-2 transition-colors hover:bg-[var(--color)]"
-                @click="openUrl(link.url)"
-              >
-                <img class="h-4 w-4" :src="link.icon ?? '/globe.png'" alt="" />
-              </div>
+              <template v-for="link in anime.externalLinks?.slice(0, 4)">
+                <div
+                  v-if="link && link.url"
+                  :key="link.id"
+                  v-tippy
+                  :style="{ '--color': link.color ?? '#ffffff20' }"
+                  :title="link.site"
+                  class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full p-2 transition-colors hover:bg-[var(--color)]"
+                  @click="openUrl(link.url)"
+                >
+                  <img
+                    class="h-4 w-4"
+                    :src="link.icon ?? '/globe.png'"
+                    alt=""
+                  />
+                </div>
+              </template>
             </div>
             <div class="ml-auto flex gap-1">
               <UiToggleIcon
@@ -58,7 +64,7 @@
           <div class="mt-auto mb-2 flex gap-2 pl-3 select-none">
             <div
               v-for="genre in anime.genres"
-              :key="genre"
+              :key="genre!"
               class="rounded-md border border-neutral-700 bg-neutral-700/20 p-[3px] px-2 pb-1 text-xs text-neutral-200"
             >
               # {{ genre }}
@@ -67,25 +73,28 @@
         </div>
       </header>
       <div
+        v-if="anime.characters"
         class="flex w-full gap-4 overflow-hidden overflow-x-scroll pb-2 select-none"
       >
-        <div
-          v-for="character in anime.characters.nodes"
-          :key="character.id"
-          class="flex flex-col items-center gap-1 text-center"
-        >
-          <NuxtImg
-            :src="character.image.large"
-            class="max-h-40 min-h-40 max-w-28 min-w-28 rounded-md object-cover"
-          />
+        <template v-for="character in anime.characters.nodes">
           <div
-            v-tippy
-            class="max-w-28 overflow-hidden text-sm overflow-ellipsis whitespace-nowrap text-neutral-200"
-            :title="character.name.userPreferred"
+            v-if="character"
+            :key="character.id"
+            class="flex flex-col items-center gap-1 text-center"
           >
-            {{ character.name.userPreferred }}
+            <NuxtImg
+              :src="character.image?.large ?? undefined"
+              class="max-h-40 min-h-40 max-w-28 min-w-28 rounded-md object-cover"
+            />
+            <div
+              v-tippy
+              class="max-w-28 overflow-hidden text-sm overflow-ellipsis whitespace-nowrap text-neutral-200"
+              :title="character.name?.userPreferred || 'No Name'"
+            >
+              {{ character.name?.userPreferred || "No Name" }}
+            </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
   </div>
@@ -94,15 +103,17 @@
 <script lang="ts" setup>
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { LucideArrowLeft, LucideCheck, LucideX } from "lucide-vue-next";
-import type { MediaDetails } from "~/types/anime";
+import { GetMediaByIdDocument } from "~/gql/gen/types.generated";
 
 const route = useRoute();
 const id = route.params.id as string;
 
-const { $api } = useNuxtApp();
-const { data: anime } = useWhenAuthentificated<MediaDetails | undefined>(() =>
-  $api.anime.single(parseInt(id)),
+const { $apollo } = useNuxtApp();
+const { data: mediaItem } = useWhenAuthentificated(() =>
+  $apollo.query(GetMediaByIdDocument, { mediaId: parseInt(id) }),
 );
+
+const anime = computed(() => mediaItem.value?.Media);
 
 const inLibrary = ref(anime.value?.mediaListEntry != null);
 
@@ -116,9 +127,9 @@ watch(
 const title = usePageScopedState("title");
 
 watch(
-  () => anime.value?.title.userPreferred,
+  () => anime.value?.title?.userPreferred,
   () => {
-    if (anime.value?.title.userPreferred)
+    if (anime.value?.title?.userPreferred)
       title.value = anime.value.title.userPreferred;
   },
 );

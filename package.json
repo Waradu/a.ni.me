@@ -2,13 +2,18 @@
   "name": "a.ni.me",
   "type": "module",
   "scripts": {
+    "prebuild": "bun run schema && bun run codegen",
     "build": "nuxt build",
+    "predev": "bun run codegen",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "bun codegen --watch",
+    "schema": "mkdir -p app/gql/gen && bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql"
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",
@@ -30,6 +35,7 @@
     "@waradu/useshared": "^0.5.0",
     "axios": "^1.12.2",
     "eslint": "^9.36.0",
+    "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
     "js-confetti": "^0.13.1",
     "lucide-vue-next": "^0.544.0",
@@ -45,9 +51,14 @@
     "vue-tippy": "^6.7.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^6.0.0",
+    "@graphql-codegen/near-operation-file-preset": "^3.1.0",
+    "@graphql-codegen/typescript": "^5.0.1",
+    "@graphql-codegen/typescript-operations": "^5.0.1",
+    "@tauri-apps/cli": "^2.8.4",
+    "@types/node": "^24.6.2",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "@tauri-apps/cli": "^2.8.4",
-    "@types/node": "^24.6.2"
+    "typescript": "^5.9.3"
   }
 }

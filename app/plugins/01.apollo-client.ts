@@ -1,75 +1,89 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  ApolloLink,
-} from "@apollo/client/core";
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, from } from "@apollo/client/core";
 import { ErrorLink } from "@apollo/client/link/error";
-import type { DocumentNode } from "graphql";
-
-interface Options {
-  query: DocumentNode;
-  variables?: Record<string, string | number | object>;
-}
+import { CombinedGraphQLErrors, CombinedProtocolErrors } from "@apollo/client/errors";
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 
 export default defineNuxtPlugin(() => {
-  const auth = useAuthStore();
+  const authStore = useAuthStore();
 
   const errorLink = new ErrorLink(({ error }) => {
-    if ("errors" in error && Array.isArray(error.errors)) {
+    if (CombinedGraphQLErrors.is(error)) {
       for (const err of error.errors) {
-        if (
-          err.extensions?.code === "UNAUTHENTICATED" ||
-          err.message === "Invalid token"
-        ) {
-          auth.reset();
+        const code = (err.extensions as Record<string, unknown> | undefined)?.code;
+        if (code === "UNAUTHENTICATED" || err.message === "Invalid token") {
+          authStore.reset();
           return;
         }
       }
+      return;
     }
-
-    if ((error as unknown as { statusCode: number; }).statusCode === 401) {
-      auth.reset();
+    if (CombinedProtocolErrors.is(error)) {
+      const is401 = error.errors.some(e => {
+        const http = (e.extensions as Record<string, unknown> | undefined)?.http as { status?: number } | undefined;
+        return http?.status === 401;
+      });
+      if (is401) {
+        authStore.reset();
+      }
+      return;
+    }
+    const asAny = error as unknown as { statusCode?: number; status?: number; response?: { status?: number } };
+    const status = asAny.statusCode ?? asAny.status ?? asAny.response?.status;
+    if (status === 401) {
+      authStore.reset();
     }
   });
 
   const httpLink = new HttpLink({
-    uri: "https://graphql.anilist.co",
+    uri: "https://graphql.anilist.co"
   });
 
-  const apolloClient = new ApolloClient({
-    link: ApolloLink.from([errorLink, httpLink]),
+  const authLink = new ApolloLink((operation, forward) => {
+    operation.setContext(({ headers = {} }) => ({
+      headers: {
+        ...headers,
+        Authorization: authStore.token ? `Bearer ${authStore.token}` : undefined
+      }
+    }));
+    return forward(operation);
+  });
+
+  const client = new ApolloClient({
+    link: from([errorLink, authLink, httpLink]),
     cache: new InMemoryCache(),
+    ssrMode: import.meta.server,
     defaultOptions: {
-      watchQuery: {
-        errorPolicy: "all",
-      },
-      query: {
-        errorPolicy: "all",
-      },
-    },
+      query: { errorPolicy: "all" },
+      watchQuery: { errorPolicy: "all" },
+      mutate: { errorPolicy: "all" }
+    }
   });
 
   const apollo = {
-    get: async <T>(options: Options, token = "") => {
-      const { data } = await apolloClient.query<T>({
-        query: options.query,
-        variables: options.variables,
-        context: {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : undefined,
-          },
-        },
-      });
-
+    client,
+    query: async <TData, TVars extends Record<string, unknown> | undefined>(
+      document: TypedDocumentNode<TData, TVars>,
+      variables?: TVars
+    ) => {
+      const { data } = await client.query({ query: document, variables });
       return data;
     },
-    client: apolloClient,
+    mutate: async <TData, TVars extends Record<string, unknown> | undefined>(
+      document: TypedDocumentNode<TData, TVars>,
+      variables?: TVars
+    ) => {
+      const { data } = await client.mutate({ mutation: document, variables });
+      return data;
+    },
+    watch: <TData, TVars extends Record<string, unknown> | undefined>(
+      document: TypedDocumentNode<TData, TVars>,
+      variables?: TVars
+    ) => client.watchQuery({ query: document, variables })
   };
 
   return {
     provide: {
-      apollo,
-    },
+      apollo
+    }
   };
 });

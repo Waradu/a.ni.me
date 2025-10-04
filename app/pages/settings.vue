@@ -1,17 +1,17 @@
 <template>
   <div class="flex justify-center p-8">
     <div class="flex max-w-96 min-w-96 flex-col gap-8">
-      <div v-if="auth.user" class="flex items-center gap-4">
+      <div v-if="authStore.user" class="flex items-center gap-4">
         <NuxtImg
-          :src="auth.user.avatar.large"
+          :src="authStore.user.avatar?.large ?? undefined"
           alt="pb"
           class="size-20 rounded-full"
         />
         <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2">
-            <div class="text-xl">{{ auth.user.name }}</div>
+            <div class="text-xl">{{ authStore.user.name }}</div>
             <div
-              v-if="auth.user.options.displayAdultContent"
+              v-if="authStore.user.options?.displayAdultContent"
               v-tippy
               class="flex items-center rounded-full bg-red-400/50 p-0.5 px-2 text-[10px] select-none"
               title="Change this on the Anilist website"
@@ -19,15 +19,16 @@
               NSFW
             </div>
           </div>
-          <UiButton v-slot="props" text="Logout" @click="auth.logout">
+          <UiButton v-slot="props" text="Logout" @click="authStore.logout">
             <LucideLogOut :class="props.class" />
           </UiButton>
         </div>
         <UiIcon
+          v-if="authStore.user?.siteUrl"
           v-tippy
           title="Open profile on Anilist"
           class="ml-auto cursor-pointer"
-          @click="openUrl(auth.user.siteUrl)"
+          @click="openUrl(authStore.user.siteUrl)"
         >
           <Anilist class="size-5" />
         </UiIcon>
@@ -51,8 +52,8 @@
             <LucideLogIn :class="props.class" />
           </UiButton>
         </div>
-        <UiError v-if="auth.errorMessage">
-          {{ auth.errorMessage }}
+        <UiError v-if="authStore.errorMessage">
+          {{ authStore.errorMessage }}
         </UiError>
       </div>
       <div v-if="settings" class="flex flex-col gap-4 select-none">
@@ -84,25 +85,25 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { LucideLogIn, LucideLogOut } from "lucide-vue-next";
 
 const { settings } = useSettings();
-const auth = useAuthStore();
+const authStore = useAuthStore();
 const loading = ref(false);
 
 const login = () => {
   loading.value = true;
-  auth.openInBrowser();
+  authStore.openInBrowser();
 };
 
 watch(
-  () => auth.user,
+  () => authStore.user,
   () => {
-    if (auth.user) loading.value = false;
+    if (authStore.user) loading.value = false;
   },
 );
 
 watch(
-  () => auth.errorMessage,
+  () => authStore.errorMessage,
   () => {
-    if (auth.errorMessage) loading.value = false;
+    if (authStore.errorMessage) loading.value = false;
   },
 );
 

@@ -16,7 +16,7 @@
       <UiButton
         v-slot="props"
         text="Finish"
-        :disabled="!auth.user"
+        :disabled="!authStore.user"
         @click="navigateTo('/')"
       >
         <LucideCheck :class="props.class" />
@@ -32,7 +32,7 @@ import { LucideCheck } from "lucide-vue-next";
 const hideNavbar = usePageScopedState("hideNavbar");
 hideNavbar.value = true;
 
-const auth = useAuthStore();
+const authStore = useAuthStore();
 
 const confetti = () => {
   const jsConfetti = new JSConfetti();
