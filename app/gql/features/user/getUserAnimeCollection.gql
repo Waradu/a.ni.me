@@ -21,6 +21,7 @@ query GetUserAnimeCollection($userId: Int) {
         }
       }
       isCustomList
+      name
     }
   }
 }

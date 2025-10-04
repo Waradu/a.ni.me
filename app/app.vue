@@ -54,7 +54,7 @@ main {
   -webkit-user-select: none;
   user-select: none;
 }
-main * {
+main > * {
   -webkit-user-select: text;
   user-select: text;
 }
