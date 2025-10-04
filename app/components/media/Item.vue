@@ -26,7 +26,7 @@
       >
         {{ entry.media.title?.userPreferred }}
       </span>
-      <span class="text-xs text-neutral-400 capitalize">
+      <span class="text-xs text-neutral-400 capitalize whitespace-nowrap">
         <template v-if="entry.media.season && entry.media.seasonYear">
           {{ entry.media.season?.toLowerCase() }}
           {{ entry.media.seasonYear }}

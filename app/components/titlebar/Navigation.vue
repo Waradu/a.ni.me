@@ -51,7 +51,10 @@ const searchStore = useSearchStore();
 
 useKeybind({
   keys: ["no-macos:control_l", "macos:meta_l"],
-  run: () => (isSearching.value = true),
+  run: () => {
+    if (isSearching.value) searchbar.value?.focus();
+    isSearching.value = true;
+  },
 });
 
 watch(isSearching, (newState) => {
@@ -59,6 +62,8 @@ watch(isSearching, (newState) => {
     setTimeout(() => {
       searchbar.value?.focus();
     });
+  } else {
+    searchStore.query = "";
   }
 });
 

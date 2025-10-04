@@ -23,6 +23,7 @@
         "@waradu/useshared": "^0.5.0",
         "axios": "^1.12.2",
         "eslint": "^9.36.0",
+        "fuse.js": "^7.1.0",
         "graphql": "^16.11.0",
         "graphql-tag": "^2.12.6",
         "js-confetti": "^0.13.1",
