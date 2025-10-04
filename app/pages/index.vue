@@ -93,6 +93,8 @@ import { GetUserAnimeCollectionDocument } from "~/gql/gen/types.generated";
 
 const { $apollo } = useNuxtApp();
 
+const searchStore = useSearchStore();
+
 const {
   data: listEntries,
   fetched,
@@ -106,7 +108,12 @@ const {
 
 const entries = computed(() => {
   const lists = listEntries.value?.MediaListCollection?.lists ?? [];
-  return lists.flatMap((g) => g?.entries ?? []);
+  const entries = lists.flatMap((g) => g?.entries ?? []);
+  return entries.filter((entry) =>
+    entry?.media?.title?.userPreferred
+      ?.toLowerCase()
+      .includes(searchStore.query.toLowerCase()),
+  );
 });
 
 definePageMeta({

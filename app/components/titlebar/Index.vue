@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex h-13 w-full justify-between border-b border-neutral-700 p-2 select-none"
+    class="flex h-13 w-full justify-between border-b border-neutral-700 p-2 select-none cursor-default"
     data-tauri-drag-region
   >
     <template v-if="currentPlatform == 'macos'">

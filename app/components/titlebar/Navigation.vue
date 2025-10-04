@@ -13,7 +13,7 @@
     >
       {{ page.name }}
     </TitlebarLink>
-    <UiToggleIcon v-slot="props" @click="toggleSearch()">
+    <UiToggleIcon v-slot="props" v-model="isSearching">
       <LucideSearch :class="props.true" />
       <LucideX :class="props.false" />
     </UiToggleIcon>
@@ -50,20 +50,17 @@ const searchbar = useTemplateRef("searchbar");
 const searchStore = useSearchStore();
 
 useKeybind({
-  keys: ["control_l"],
-  run: () => toggleSearch(true),
+  keys: ["no-macos:control_l", "macos:meta_l"],
+  run: () => (isSearching.value = true),
 });
 
-const toggleSearch = (force?: boolean) => {
-  const newState = force ?? !isSearching.value;
-  isSearching.value = newState;
-
+watch(isSearching, (newState) => {
   if (newState) {
     setTimeout(() => {
       searchbar.value?.focus();
     });
   }
-};
+});
 
 const pages = [
   {
@@ -101,7 +98,7 @@ onMounted(() => {
     useKeybind({
       keys: ["escape"],
       run: () => {
-        toggleSearch(false);
+        isSearching.value = false;
       },
       config: { runIfFocused: [searchbar.value] },
     });
