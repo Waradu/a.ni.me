@@ -36,7 +36,7 @@ jobs:
             echo "::group::Schema diff"
             cat schema.diff
             echo "::endgroup::"
-            echo "::error title=Schema drift detected::Your committed schema is outdated. Run 'bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql' locally (or 'bun run schema:update' if you have that script) and commit the changes."
+            echo "::error title=Schema drift detected::Your committed schema is outdated ❌. Run 'bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql' locally (or 'bun run schema:update' if you have that script) and commit the changes."
             exit 1
           else
             echo "Schema is up to date ✅"
