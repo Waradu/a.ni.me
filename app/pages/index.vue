@@ -29,10 +29,12 @@
 </template>
 
 <script lang="ts" setup>
+import Fuse from "fuse.js";
 import { GetUserAnimeCollectionDocument } from "~/gql/gen/types.generated";
 
 const { $apollo } = useNuxtApp();
 
+const filterStore = useFiltersStore();
 const searchStore = useSearchStore();
 const authStore = useAuthStore();
 
@@ -41,8 +43,11 @@ const {
   error,
   pending,
 } = useAsyncData(
-  () => `GetUserAnimeCollectionDocument:${searchStore.query}`,
+  () =>
+    `GetUserAnimeCollectionDocument:${authStore.user?.id}:${filterStore.sort}:${filterStore.desc}:${filterStore.status}`,
   async () => {
+    if (!authStore.user?.id) return null;
+
     const data = await $apollo.query(GetUserAnimeCollectionDocument, {
       userId: authStore.user?.id,
     });
@@ -50,8 +55,37 @@ const {
     return data?.MediaListCollection?.lists;
   },
   {
-    watch: [() => authStore.user, () => searchStore.query],
+    watch: [
+      () => authStore.user,
+      () => filterStore.sort,
+      () => filterStore.desc,
+      () => filterStore.status,
+    ],
   },
+);
+
+const statusbarText = usePageScopedState("statusbar");
+
+watch(
+  [lists, () => searchStore.query],
+  ([lists]) => {
+    const entries = lists?.flatMap((list) => list?.entries);
+
+    if (!entries) return;
+
+    const fuse = new Fuse(entries, {
+      keys: ["media.title.userPreferred"],
+      threshold: 0.3,
+    });
+
+    const results = fuse.search(searchStore.query).map((r) => r.item);
+
+    statusbarText.value =
+      (searchStore.query
+        ? `${results.length}/${entries.length}`
+        : `${entries.length}`) + " Animes";
+  },
+  { immediate: true, deep: true },
 );
 
 definePageMeta({

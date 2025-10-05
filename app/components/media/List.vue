@@ -2,7 +2,10 @@
   <div
     v-if="list"
     class="flex w-full flex-col transition-[margin-bottom]"
-    :class="[collapsed ? '' : 'mb-3', filteredEntries.length == 0 ? 'opacity-40 pointer-events-none' : '']"
+    :class="[
+      collapsed ? '' : 'mb-3',
+      filteredEntries.length == 0 ? 'pointer-events-none opacity-40' : '',
+    ]"
   >
     <div
       class="mb-3 flex w-full cursor-pointer items-center gap-1 text-sm text-neutral-400 transition-colors select-none hover:text-white"
@@ -15,11 +18,9 @@
       <div class="flex w-full justify-between gap-1">
         <span>{{ list.name }}</span>
         <span v-if="searchStore.query" class="flex">
-          (
           <span>{{ filteredEntries.length }}</span>
           /
           <span>{{ list.entries?.length ?? 0 }}</span>
-          )
         </span>
         <span v-else>{{ filteredEntries.length }}</span>
       </div>
