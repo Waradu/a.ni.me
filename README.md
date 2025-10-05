@@ -19,7 +19,7 @@
 
 - [ ] Finish the app (v1)
   - [ ] Explore page
-  - [ ] Search, filters
+  - [x] Search, filters
   - [ ] Details page
   - [ ] Other small stuff
   - [ ] Fix bugs
@@ -30,11 +30,10 @@
   - [ ] Import MAL list
   - [ ] Lightmode, themes
   - [ ] Context menu
-  - [ ] MacOS/Linux support
+  - [x] MacOS/Linux support
   - [ ] More content (website)
   - [ ] News/blog/changelog (website)
   - [ ] Add screenshots (github)
-  - [ ] Load library in chunks
   - [ ] Some QOL features if needed (maybe)
 
 - [ ] More to come
