@@ -26,4 +26,3 @@ logs
 # GQL
 app/**/*.gql.ts
 app/gql/gen/types.generated.ts
-app/gql/gen/schema.gql
