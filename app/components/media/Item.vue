@@ -14,6 +14,7 @@
         <NuxtImg
           :src="entry.media.coverImage?.extraLarge ?? undefined"
           alt="Cover"
+          loading="lazy"
           class="h-full w-full object-cover transition group-hover:scale-105 group-hover:opacity-40"
         />
       </div>
