@@ -26,17 +26,17 @@ jobs:
       - name: Introspect AniList schema
         run: |
           bunx @apollo/rover --version
-          bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.graphql.new
+          bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.gql.new
 
       - name: Compare schema
         shell: bash
         run: |
           set -eo pipefail
-          if ! diff -u app/gql/schema.graphql app/gql/schema.graphql.new > schema.diff; then
+          if ! diff -u app/gql/schema.gql app/gql/schema.gql.new > schema.diff; then
             echo "::group::Schema diff"
             cat schema.diff
             echo "::endgroup::"
-            echo "::error title=Schema drift detected::Your committed schema is outdated. Run 'bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.graphql' locally (or 'bun run schema:update' if you have that script) and commit the changes."
+            echo "::error title=Schema drift detected::Your committed schema is outdated. Run 'bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.gql' locally (or 'bun run schema:update' if you have that script) and commit the changes."
             exit 1
           else
             echo "Schema is up to date ✅"
