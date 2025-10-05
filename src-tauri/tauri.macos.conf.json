@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "identifier": "com.tauri.dev",
+  "identifier": "dev.waradu.a.ni.me",
   "app": {
     "windows": [
       {
