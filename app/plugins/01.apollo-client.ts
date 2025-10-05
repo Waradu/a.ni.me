@@ -19,7 +19,7 @@ export default defineNuxtPlugin(() => {
     }
     if (CombinedProtocolErrors.is(error)) {
       const is401 = error.errors.some(e => {
-        const http = (e.extensions as Record<string, unknown> | undefined)?.http as { status?: number } | undefined;
+        const http = (e.extensions as Record<string, unknown> | undefined)?.http as { status?: number; } | undefined;
         return http?.status === 401;
       });
       if (is401) {
@@ -27,7 +27,7 @@ export default defineNuxtPlugin(() => {
       }
       return;
     }
-    const asAny = error as unknown as { statusCode?: number; status?: number; response?: { status?: number } };
+    const asAny = error as unknown as { statusCode?: number; status?: number; response?: { status?: number; }; };
     const status = asAny.statusCode ?? asAny.status ?? asAny.response?.status;
     if (status === 401) {
       authStore.reset();
