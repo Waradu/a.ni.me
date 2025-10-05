@@ -6,6 +6,7 @@
     "build": "nuxt build",
     "predev": "bun run codegen",
     "dev": "nuxt dev",
+    "pregenerate": "bun run codegen",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
