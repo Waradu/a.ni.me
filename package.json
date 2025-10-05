@@ -2,7 +2,7 @@
   "name": "a.ni.me",
   "type": "module",
   "scripts": {
-    "prebuild": "bun run schema && bun run codegen",
+    "prebuild": "bun run codegen",
     "build": "nuxt build",
     "predev": "bun run codegen",
     "dev": "nuxt dev",
@@ -13,7 +13,7 @@
     "lint:fix": "eslint . --fix",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "bun codegen --watch",
-    "schema": "mkdir -p app/gql/gen && bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql"
+    "schema:update": "mkdir -p app/gql/gen && bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql"
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",

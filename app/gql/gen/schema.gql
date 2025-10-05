@@ -1,4 +1,3 @@
-"-- INVALID --"
 schema {
   query: Query
   mutation: Mutation
