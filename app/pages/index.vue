@@ -50,7 +50,7 @@ const {
   pending,
 } = useAsyncData(
   () =>
-    `GetUserAnimeCollectionDocument:${authStore.user?.id}:${filterStore.sort}:${filterStore.desc}:${filterStore.status}`,
+    `GetUserAnimeCollectionDocument:${authStore.user?.id}:${filterStore.sort}:${filterStore.desc}:${filterStore.status}:${filterStore.singleCompletedList}`,
   async () => {
     if (!authStore.user?.id) return null;
 
@@ -67,7 +67,8 @@ const {
     const data = await $apollo.query(GetUserAnimeCollectionDocument, {
       userId: authStore.user?.id,
       status: filterStore.status,
-      sort: sort,
+      sort: [sort],
+      forceSingleCompletedList: filterStore.singleCompletedList,
     });
 
     return data?.MediaListCollection?.lists;
@@ -78,6 +79,7 @@ const {
       () => filterStore.sort,
       () => filterStore.desc,
       () => filterStore.status,
+      () => filterStore.singleCompletedList,
     ],
   },
 );
