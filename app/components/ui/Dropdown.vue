@@ -1,8 +1,8 @@
 <template>
   <div class="relative flex flex-col">
     <div
-      class="flex h-8 cursor-pointer items-center gap-1 rounded-full border border-neutral-700 pr-2 text-sm transition-colors select-none hover:bg-neutral-700"
-      :class="model ? 'bg-neutral-700 pl-1' : 'pl-3'"
+      class="z-40 flex h-8 cursor-pointer items-center gap-1 rounded-2xl border border-neutral-700 pr-2 text-sm transition-[background-color,border-radius] select-none hover:bg-neutral-700"
+      :class="[model ? 'bg-neutral-700 pl-1' : 'bg-neutral-800 pl-3']"
       @click="open = !open"
     >
       <div
@@ -18,21 +18,27 @@
         :class="open ? 'rotate-180' : ''"
       />
     </div>
-    <div v-if="open" class="fixed inset-0 z-40" @click="open = false"></div>
+    <div
+      class="fixed inset-0 z-30 bg-neutral-800/50 transition-opacity"
+      :class="open ? '' : 'pointer-events-none opacity-0'"
+      @click="open = false"
+    ></div>
     <Collapse
       :when="open"
-      class="v-collapse absolute top-9 z-50 min-w-32 cursor-default rounded-md border border-neutral-700 bg-neutral-800 text-sm select-none"
+      class="v-collapse absolute top-9 z-40 min-w-full cursor-default overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-800 text-sm select-none"
     >
       <template v-for="option in options" :key="option.value">
         <div
           v-if="model != option.value"
-          class="flex h-8 w-max min-w-full items-center px-2 transition-colors hover:bg-neutral-700"
+          class="flex h-9 w-max min-w-full items-center gap-2.5 transition-colors hover:bg-neutral-700 pr-12"
+          :class="option.icon ? 'pl-2.5' : 'pl-3'"
           @click="
             model = option.value;
             open = false;
           "
         >
-          {{ option.label }}
+          <component :is="option.icon" v-if="option.icon" class="size-3.5 text-neutral-400" />
+          <span>{{ option.label }}</span>
         </div>
       </template>
     </Collapse>
@@ -40,7 +46,7 @@
 </template>
 
 <script lang="ts" setup generic="T extends string | number">
-import { LucideChevronDown, LucideX } from "lucide-vue-next";
+import { LucideChevronDown, LucideX, type LucideIcon } from "lucide-vue-next";
 import { Collapse } from "vue-collapsed";
 
 const model = defineModel<T | undefined>({
@@ -51,6 +57,7 @@ const props = defineProps<{
   options: {
     value: T;
     label: string;
+    icon?: LucideIcon;
   }[];
   placeholder: string;
 }>();
