@@ -3,16 +3,16 @@
     <div
       class="flex h-8 cursor-pointer items-center gap-1 rounded-2xl border border-neutral-700 pr-2 text-sm transition-[background-color,border-radius] select-none hover:bg-neutral-700"
       :class="[
-        model ? 'bg-neutral-700' : 'bg-neutral-800',
-        model && showX ? 'pl-1' : 'pl-3',
+        model && model != props.default ? 'bg-neutral-700' : 'bg-neutral-800',
+        model && model != props.default && showX ? 'pl-1' : 'pl-3',
         open ? 'z-40' : '',
       ]"
       @click="open = !open"
     >
       <div
-        v-if="model && showX"
+        v-if="model && showX && model != props.default"
         class="flex size-6 items-center justify-center rounded-full transition-colors hover:bg-neutral-600"
-        @click.stop="model = undefined"
+        @click.stop="model = props.default"
       >
         <LucideX class="size-3 transition-transform" />
       </div>
@@ -67,8 +67,9 @@ const props = defineProps<{
     label: string;
     icon?: LucideIcon;
   }[];
-  placeholder: string;
+  placeholder?: string;
   showX?: boolean;
+  default?: T;
 }>();
 
 const current = computed(() => {

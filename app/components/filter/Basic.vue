@@ -2,20 +2,23 @@
   <div class="flex w-full gap-3 p-3">
     <UiDropdown
       v-model="filterStore.status"
+      v-tippy="{ content: 'Filter By Status' }"
       placeholder="Status"
       :options="statusOptions"
       show-x
     />
     <UiDropdown
       v-model="filterStore.sort"
+      v-tippy="{ content: 'Sort By' }"
       placeholder="Sort"
       :options="sortOptions"
+      :default="MediaListSort.AddedTime"
+      show-x
     />
     <UiToggleIcon
       v-slot="props"
       v-model="filterStore.desc"
-      v-tippy
-      :title="filterStore.desc ? 'Ascending' : 'Descending'"
+      v-tippy="{ content: filterStore.desc ? 'Ascending' : 'Descending' }"
       class="border border-neutral-700"
     >
       <LucideArrowUp :class="props.true" />

@@ -10,7 +10,10 @@
     data-tauri-drag-region
   >
     <div class="flex h-full max-w-0" data-tauri-drag-region>
-      <StatusbarButton v-tippy title="Check for updates" @click="check">
+      <StatusbarButton
+        v-tippy="{ content: 'Check for updates' }"
+        @click="check"
+      >
         {{ appData }}
       </StatusbarButton>
     </div>

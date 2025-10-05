@@ -23,9 +23,8 @@
                 <div
                   v-if="link && link.url"
                   :key="link.id"
-                  v-tippy
+                  v-tippy="{ content: link.site }"
                   :style="{ '--color': link.color ?? '#ffffff20' }"
-                  :title="link.site"
                   class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full p-2 transition-colors hover:bg-[var(--color)]"
                   @click="openUrl(link.url)"
                 >
@@ -41,8 +40,9 @@
               <UiToggleIcon
                 v-slot="props"
                 v-model="anime.isFavourite"
-                v-tippy
-                :title="anime.isFavourite ? 'Favorite' : 'Not Favorite'"
+                v-tippy="{
+                  content: anime.isFavourite ? 'Favorite' : 'Not Favorite',
+                }"
               >
                 <LucideHeart
                   class="fill-current text-red-400"
@@ -53,8 +53,9 @@
               <UiToggleIcon
                 v-slot="props"
                 v-model="inLibrary"
-                v-tippy
-                :title="inLibrary ? 'In Library' : 'Not In Library'"
+                v-tippy="{
+                  content: inLibrary ? 'In Library' : 'Not In Library',
+                }"
               >
                 <LucideCheck :class="props.true" />
                 <LucideX :class="props.false" />
@@ -99,9 +100,8 @@
               class="max-h-40 min-h-40 max-w-28 min-w-28 rounded-md object-cover"
             />
             <div
-              v-tippy
+              v-tippy="{ content: character.name?.userPreferred || 'No Name' }"
               class="max-w-28 overflow-hidden text-sm overflow-ellipsis whitespace-nowrap text-neutral-200"
-              :title="character.name?.userPreferred || 'No Name'"
             >
               {{ character.name?.userPreferred || "No Name" }}
             </div>

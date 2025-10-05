@@ -20,13 +20,15 @@
     </NuxtLink>
     <div class="flex w-full flex-col select-text">
       <span
-        v-tippy="{ interactive: true }"
+        v-tippy="{
+          content: entry.media.title?.userPreferred || '',
+          interactive: true,
+        }"
         class="overflow-hidden text-base overflow-ellipsis whitespace-nowrap text-neutral-200"
-        :title="entry.media.title?.userPreferred || ''"
       >
         {{ entry.media.title?.userPreferred }}
       </span>
-      <span class="text-xs text-neutral-400 capitalize whitespace-nowrap">
+      <span class="text-xs whitespace-nowrap text-neutral-400 capitalize">
         <template v-if="entry.media.season && entry.media.seasonYear">
           {{ entry.media.season?.toLowerCase() }}
           {{ entry.media.seasonYear }}

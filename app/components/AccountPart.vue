@@ -10,9 +10,8 @@
         <div class="text-xl">{{ authStore.user.name }}</div>
         <div
           v-if="authStore.user.options?.displayAdultContent"
-          v-tippy
+          v-tippy="{ content: 'Change this on the Anilist website' }"
           class="flex items-center rounded-full bg-red-400/50 p-0.5 px-2 text-[10px] select-none"
-          title="Change this on the Anilist website"
         >
           NSFW
         </div>
@@ -23,9 +22,8 @@
     </div>
     <UiIcon
       v-if="authStore.user.siteUrl"
-      v-tippy
+      v-tippy="{ content: 'Open profile on Anilist' }"
       class="ml-auto cursor-pointer"
-      title="Open profile on Anilist"
       @click="openUrl(authStore.user.siteUrl)"
     >
       <Anilist class="size-5" />
@@ -34,9 +32,8 @@
   <div v-else class="flex flex-col items-center gap-2">
     <div class="flex items-center justify-center gap-4">
       <UiIcon
-        v-tippy
+        v-tippy="{ content: 'Go to Anilist' }"
         class="cursor-pointer"
-        title="Go to Anilist"
         @click="openUrl('https://anilist.co')"
       >
         <Anilist class="size-5" />
