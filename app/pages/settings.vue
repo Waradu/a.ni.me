@@ -109,7 +109,7 @@ watch(
 
 definePageMeta({
   pageTransition: {
-    name: "slide-right",
+    name: "page",
     mode: "out-in",
   },
 });

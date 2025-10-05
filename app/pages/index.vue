@@ -24,9 +24,9 @@
       v-else
       class="flex size-full cursor-default items-center justify-center text-neutral-400 select-none"
     >
-      No lists found. Add animes to one of your lists on the
+      No lists yet, add some on the
       <NuxtLink to="/explore" class="px-1 underline">explore</NuxtLink>
-      page.
+      page or tweak filters.
     </div>
   </div>
 </template>
@@ -108,7 +108,7 @@ watch(
 
 definePageMeta({
   pageTransition: {
-    name: "slide-right",
+    name: "page",
     mode: "out-in",
   },
 });

@@ -1,18 +1,22 @@
 <template>
   <div class="relative flex flex-col">
     <div
-      class="z-40 flex h-8 cursor-pointer items-center gap-1 rounded-2xl border border-neutral-700 pr-2 text-sm transition-[background-color,border-radius] select-none hover:bg-neutral-700"
-      :class="[model ? 'bg-neutral-700 pl-1' : 'bg-neutral-800 pl-3']"
+      class="flex h-8 cursor-pointer items-center gap-1 rounded-2xl border border-neutral-700 pr-2 text-sm transition-[background-color,border-radius] select-none hover:bg-neutral-700"
+      :class="[
+        model ? 'bg-neutral-700' : 'bg-neutral-800',
+        model && showX ? 'pl-1' : 'pl-3',
+        open ? 'z-40' : '',
+      ]"
       @click="open = !open"
     >
       <div
-        v-if="model"
+        v-if="model && showX"
         class="flex size-6 items-center justify-center rounded-full transition-colors hover:bg-neutral-600"
         @click.stop="model = undefined"
       >
         <LucideX class="size-3 transition-transform" />
       </div>
-      <span>{{ current?.label ?? placeholder }}</span>
+      <span class="capitalize">{{ current?.label ?? placeholder }}</span>
       <LucideChevronDown
         class="ml-1 size-4 transition-transform"
         :class="open ? 'rotate-180' : ''"
@@ -30,14 +34,18 @@
       <template v-for="option in options" :key="option.value">
         <div
           v-if="model != option.value"
-          class="flex h-9 w-max min-w-full items-center gap-2.5 transition-colors hover:bg-neutral-700 pr-12"
+          class="flex h-9 w-max min-w-full items-center gap-2.5 pr-12 capitalize transition-colors hover:bg-neutral-700"
           :class="option.icon ? 'pl-2.5' : 'pl-3'"
           @click="
             model = option.value;
             open = false;
           "
         >
-          <component :is="option.icon" v-if="option.icon" class="size-3.5 text-neutral-400" />
+          <component
+            :is="option.icon"
+            v-if="option.icon"
+            class="size-3.5 text-neutral-400"
+          />
           <span>{{ option.label }}</span>
         </div>
       </template>
@@ -60,6 +68,7 @@ const props = defineProps<{
     icon?: LucideIcon;
   }[];
   placeholder: string;
+  showX?: boolean;
 }>();
 
 const current = computed(() => {

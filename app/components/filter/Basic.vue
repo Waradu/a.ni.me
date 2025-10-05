@@ -1,5 +1,16 @@
 <template>
   <div class="flex w-full gap-3 p-3">
+    <UiDropdown
+      v-model="filterStore.status"
+      placeholder="Status"
+      :options="statusOptions"
+      show-x
+    />
+    <UiDropdown
+      v-model="filterStore.sort"
+      placeholder="Sort"
+      :options="sortOptions"
+    />
     <UiToggleIcon
       v-slot="props"
       v-model="filterStore.desc"
@@ -10,11 +21,6 @@
       <LucideArrowUp :class="props.true" />
       <LucideArrowDown :class="props.false" />
     </UiToggleIcon>
-    <UiDropdown
-      v-model="filterStore.status"
-      placeholder="Status"
-      :options="options"
-    />
   </div>
 </template>
 
@@ -30,7 +36,7 @@ import {
   LucideX,
   type LucideIcon,
 } from "lucide-vue-next";
-import { MediaListStatus } from "~/gql/gen/types.generated";
+import { MediaListSort, MediaListStatus } from "~/gql/gen/types.generated";
 
 const filterStore = useFiltersStore();
 
@@ -40,12 +46,19 @@ const iconMap: Record<MediaListStatus, LucideIcon> = {
   DROPPED: LucideX,
   PAUSED: LucidePause,
   PLANNING: LucideCalendar,
-  REPEATING: LucideRepeat
+  REPEATING: LucideRepeat,
 };
 
-const options = Object.values(MediaListStatus).map((status) => ({
+const statusOptions = Object.values(MediaListStatus).map((status) => ({
   value: status,
-  label: status.slice(0, 1).toUpperCase() + status.slice(1).toLowerCase(),
+  label: status.toLowerCase(),
   icon: iconMap[status],
 }));
+
+const sortOptions = Object.values(MediaListSort)
+  .map((sort) => ({
+    value: sort,
+    label: sort.replaceAll("_", " ").toLowerCase(),
+  }))
+  .filter((sort) => !sort.label.includes("desc"));
 </script>
