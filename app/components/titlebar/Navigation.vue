@@ -14,8 +14,8 @@
       {{ page.name }}
     </TitlebarLink>
     <UiToggleIcon v-slot="props" v-model="isSearching">
-      <LucideSearch :class="props.true" />
-      <LucideX :class="props.false" />
+      <LucideX :class="props.true" />
+      <LucideSearch :class="props.false" />
     </UiToggleIcon>
     <input
       ref="searchbar"

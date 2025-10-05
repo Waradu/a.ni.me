@@ -40,12 +40,24 @@
             <div class="ml-auto flex gap-1">
               <UiToggleIcon
                 v-slot="props"
+                v-model="anime.isFavourite"
+                v-tippy
+                :title="anime.isFavourite ? 'Favorite' : 'Not Favorite'"
+              >
+                <LucideHeart
+                  class="fill-current text-red-400"
+                  :class="props.true"
+                />
+                <LucideHeart :class="props.false" />
+              </UiToggleIcon>
+              <UiToggleIcon
+                v-slot="props"
                 v-model="inLibrary"
                 v-tippy
                 :title="inLibrary ? 'In Library' : 'Not In Library'"
               >
-                <LucideX :class="props.true" />
-                <LucideCheck :class="props.false" />
+                <LucideCheck :class="props.true" />
+                <LucideX :class="props.false" />
               </UiToggleIcon>
             </div>
           </div>
@@ -102,7 +114,12 @@
 
 <script lang="ts" setup>
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { LucideArrowLeft, LucideCheck, LucideX } from "lucide-vue-next";
+import {
+  LucideArrowLeft,
+  LucideCheck,
+  LucideHeart,
+  LucideX,
+} from "lucide-vue-next";
 import { GetMediaByIdDocument } from "~/gql/gen/types.generated";
 
 const route = useRoute();

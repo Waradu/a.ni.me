@@ -12,8 +12,8 @@
       :title="filterStore.desc ? 'Ascending' : 'Descending'"
       class="border border-neutral-700"
     >
-      <LucideArrowDown :class="props.true" />
-      <LucideArrowUp :class="props.false" />
+      <LucideArrowUp :class="props.true" />
+      <LucideArrowDown :class="props.false" />
     </UiToggleIcon>
   </div>
 </template>

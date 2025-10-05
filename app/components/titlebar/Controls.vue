@@ -1,5 +1,5 @@
 <template>
-  <div class="w-52 flex items-center justify-end gap-1" data-tauri-drag-region>
+  <div class="flex w-52 items-center justify-end gap-1" data-tauri-drag-region>
     <UiIcon v-slot="props" @click="() => getCurrentWindow().minimize()">
       <LucideMinus :class="props.class" />
     </UiIcon>
@@ -8,8 +8,8 @@
       v-model="isMaximized"
       @click="() => getCurrentWindow().toggleMaximize()"
     >
-      <LucideMaximize :class="props.true" />
-      <LucideMinimize :class="props.false" />
+      <LucideMinimize :class="props.true" />
+      <LucideMaximize :class="props.false" />
     </UiToggleIcon>
     <UiIcon v-slot="props" red @click="() => getCurrentWindow().close()">
       <LucideX :class="props.class" />
@@ -19,7 +19,12 @@
 
 <script lang="ts" setup>
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { LucideMaximize, LucideMinimize, LucideMinus, LucideX } from "lucide-vue-next";
+import {
+  LucideMaximize,
+  LucideMinimize,
+  LucideMinus,
+  LucideX,
+} from "lucide-vue-next";
 
 const isMaximized = ref(false);
 
