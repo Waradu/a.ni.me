@@ -1,0 +1,43 @@
+name: validate-schema
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: schema-drift-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Introspect AniList schema
+        run: |
+          bunx @apollo/rover --version
+          bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.graphql.new
+
+      - name: Compare schema
+        shell: bash
+        run: |
+          set -eo pipefail
+          if ! diff -u app/gql/schema.graphql app/gql/schema.graphql.new > schema.diff; then
+            echo "::group::Schema diff"
+            cat schema.diff
+            echo "::endgroup::"
+            echo "::error title=Schema drift detected::Your committed schema is outdated. Run 'bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/schema.graphql' locally (or 'bun run schema:update' if you have that script) and commit the changes."
+            exit 1
+          else
+            echo "Schema is up to date ✅"
+          fi

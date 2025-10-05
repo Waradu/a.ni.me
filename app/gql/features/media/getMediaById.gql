@@ -1,0 +1,67 @@
+query GetMediaById($mediaId: Int) {
+  Media(id: $mediaId) {
+    bannerImage
+    coverImage {
+      extraLarge
+      color
+    }
+    title {
+      userPreferred
+    }
+    trailer {
+      id
+      site
+      thumbnail
+    }
+    externalLinks {
+      id
+      color
+      icon
+      site
+      url
+    }
+    isFavourite
+    isAdult
+    genres
+    tags {
+      name
+    }
+    status
+    season
+    seasonYear
+    recommendations(perPage: 5) {
+      nodes {
+        media {
+          id
+          title {
+            userPreferred
+          }
+          coverImage {
+            extraLarge
+          }
+        }
+      }
+    }
+    popularity
+    favourites
+    description
+    averageScore
+    characters(sort: RELEVANCE) {
+      nodes {
+        id
+        image {
+          large
+        }
+        name {
+          userPreferred
+        }
+      }
+    }
+    mediaListEntry {
+      id
+      private
+      score
+      status
+    }
+  }
+}
