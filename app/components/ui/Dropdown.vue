@@ -30,6 +30,7 @@
     <Collapse
       :when="open"
       class="v-collapse absolute top-9 z-40 min-w-full cursor-default overflow-hidden rounded-2xl border border-neutral-700 bg-neutral-800 text-sm select-none"
+      :class="rightAligned ? 'right-0' : ''"
     >
       <template v-for="option in options" :key="option.value">
         <div
@@ -69,6 +70,7 @@ const props = defineProps<{
   }[];
   placeholder?: string;
   showX?: boolean;
+  rightAligned?: boolean;
   default?: T;
 }>();
 
