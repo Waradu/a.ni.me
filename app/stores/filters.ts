@@ -1,10 +1,9 @@
-import { MediaListSort } from "~/gql/gen/types.generated";
-import type { MediaListStatus } from "~/types/animes";
+import { MediaListSort, type MediaListStatus } from "~/gql/gen/types.generated";
 
 export const useFiltersStore = defineStore("filtersStore", () => {
   const sort = ref<MediaListSort>(MediaListSort.AddedTime);
   const desc = ref<boolean>(false);
-  const status = ref<MediaListStatus | null>(null);
+  const status = ref<MediaListStatus>();
 
   return { sort, status, desc };
 }, {

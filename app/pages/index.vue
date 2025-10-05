@@ -1,36 +1,42 @@
 <template>
   <div
-    class="flex w-full justify-center"
-    :class="pending ? 'h-full overflow-hidden' : ''"
+    class="flex w-full flex-col"
+    :class="
+      pending || !(!pending && lists && lists.length > 0)
+        ? 'h-full overflow-hidden'
+        : ''
+    "
   >
+    <FilterBasic />
     <UiError v-if="error">
       {{ error.statusCode }}:
       {{ error.message }}
     </UiError>
     <template v-else-if="pending || (!pending && lists && lists.length > 0)">
-      <div
-        v-if="!pending && lists && lists.length > 0"
-        class="flex w-full flex-col gap-3 p-3"
-      >
+      <div v-if="!pending" class="flex w-full flex-col gap-3 p-3 pt-0">
         <template v-for="list in lists" :key="list!.name!">
           <MediaList v-if="list" :list="list" />
         </template>
       </div>
-      <div
-        v-else
-        class="grid h-max w-full grid-cols-[repeat(auto-fill,_minmax(160px,_1fr))] gap-3 p-3 select-none"
-        :class="pending ? 'pr-1' : 'pr-2'"
-      >
-        <MediaSkelleton />
-      </div>
+      <MediaSkelleton v-else />
     </template>
-    <div v-else class="p-3">No Animes Found</div>
+    <div
+      v-else
+      class="flex size-full cursor-default items-center justify-center text-neutral-400 select-none"
+    >
+      No lists found. Add animes to one of your lists on the
+      <NuxtLink to="/explore" class="px-1 underline">explore</NuxtLink>
+      page.
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Fuse from "fuse.js";
-import { GetUserAnimeCollectionDocument } from "~/gql/gen/types.generated";
+import {
+  GetUserAnimeCollectionDocument,
+  type MediaListSort,
+} from "~/gql/gen/types.generated";
 
 const { $apollo } = useNuxtApp();
 
@@ -48,8 +54,20 @@ const {
   async () => {
     if (!authStore.user?.id) return null;
 
+    let sort = filterStore.sort;
+
+    if (filterStore.desc && sort) {
+      sort = (sort + "_DESC") as MediaListSort;
+    }
+
+    console.log(sort);
+    console.log(filterStore.desc);
+    console.log("Test");
+
     const data = await $apollo.query(GetUserAnimeCollectionDocument, {
       userId: authStore.user?.id,
+      status: filterStore.status,
+      sort: sort,
     });
 
     return data?.MediaListCollection?.lists;
