@@ -10,6 +10,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 }, {
   persist: {
     storage: localStorage,
-    pick: ["sort", "status", "desc"]
+    pick: ["sort", "status", "desc", "singleCompletedList"]
   }
 });
