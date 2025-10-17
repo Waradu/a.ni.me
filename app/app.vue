@@ -39,13 +39,9 @@ await onOpenUrl((urls) => {
 authStore.refreshUser();
 
 onMounted(() => {
-  const detectPlatform = async () => {
-    const currentPlatform = await platform();
+  const currentPlatform = platform();
 
-    document.documentElement.classList.add(currentPlatform);
-  };
-
-  detectPlatform();
+  document.documentElement.classList.add(currentPlatform);
 });
 </script>
 
