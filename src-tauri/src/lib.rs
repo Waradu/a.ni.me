@@ -1,5 +1,6 @@
 use tauri::Manager;
 use tauri_plugin_prevent_default::Flags;
+use tauri_plugin_window_state::StateFlags;
 
 #[cfg(debug_assertions)]
 fn prevent_default() -> tauri::plugin::TauriPlugin<tauri::Wry> {
@@ -30,7 +31,16 @@ pub fn run() {
         .plugin(prevent_default())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_window_state::Builder::new().build())
+        .plugin(
+            tauri_plugin_window_state::Builder::new()
+                .with_state_flags(
+                    StateFlags::SIZE
+                        | StateFlags::POSITION
+                        | StateFlags::MAXIMIZED
+                        | StateFlags::FULLSCREEN,
+                )
+                .build(),
+        )
         .plugin(
             tauri_plugin_log::Builder::default()
                 .level(log::LevelFilter::Debug)
