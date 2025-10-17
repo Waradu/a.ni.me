@@ -18,5 +18,8 @@
     "window-state:default",
     "os:default",
     "clipboard-manager:allow-write-text"
-  ]
+  ],
+  "remote": {
+    "urls": ["https://s4.anilist.co"]
+  }
 }
