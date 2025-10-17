@@ -17,7 +17,7 @@ export const usePageScopedState = <K extends PageScopedKeys>(key: K) => {
     () => route.fullPath,
     () => {
       internalKey.value = `${key}-${route.fullPath}`;
-    }
+    },
   );
 
   const defaultValue =
@@ -29,7 +29,7 @@ export const usePageScopedState = <K extends PageScopedKeys>(key: K) => {
     set: (val) => {
       useState<PageScopedType<K> | null>(
         internalKey.value,
-        defaultValue
+        defaultValue,
       ).value = val;
     },
   });

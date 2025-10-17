@@ -4,7 +4,9 @@ import type { ResultOf } from "@graphql-typed-document-node/core";
 
 type Viewer = ResultOf<typeof GetViewerDocument>["Viewer"];
 
-export const useWhenAuthentificated = <T>(get: (user: NonNullable<Viewer>) => Promise<T>) => {
+export const useWhenAuthentificated = <T>(
+  get: (user: NonNullable<Viewer>) => Promise<T>,
+) => {
   const authStore = useAuthStore();
 
   const data = ref<T>();
@@ -29,7 +31,7 @@ export const useWhenAuthentificated = <T>(get: (user: NonNullable<Viewer>) => Pr
 
       fetched.value = true;
     },
-    { immediate: true }
+    { immediate: true },
   );
 
   return {

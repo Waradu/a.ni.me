@@ -24,12 +24,6 @@
 <script lang="ts" setup>
 import { LucideCheck } from "lucide-vue-next";
 
-const {
-  updateAvailable,
-  progress,
-  pending,
-  downloading,
-  check,
-  install,
-} = useUpdater(false);
+const { updateAvailable, progress, pending, downloading, check, install } =
+  useUpdater(false);
 </script>

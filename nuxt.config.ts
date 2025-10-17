@@ -10,16 +10,14 @@ export default defineNuxtConfig({
 
   vite: {
     clearScreen: false,
-    envPrefix: ['VITE_', 'TAURI_'],
+    envPrefix: ["VITE_", "TAURI_"],
     server: {
       strictPort: true,
     },
-    plugins: [
-      tailwindcss(),
-    ]
+    plugins: [tailwindcss()],
   },
 
-  ignore: ['**/src-tauri/**'],
+  ignore: ["**/src-tauri/**"],
 
   modules: [
     "@nuxt/fonts",
@@ -30,7 +28,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/image",
     "@pinia/nuxt",
-    "pinia-plugin-persistedstate/nuxt"
+    "pinia-plugin-persistedstate/nuxt",
   ],
 
   css: ["~/assets/css/tailwind.css", "~/assets/css/tippy.css"],
@@ -39,9 +37,9 @@ export default defineNuxtConfig({
     pageTransition: { name: "page", mode: "out-in" },
     head: {
       htmlAttrs: {
-        style: "background: #262626;"
-      }
-    }
+        style: "background: #262626;",
+      },
+    },
   },
 
   fonts: {
@@ -50,13 +48,13 @@ export default defineNuxtConfig({
       {
         name: "Inter",
         provider: "bunny",
-        weights: [100, 200, 300, 400, 500, 600, 700, 800, 900]
-      }
-    ]
+        weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      },
+    ],
   },
 
   nitro: {
-    preset: "bun"
+    preset: "bun",
   },
 
   svgo: {
@@ -68,12 +66,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       redirectUri: process.env.REDIRECT_URI,
-    }
+    },
   },
 
   image: {
-    domains: [
-      "s4.anilist.co"
-    ]
-  }
+    domains: ["s4.anilist.co"],
+  },
 });

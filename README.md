@@ -2,9 +2,10 @@
   <img align="center" width="128px" src="public/icon.png" />
   <h1 align="center">A • NI • ME</h1>
 
-   Can't keep up with all the anime you've watched? Neither can we! <br>
-   A•NI•ME helps you keep track of all the anime you’ve watched. It’s simple, fast, and easy to use! <br>
-   It’s perfect for any anime fan who watches a lot!
+Can't keep up with all the anime you've watched? Neither can we! <br>
+A•NI•ME helps you keep track of all the anime you’ve watched. It’s simple, fast, and easy to use! <br>
+It’s perfect for any anime fan who watches a lot!
+
 </div>
 
 <br>
@@ -12,7 +13,7 @@
 > \[!IMPORTANT]
 >
 > **Star this project**, to get notified when it releases.
-> 
+>
 > Also I currently **<ins>won't accept PR's</ins>** please wait for v1 with contributing
 
 ## 📝 TODO (05.11.2025)

@@ -14,7 +14,8 @@
     "lint:fix": "eslint . --fix",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "bun codegen --watch",
-    "schema:update": "mkdir -p app/gql/gen && bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql"
+    "schema:update": "mkdir -p app/gql/gen && bunx @apollo/rover graph introspect https://graphql.anilist.co > app/gql/gen/schema.gql",
+    "format": "bun prettier . --write"
   },
   "dependencies": {
     "@apollo/client": "^4.0.7",

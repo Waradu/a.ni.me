@@ -17,7 +17,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (toIndex !== -1 && fromIndex !== -1 && toIndex !== fromIndex) {
       const direction = toIndex > fromIndex ? "right" : "left";
       transitionName = `slide-${direction}`;
-    };
+    }
 
     toTransition.name = transitionName;
     fromTransition.name = transitionName;
